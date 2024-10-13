@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таблица продуктов</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            cursor: pointer;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        nav li {
+            margin-right: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #337ab7;
+        }
+        nav a:hover {
+            color: #23527c;
+        }
+    </style>
+</head>
+<body>
+<h1>Таблица продуктов</h1>
+<nav>
+    <ul>
+        <li><a href="http://localhost:8080/pcs/all">Компьютеры</a></li>
+        <li><a href="http://localhost:8080/printers/all">Принтеры</a></li>
+        <li><a href="http://localhost:8080/laptops/all">Ноутбуки</a></li>
+    </ul>
+</nav>
+<table id="products-table">
+    <thead>
+    <tr>
+        <th>Модель</th>
+        <th>Тип</th>
+        <th>Производитель</th>
+        <th>Код</th>
+    </tr>
+    </thead>
+    <tbody id="products-body">
+    </tbody>
+</table>
+
+<script>
+    fetch('http://localhost:8080/products/fullproduct')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Ошибка ${response.status}: ${response.statusText}");
+            }
+            return response.json();
+        })
+        .then(data => {
+            const tableBody = document.getElementById('products-body');
+            data.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.model}</td>
+                    <td>${product.type}</td>
+                    <td>${product.maker}</td>
+                    <td>${product.code}</td>
+                `;
+                row.addEventListener('click', () => {
+                    let url;
+                    switch (product.type) {
+                        case 'Laptop':
+                            url = `http://localhost:8080/laptops?code=${product.code}`;
+                            break;
+                        case 'Printer':
+                            url = `http://localhost:8080/printers?code=${product.code}`;
+                            break;
+                        case 'PC':
+                            url = `pc.html?code=${product.code}`;
+                            break;
+                        default:
+                            return;
+                    }
+                    window.location.href = url;
+                });
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Ошибка:', error));
+</script>
+</body>
+</html>
