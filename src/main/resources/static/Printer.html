@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Карточка компьютера</title>
+    <title>Карточка Принтера</title>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
-        .computer-card {
+        .printer-card {
             width: 500px;
             margin: 40px auto;
             padding: 20px;
@@ -16,31 +16,31 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .computer-card h2 {
+        .printer-card h2 {
             margin-top: 0;
         }
-        .computer-card ul {
+        .printer-card ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-        .computer-card li {
+        .printer-card li {
             margin-bottom: 10px;
         }
-        .computer-card li span {
+        .printer-card li span {
             font-weight: bold;
         }
     </style>
 </head>
 <body>
-<div class="computer-card">
+<div class="printer-card">
 </div>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
 
-    fetch(`http://localhost:8080/pcs?code=${code}`)
+    fetch(`http://localhost:8080/printers?code=${code}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -48,16 +48,14 @@
             return response.json();
         })
         .then(data => {
-            const computerCard = document.querySelector('.computer-card');
+            const computerCard = document.querySelector('.printer-card');
             computerCard.innerHTML = `
-                    <h2>Карточка компьютера</h2>
+                    <h2>Карточка Принетера</h2>
                     <ul>
                         <li><span>Серийный номер:</span> ${data.code}</li>
                         <li><span>Модель:</span> ${data.model}</li>
-                        <li><span>Скорость:</span> ${data.speed} МГц</li>
-                        <li><span>ОЗУ:</span> ${data.ram} ГБ</li>
-                        <li><span>Жесткий диск:</span> ${data.hd} ГБ</li>
-                        <li><span>CD-ROM:</span> ${data.cd}</li>
+                        <li><span>Цветной или нет:</span> ${data.color} </li>
+                        <li><span>Тип:</span> ${data.type} </li>
                         <li><span>Цена:</span> ${data.price} $</li>
                     </ul>
                 `;
