@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Таблица продуктов</title>
+    <title>Таблица Ноутбуков</title>
     <style>
         table {
             border-collapse: collapse;
@@ -33,29 +33,26 @@
     </style>
 </head>
 <body>
-<h1>Таблица продуктов</h1>
-<nav>
-    <ul>
-        <li><a href="pc-table.html">Компьютеры</a></li>
-        <li><a href="printer-table.html">Принтеры</a></li>
-        <li><a href="laptop-table.html">Ноутбуки</a></li>
-    </ul>
-</nav>
-<table id="products-table">
+<h1>Таблица Ноутбуков</h1>
+<table id="laptop-table">
     <thead>
     <tr>
-        <th>Модель</th>
-        <th>Тип</th>
-        <th>Производитель</th>
         <th>Код</th>
+        <th>Модель</th>
+        <th>Скорость</th>
+        <th>ОЗУ</th>
+        <th>Жёстрий диск</th>
+        <th>Цена</th>
+        <th>Дюймы</th>
+
     </tr>
     </thead>
-    <tbody id="products-body">
+    <tbody id="laptop-body">
     </tbody>
 </table>
 
 <script>
-    fetch('http://localhost:8080/products/fullproduct')
+    fetch('http://localhost:8080/laptops/all')
         .then(response => {
             if (!response.ok) {
                 throw new Error("Ошибка ${response.status}: ${response.statusText}");
@@ -63,30 +60,22 @@
             return response.json();
         })
         .then(data => {
-            const tableBody = document.getElementById('products-body');
-            data.forEach(product => {
+            const tableBody = document.getElementById('laptop-body');
+            data.forEach(laptop => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${product.model}</td>
-                    <td>${product.type}</td>
-                    <td>${product.maker}</td>
-                    <td>${product.code}</td>
+                    <td>${laptop.code}</td>
+                    <td>${laptop.model}</td>
+                    <td>${laptop.speed}</td>
+                    <td>${laptop.ram}</td>
+                    <td>${laptop.hd}</td>
+                    <td>${laptop.price}</td>
+                    <td>${laptop.screen}</td>
+
                 `;
                 row.addEventListener('click', () => {
                     let url;
-                    switch (product.type) {
-                        case 'Laptop':
-                            url = `laptop.html?code=${product.code}`;
-                            break;
-                        case 'Printer':
-                            url = `printer.html?code=${product.code}`;
-                            break;
-                        case 'PC':
-                            url = `pc.html?code=${product.code}`;
-                            break;
-                        default:
-                            return;
-                    }
+                    url = `laptop.html?code=${laptop.code}`;
                     window.location.href = url;
                 });
                 tableBody.appendChild(row);
