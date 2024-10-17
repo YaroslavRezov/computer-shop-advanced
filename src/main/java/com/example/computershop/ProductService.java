@@ -36,4 +36,17 @@ public class ProductService {
 
         return productJoinedDtoList;
     }
+    public ProductDto save(ProductDto requestProductDto) {
+        ProductEntity sourceProductEntity = new ProductEntity();
+        sourceProductEntity.setMaker(requestProductDto.getMaker());
+        sourceProductEntity.setType(requestProductDto.getType());
+
+        ProductEntity savedProductEntity = productRepository.save(sourceProductEntity);
+
+        ProductDto responseProductDto = new ProductDto();
+        responseProductDto.setMaker(savedProductEntity.getMaker());
+        responseProductDto.setType(savedProductEntity.getType());
+        responseProductDto.setModel(savedProductEntity.getModel());
+        return responseProductDto;
+    }
 }

@@ -10,4 +10,7 @@ public class ProductDto {
     String model;
     String type;
 
+    public ProductDto() {
+
+    }
 }
