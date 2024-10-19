@@ -13,4 +13,8 @@ public class LaptopDto {
     private Double hd;
     private int price;
     private int screen;
+
+    public LaptopDto() {
+
+    }
 }

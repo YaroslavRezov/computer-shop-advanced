@@ -28,5 +28,27 @@ public class LaptopService {
         return new LaptopDto(laptopEntity.getCode(), laptopEntity.getProduct().getModel(), laptopEntity.getSpeed(), laptopEntity.getRam(),laptopEntity.getHd(),laptopEntity.getPrice(), laptopEntity.getScreen());
     }
 
+    public LaptopDto save(LaptopDto requestLaptopDto) {
+        LaptopEntity sourceLaptopEntity = new LaptopEntity();
+        sourceLaptopEntity.getProduct().setModel(requestLaptopDto.getModel()); // есть ошибка 500
+        sourceLaptopEntity.setSpeed(requestLaptopDto.getSpeed());
+        sourceLaptopEntity.setRam(requestLaptopDto.getRam());
+        sourceLaptopEntity.setHd(requestLaptopDto.getHd());
+        sourceLaptopEntity.setPrice(requestLaptopDto.getPrice());
+        sourceLaptopEntity.setScreen(requestLaptopDto.getScreen());
+
+        LaptopEntity savedLaptopEntity = laptopRepository.save(sourceLaptopEntity);
+
+        LaptopDto responseLaptopDto = new LaptopDto();
+        responseLaptopDto.setModel(savedLaptopEntity.getProduct().getModel());
+        responseLaptopDto.setSpeed(savedLaptopEntity.getSpeed());
+        responseLaptopDto.setRam(savedLaptopEntity.getRam());
+        responseLaptopDto.setHd(savedLaptopEntity.getHd());
+        responseLaptopDto.setPrice(savedLaptopEntity.getPrice());
+        responseLaptopDto.setScreen(savedLaptopEntity.getScreen());
+        responseLaptopDto.setCode(savedLaptopEntity.getCode());
+        return responseLaptopDto;
+    }
+
 
 }

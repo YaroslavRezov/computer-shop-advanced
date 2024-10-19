@@ -1,10 +1,7 @@
 package com.example.computershop;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +18,10 @@ public class LaptopController {
     @GetMapping
     LaptopDto getLaptop(@RequestParam Integer code){
         return laptopService.getLaptop(code);
+    }
+
+    @PostMapping()
+    LaptopDto insertIntoLaptop(@RequestBody LaptopDto laptopDto) {
+        return laptopService.save(laptopDto);
     }
 }
