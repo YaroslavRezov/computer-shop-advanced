@@ -1,6 +1,6 @@
-package com.example.computershop;
-import org.hibernate.annotations.SQLInsert;
-import org.springframework.data.jpa.repository.JpaRepository;
+package com.example.computershop.repository;
+import com.example.computershop.model.entity.ProductEntity;
+import com.example.computershop.model.entity.ProductJoinedView;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

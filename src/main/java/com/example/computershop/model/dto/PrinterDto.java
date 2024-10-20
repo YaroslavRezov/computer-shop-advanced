@@ -1,4 +1,4 @@
-package com.example.computershop;
+package com.example.computershop.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PrinterDto {
-    private Integer code;
+    private Long code;
     private String model;
     private String color;
     private String type;

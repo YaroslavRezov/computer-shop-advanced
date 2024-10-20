@@ -1,4 +1,4 @@
-package com.example.computershop;
+package com.example.computershop.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

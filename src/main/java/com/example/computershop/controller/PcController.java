@@ -1,5 +1,7 @@
-package com.example.computershop;
+package com.example.computershop.controller;
 
+import com.example.computershop.model.dto.PcDto;
+import com.example.computershop.service.PcService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +21,7 @@ public class PcController {
         return pcService.getPcs();
     }
     @GetMapping
-    PcDto getPc(@RequestParam Integer code){
+    PcDto getPc(@RequestParam Long code){
         return pcService.getPc(code);
     }
 }

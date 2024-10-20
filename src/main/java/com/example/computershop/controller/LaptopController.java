@@ -1,5 +1,7 @@
-package com.example.computershop;
+package com.example.computershop.controller;
 
+import com.example.computershop.model.dto.LaptopDto;
+import com.example.computershop.service.LaptopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +18,7 @@ public class LaptopController {
         return laptopService.getLaptops();
     }
     @GetMapping
-    LaptopDto getLaptop(@RequestParam Integer code){
+    LaptopDto getLaptop(@RequestParam Long code){
         return laptopService.getLaptop(code);
     }
 

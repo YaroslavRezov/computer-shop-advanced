@@ -1,7 +1,8 @@
-package com.example.computershop;
+package com.example.computershop.controller;
 
+import com.example.computershop.model.dto.DeviceDto;
+import com.example.computershop.service.DeviceService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.internal.util.StringHelper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

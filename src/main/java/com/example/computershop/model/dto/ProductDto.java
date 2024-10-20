@@ -1,14 +1,16 @@
-package com.example.computershop;
+package com.example.computershop.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ProductJoinedDto {
+public class ProductDto {
     String maker;
     String model;
     String type;
-    Integer code;
 
+    public ProductDto() {
+
+    }
 }

@@ -1,5 +1,10 @@
-package com.example.computershop;
+package com.example.computershop.service;
 
+import com.example.computershop.model.dto.ProductDto;
+import com.example.computershop.model.dto.ProductJoinedDto;
+import com.example.computershop.model.entity.ProductEntity;
+import com.example.computershop.model.entity.ProductJoinedView;
+import com.example.computershop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

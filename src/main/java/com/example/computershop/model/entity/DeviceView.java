@@ -1,4 +1,4 @@
-package com.example.computershop;
+package com.example.computershop.model.entity;
 
 public interface DeviceView {
     String getModel();

@@ -1,5 +1,10 @@
-package com.example.computershop;
+package com.example.computershop.service;
 
+import com.example.computershop.model.dto.LaptopDto;
+import com.example.computershop.model.entity.LaptopEntity;
+import com.example.computershop.model.entity.ProductEntity;
+import com.example.computershop.repository.LaptopRepository;
+import com.example.computershop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +15,8 @@ import java.util.List;
 @Service
 public class LaptopService {
     private final LaptopRepository laptopRepository;
+    private final ProductRepository productRepository;
+
 
     public List<LaptopDto> getLaptops() {
         Iterable<LaptopEntity> laptopEntities = laptopRepository.findAll();
@@ -21,7 +28,7 @@ public class LaptopService {
         return laptopDtoList;
     }
 
-    public LaptopDto getLaptop(Integer code) {
+    public LaptopDto getLaptop(Long code) {
         LaptopEntity laptopEntity = laptopRepository.findById(code).orElse(null);
 
 
@@ -29,8 +36,13 @@ public class LaptopService {
     }
 
     public LaptopDto save(LaptopDto requestLaptopDto) {
+        ProductEntity foundProductEntity = productRepository.findById(requestLaptopDto.getModel()).orElse(null);
+
         LaptopEntity sourceLaptopEntity = new LaptopEntity();
-        sourceLaptopEntity.getProduct().setModel(requestLaptopDto.getModel()); // есть ошибка 500
+
+
+        sourceLaptopEntity.setProduct(foundProductEntity);
+
         sourceLaptopEntity.setSpeed(requestLaptopDto.getSpeed());
         sourceLaptopEntity.setRam(requestLaptopDto.getRam());
         sourceLaptopEntity.setHd(requestLaptopDto.getHd());

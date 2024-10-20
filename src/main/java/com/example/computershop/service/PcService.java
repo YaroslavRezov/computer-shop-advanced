@@ -1,5 +1,8 @@
-package com.example.computershop;
+package com.example.computershop.service;
 
+import com.example.computershop.model.dto.PcDto;
+import com.example.computershop.model.entity.PcEntity;
+import com.example.computershop.repository.PcRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -20,7 +23,7 @@ public class PcService {
         return pcDtoList;
     }
 
-    public PcDto getPc(Integer code) {
+    public PcDto getPc(Long code) {
         PcEntity pcEntity = pcRepository.findById(code).orElse(null);
 
 

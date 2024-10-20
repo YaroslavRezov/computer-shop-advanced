@@ -1,8 +1,9 @@
-package com.example.computershop;
+package com.example.computershop.controller;
 
+import com.example.computershop.model.dto.ProductDto;
+import com.example.computershop.model.dto.ProductJoinedDto;
+import com.example.computershop.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

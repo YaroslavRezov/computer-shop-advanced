@@ -1,5 +1,6 @@
-package com.example.computershop;
+package com.example.computershop.model.entity;
 
+import com.example.computershop.model.entity.ProductEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 @MappedSuperclass
@@ -7,9 +8,9 @@ import lombok.Data;
 public abstract class BaseDeviceEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private Integer code;
+    private Long code;
 
     @ManyToOne
     @JoinColumn(name = "model", referencedColumnName = "model", nullable = true)

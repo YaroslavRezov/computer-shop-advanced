@@ -1,5 +1,8 @@
-package com.example.computershop;
+package com.example.computershop.service;
 
+import com.example.computershop.repository.PrinterRepository;
+import com.example.computershop.model.dto.PrinterDto;
+import com.example.computershop.model.entity.PrinterEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +24,7 @@ public class PrinterService {
         return printerDtoList;
     }
 
-    public PrinterDto getPrinter(Integer code) {
+    public PrinterDto getPrinter(Long code) {
         PrinterEntity printerEntity = printerRepository.findById(code).orElse(null);
 
 
