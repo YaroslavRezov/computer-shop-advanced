@@ -43,6 +43,8 @@ public class LaptopService {
 
         sourceLaptopEntity.setProduct(foundProductEntity);
 
+
+        sourceLaptopEntity.setCode(requestLaptopDto.getCode());
         sourceLaptopEntity.setSpeed(requestLaptopDto.getSpeed());
         sourceLaptopEntity.setRam(requestLaptopDto.getRam());
         sourceLaptopEntity.setHd(requestLaptopDto.getHd());

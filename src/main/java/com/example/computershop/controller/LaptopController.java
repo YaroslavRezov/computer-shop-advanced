@@ -27,3 +27,4 @@ public class LaptopController {
         return laptopService.save(laptopDto);
     }
 }
+
