@@ -11,4 +11,8 @@ public class PrinterDto {
     private String color;
     private String type;
     private Integer price;
+
+    public PrinterDto() {
+
+    }
 }

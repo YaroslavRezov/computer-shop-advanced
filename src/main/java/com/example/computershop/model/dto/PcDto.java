@@ -13,4 +13,8 @@ public class PcDto {
     private Double hd;
     private String cd;
     private int price;
+
+    public PcDto() {
+
+    }
 }

@@ -1,8 +1,10 @@
 package com.example.computershop.service;
 
-import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.model.dto.PrinterDto;
 import com.example.computershop.model.entity.PrinterEntity;
+import com.example.computershop.model.entity.ProductEntity;
+import com.example.computershop.repository.PrinterRepository;
+import com.example.computershop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import java.util.List;
 @Service
 public class PrinterService {
     private final PrinterRepository printerRepository;
+    private final ProductRepository productRepository;
 
     public List<PrinterDto> getPrinters() {
         Iterable<PrinterEntity> printerEntities = printerRepository.findAll();
@@ -29,5 +32,31 @@ public class PrinterService {
 
 
         return new PrinterDto(printerEntity.getCode(), printerEntity.getProduct().getModel(), printerEntity.getColor(), printerEntity.getType(), printerEntity.getPrice());
+    }
+
+    public PrinterDto save(PrinterDto requestPrinterDto) {
+        ProductEntity foundProductEntity = productRepository.findById(requestPrinterDto.getModel()).orElse(null);
+
+        PrinterEntity sourcePrinterEntity = new PrinterEntity();
+
+
+        sourcePrinterEntity.setProduct(foundProductEntity);
+
+
+        sourcePrinterEntity.setCode(requestPrinterDto.getCode());
+        sourcePrinterEntity.setColor(requestPrinterDto.getColor());
+        sourcePrinterEntity.setType(requestPrinterDto.getType());
+        sourcePrinterEntity.setPrice(requestPrinterDto.getPrice());
+
+
+        PrinterEntity savedPrinterEntity = printerRepository.save(sourcePrinterEntity);
+
+        PrinterDto responsePrinterDto = new PrinterDto();
+        responsePrinterDto.setModel(savedPrinterEntity.getProduct().getModel());
+        responsePrinterDto.setColor(savedPrinterEntity.getColor());
+        responsePrinterDto.setType(savedPrinterEntity.getType());
+        responsePrinterDto.setPrice(savedPrinterEntity.getPrice());
+        responsePrinterDto.setCode(savedPrinterEntity.getCode());
+        return responsePrinterDto;
     }
 }

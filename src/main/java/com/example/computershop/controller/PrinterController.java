@@ -1,12 +1,8 @@
 package com.example.computershop.controller;
-
 import com.example.computershop.model.dto.PrinterDto;
 import com.example.computershop.service.PrinterService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +19,10 @@ public class PrinterController {
     @GetMapping
     PrinterDto getPrinter(@RequestParam Long code){
         return printerService.getPrinter(code);
+    }
+
+    @PostMapping()
+    PrinterDto insertIntoPrinter(@RequestBody PrinterDto printerDto) {
+        return printerService.save(printerDto);
     }
 }
