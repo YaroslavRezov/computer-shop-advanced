@@ -2,6 +2,7 @@ package com.example.computershop.service;
 
 import com.example.computershop.model.dto.PrinterDto;
 import com.example.computershop.model.entity.PrinterEntity;
+import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
@@ -58,5 +59,18 @@ public class PrinterService {
         responsePrinterDto.setPrice(savedPrinterEntity.getPrice());
         responsePrinterDto.setCode(savedPrinterEntity.getCode());
         return responsePrinterDto;
+    }
+
+    private Long getElCode() {
+        Iterable<PrinterEntity> printerEntities = printerRepository.findAll();
+        Long elCode = Long.valueOf(0);
+
+        for(PrinterEntity printerEntity : printerEntities){
+            if (printerEntity.getCode() > elCode) {
+                elCode = printerEntity.getCode();}
+        }
+
+        elCode++;
+        return elCode;
     }
 }

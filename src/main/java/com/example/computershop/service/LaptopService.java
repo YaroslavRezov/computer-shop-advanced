@@ -18,6 +18,7 @@ public class LaptopService {
     private final ProductRepository productRepository;
 
 
+
     public List<LaptopDto> getLaptops() {
         Iterable<LaptopEntity> laptopEntities = laptopRepository.findAll();
         List<LaptopDto> laptopDtoList = new ArrayList<>();
@@ -41,10 +42,12 @@ public class LaptopService {
         LaptopEntity sourceLaptopEntity = new LaptopEntity();
 
 
+
         sourceLaptopEntity.setProduct(foundProductEntity);
 
 
-        sourceLaptopEntity.setCode(requestLaptopDto.getCode());
+//        sourceLaptopEntity.setCode(requestLaptopDto.getCode());
+        sourceLaptopEntity.setCode(getElCode());
         sourceLaptopEntity.setSpeed(requestLaptopDto.getSpeed());
         sourceLaptopEntity.setRam(requestLaptopDto.getRam());
         sourceLaptopEntity.setHd(requestLaptopDto.getHd());
@@ -63,6 +66,19 @@ public class LaptopService {
         responseLaptopDto.setCode(savedLaptopEntity.getCode());
         return responseLaptopDto;
     }
+    private Long getElCode() {
+        Iterable<LaptopEntity> laptopEntities = laptopRepository.findAll();
+        Long elCode = Long.valueOf(0);
+
+        for(LaptopEntity laptopEntity : laptopEntities){
+            if (laptopEntity.getCode() > elCode) {
+            elCode = laptopEntity.getCode();}
+        }
+
+        elCode++;
+        return elCode;
+    }
+
 
 
 }

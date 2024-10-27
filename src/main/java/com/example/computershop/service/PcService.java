@@ -4,6 +4,7 @@ import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.model.entity.PcEntity;
 import com.example.computershop.model.entity.PcEntity;
+import com.example.computershop.model.entity.PcEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.ProductRepository;
@@ -44,7 +45,8 @@ public class PcService {
         sourcePcEntity.setProduct(foundProductEntity);
 
 
-        sourcePcEntity.setCode(requestPcDto.getCode());
+//        sourcePcEntity.setCode(requestPcDto.getCode());
+        sourcePcEntity.setCode(getElCode());
         sourcePcEntity.setSpeed(requestPcDto.getSpeed());
         sourcePcEntity.setRam(requestPcDto.getRam());
         sourcePcEntity.setHd(requestPcDto.getHd());
@@ -63,5 +65,17 @@ public class PcService {
         responsePcDto.setPrice(savedPcEntity.getPrice());
         responsePcDto.setCode(savedPcEntity.getCode());
         return responsePcDto;
+    }
+    private Long getElCode() {
+        Iterable<PcEntity> pcEntities = pcRepository.findAll();
+        Long elCode = Long.valueOf(0);
+
+        for(PcEntity pcEntity : pcEntities){
+            if (pcEntity.getCode() > elCode) {
+                elCode = pcEntity.getCode();}
+        }
+
+        elCode++;
+        return elCode;
     }
 }
