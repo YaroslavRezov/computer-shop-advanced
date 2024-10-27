@@ -43,8 +43,8 @@ public class PrinterService {
 
         sourcePrinterEntity.setProduct(foundProductEntity);
 
-
-        sourcePrinterEntity.setCode(requestPrinterDto.getCode());
+        sourcePrinterEntity.setCode(getElCode());
+//        sourcePrinterEntity.setCode(requestPrinterDto.getCode());
         sourcePrinterEntity.setColor(requestPrinterDto.getColor());
         sourcePrinterEntity.setType(requestPrinterDto.getType());
         sourcePrinterEntity.setPrice(requestPrinterDto.getPrice());
