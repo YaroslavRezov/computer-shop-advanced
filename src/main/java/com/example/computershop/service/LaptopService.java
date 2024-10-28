@@ -47,7 +47,7 @@ public class LaptopService {
 
 
 //        sourceLaptopEntity.setCode(requestLaptopDto.getCode());
-        sourceLaptopEntity.setCode(getElCode());
+//        sourceLaptopEntity.setCode(getElCode());
         sourceLaptopEntity.setSpeed(requestLaptopDto.getSpeed());
         sourceLaptopEntity.setRam(requestLaptopDto.getRam());
         sourceLaptopEntity.setHd(requestLaptopDto.getHd());
@@ -78,6 +78,7 @@ public class LaptopService {
         elCode++;
         return elCode;
     }
+
 
 
 

@@ -46,7 +46,7 @@ public class PcService {
 
 
 //        sourcePcEntity.setCode(requestPcDto.getCode());
-        sourcePcEntity.setCode(getElCode());
+//        sourcePcEntity.setCode(getElCode());
         sourcePcEntity.setSpeed(requestPcDto.getSpeed());
         sourcePcEntity.setRam(requestPcDto.getRam());
         sourcePcEntity.setHd(requestPcDto.getHd());

@@ -7,10 +7,6 @@ import lombok.Data;
 @Data
 public abstract class BaseDeviceEntity {
 
-    @Id
-//@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
-    private Long code;
 
     @ManyToOne
     @JoinColumn(name = "model", referencedColumnName = "model", nullable = true)

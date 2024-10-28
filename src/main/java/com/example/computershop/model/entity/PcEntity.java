@@ -8,6 +8,11 @@ import lombok.Data;
 @Entity
 public class PcEntity extends BaseDeviceEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pc_code_seq")
+    @SequenceGenerator(name = "pc_code_seq", sequenceName = "pc_code_seq", allocationSize = 1)
+    @Column(nullable = false, updatable = false)
+    private Long code;
     @Column
     private int speed;
     @Column
