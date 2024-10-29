@@ -27,5 +27,11 @@ public class PcController {
     PcDto insertIntoPc(@RequestBody PcDto pcDto) {
         return pcService.save(pcDto);
     }
+    @DeleteMapping("/{code}")
+    void deleteFromPc(@PathVariable("code") Long code) {
+        pcService.delete(code);
+
+    }
+
 
 }

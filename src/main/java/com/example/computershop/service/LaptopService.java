@@ -66,6 +66,10 @@ public class LaptopService {
         responseLaptopDto.setCode(savedLaptopEntity.getCode());
         return responseLaptopDto;
     }
+    public void delete(Long code){
+        laptopRepository.deleteById(code);
+
+    }
     private Long getElCode() {
         Iterable<LaptopEntity> laptopEntities = laptopRepository.findAll();
         Long elCode = Long.valueOf(0);

@@ -54,4 +54,8 @@ public class ProductService {
         responseProductDto.setModel(savedProductEntity.getModel());
         return responseProductDto;
     }
+    public void delete(String model){
+        productRepository.deleteById(model);
+
+    }
 }

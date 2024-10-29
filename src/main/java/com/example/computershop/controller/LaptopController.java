@@ -26,5 +26,10 @@ public class LaptopController {
     LaptopDto insertIntoLaptop(@RequestBody LaptopDto laptopDto) {
         return laptopService.save(laptopDto);
     }
+    @DeleteMapping("/{code}")
+    void deleteFromPc(@PathVariable("code") Long code) {
+        laptopService.delete(code);
+
+    }
 }
 

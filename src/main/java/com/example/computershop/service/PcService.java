@@ -66,6 +66,10 @@ public class PcService {
         responsePcDto.setCode(savedPcEntity.getCode());
         return responsePcDto;
     }
+    public void delete(Long code){
+        pcRepository.deleteById(code);
+
+    }
     private Long getElCode() {
         Iterable<PcEntity> pcEntities = pcRepository.findAll();
         Long elCode = Long.valueOf(0);

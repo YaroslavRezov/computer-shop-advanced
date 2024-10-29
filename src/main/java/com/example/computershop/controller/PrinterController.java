@@ -25,4 +25,10 @@ public class PrinterController {
     PrinterDto insertIntoPrinter(@RequestBody PrinterDto printerDto) {
         return printerService.save(printerDto);
     }
+
+    @DeleteMapping("/{code}")
+    void deleteFromPrinter(@PathVariable("code") Long code) {
+        printerService.delete(code);
+
+    }
 }

@@ -61,6 +61,11 @@ public class PrinterService {
         return responsePrinterDto;
     }
 
+    public void delete(Long code){
+        printerRepository.deleteById(code);
+
+    }
+
     private Long getElCode() {
         Iterable<PrinterEntity> printerEntities = printerRepository.findAll();
         Long elCode = Long.valueOf(0);

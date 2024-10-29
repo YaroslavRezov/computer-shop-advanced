@@ -32,4 +32,9 @@ public class ProductController {
     ProductDto insertIntoProduct(@RequestBody ProductDto productDto) {
         return productService.save(productDto);
     }
+    @DeleteMapping("/{model}")
+    void deleteFromProduct(@PathVariable("model") String model) {
+        productService.delete(model);
+
+    }
 }
