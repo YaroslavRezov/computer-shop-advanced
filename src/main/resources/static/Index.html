@@ -30,6 +30,64 @@
         nav a:hover {
             color: #23527c;
         }
+        #add-product-btn {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+        #add-product-btn:hover {
+            background-color: #45a049;
+        }
+        /* Модальное окно */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .modal-buttons {
+            margin-top: 10px;
+            text-align: right;
+        }
+        .modal-buttons button {
+            padding: 8px 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .modal-buttons .save {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .modal-buttons .cancel {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -41,6 +99,31 @@
         <li><a href="laptop-table.html">Ноутбуки</a></li>
     </ul>
 </nav>
+
+<button id="add-product-btn">Добавить продукт</button>
+
+<!-- Модальное окно -->
+<div id="modal-overlay"></div>
+<div id="modal">
+    <h2>Добавить продукт</h2>
+    <form id="add-product-form">
+        <label>
+            Тип:
+            <input type="text" id="type" name="type" required>
+        </label>
+        <br><br>
+        <label>
+            Производитель:
+            <input type="text" id="maker" name="maker" required>
+        </label>
+        <br>
+        <div class="modal-buttons">
+            <button type="button" class="save" id="save-btn">Сохранить</button>
+            <button type="button" class="cancel" id="cancel-btn">Закрыть</button>
+        </div>
+    </form>
+</div>
+
 <table id="products-table">
     <thead>
     <tr>
@@ -55,15 +138,88 @@
 </table>
 
 <script>
+    const addProductBtn = document.getElementById('add-product-btn');
+    const modal = document.getElementById('modal');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const tableBody = document.getElementById('products-body');
+
+    // Открыть модальное окно
+    addProductBtn.addEventListener('click', () => {
+        modal.style.display = 'block';
+        modalOverlay.style.display = 'block';
+    });
+
+    // Закрыть модальное окно
+    const closeModal = () => {
+        modal.style.display = 'none';
+        modalOverlay.style.display = 'none';
+        document.getElementById('add-product-form').reset(); // Сброс формы
+    };
+
+    cancelBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+
+    // Сохранить продукт
+    saveBtn.addEventListener('click', () => {
+        const type = document.getElementById('type').value;
+        const maker = document.getElementById('maker').value;
+
+        if (type && maker) {
+            const product = {
+                type,
+                maker,
+            };
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(product),
+            };
+
+            fetch('http://localhost:8080/products', options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Продукт успешно добавлен:', data);
+
+                    // Добавить новый продукт в таблицу
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${data.model}</td>
+                        <td>${data.type}</td>
+                        <td>${data.maker}</td>
+                        <td></td>
+                    `;
+                    tableBody.appendChild(newRow);
+
+                    closeModal(); // Закрыть модальное окно
+                })
+                .catch(error => {
+                    console.error('Ошибка сохранения:', error);
+                    alert('Произошла ошибка при добавлении продукта.');
+                });
+        } else {
+            alert('Пожалуйста, заполните все поля.');
+        }
+    });
+
+    // Загрузка данных
     fetch('http://localhost:8080/products/fullproduct')
         .then(response => {
             if (!response.ok) {
-                throw new Error("Ошибка ${response.status}: ${response.statusText}");
+                throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
             }
             return response.json();
         })
         .then(data => {
-            const tableBody = document.getElementById('products-body');
             data.forEach(product => {
                 const row = document.createElement('tr');
                 row.innerHTML = `

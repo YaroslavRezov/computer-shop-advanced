@@ -19,7 +19,7 @@ public interface ProductRepository extends CrudRepository<ProductEntity, String>
                  UNION
                  SELECT model, code
                  FROM pc)as bruh
-                    JOIN product ON bruh.model=product.model;""")
+                    RIGHT OUTER JOIN product ON bruh.model=product.model;""")
     Iterable<ProductJoinedView> findAllProductsJoined();
 
 

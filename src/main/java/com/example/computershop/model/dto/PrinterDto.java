@@ -15,4 +15,11 @@ public class PrinterDto {
     public PrinterDto() {
 
     }
+    public String getColor() {
+        if(this.color == "y"){
+            return "Цвтеной";
+        } else if (this.color == "n") {
+            return "Чернобелый";
+        } else return this.color;
+    }
 }
