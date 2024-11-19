@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 @Service
@@ -22,7 +23,7 @@ public class PrinterService {
         Iterable<PrinterEntity> printerEntities = printerRepository.findAll();
         List<PrinterDto> printerDtoList = new ArrayList<>();
         for(PrinterEntity printerEntity : printerEntities){
-            printerDtoList.add(new PrinterDto(printerEntity.getCode(), printerEntity.getProduct().getModel(), printerEntity.getColor(), printerEntity.getType(), printerEntity.getPrice()));
+            printerDtoList.add(new PrinterDto(printerEntity.getCode(), printerEntity.getProduct().getModel(), translateDataBaseColor(printerEntity.getColor()), printerEntity.getType(), printerEntity.getPrice()));
         }
 
         return printerDtoList;
@@ -32,7 +33,7 @@ public class PrinterService {
         PrinterEntity printerEntity = printerRepository.findById(code).orElse(null);
 
 
-        return new PrinterDto(printerEntity.getCode(), printerEntity.getProduct().getModel(), printerEntity.getColor(), printerEntity.getType(), printerEntity.getPrice());
+        return new PrinterDto(printerEntity.getCode(), printerEntity.getProduct().getModel(), translateDataBaseColor(printerEntity.getColor()), printerEntity.getType(), printerEntity.getPrice());
     }
 
     public PrinterDto save(PrinterDto requestPrinterDto) {
@@ -77,5 +78,12 @@ public class PrinterService {
 
         elCode++;
         return elCode;
+    }
+    private String translateDataBaseColor(String fromGetColor) {
+        if(Objects.equals(fromGetColor, "y")){
+            return "Цвтеной";
+        } else if (Objects.equals(fromGetColor, "n")) {
+            return "Чернобелый";
+        } else return "error";
     }
 }

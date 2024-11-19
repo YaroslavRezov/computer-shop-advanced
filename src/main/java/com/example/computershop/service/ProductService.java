@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -36,7 +37,7 @@ public class ProductService {
         Iterable<ProductJoinedView> productsJoined = productRepository.findAllProductsJoined();
         List<ProductJoinedDto> productJoinedDtoList = new ArrayList<>();
         for(ProductJoinedView productJoinedView : productsJoined){
-            productJoinedDtoList.add(new ProductJoinedDto(productJoinedView.getMaker(), productJoinedView.getModel(), productJoinedView.getType(), productJoinedView.getCode()));
+            productJoinedDtoList.add(new ProductJoinedDto(productJoinedView.getMaker(), productJoinedView.getModel(), productJoinedView.getType(), translateDataBaseCode(String.valueOf(productJoinedView.getCode()))));
         }
 
         return productJoinedDtoList;
@@ -57,5 +58,10 @@ public class ProductService {
     public void delete(String model){
         productRepository.deleteById(model);
 
+    }
+    private String translateDataBaseCode(String fromGetCode) {
+        if(Objects.equals(fromGetCode, "null")){
+            return "нет отделного дивайса";
+        } else return fromGetCode;
     }
 }

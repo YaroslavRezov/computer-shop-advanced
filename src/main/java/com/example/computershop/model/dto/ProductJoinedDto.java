@@ -9,6 +9,7 @@ public class ProductJoinedDto {
     String maker;
     String model;
     String type;
-    Long code;
+    String code;
+    //only for joined code is string
 
 }
