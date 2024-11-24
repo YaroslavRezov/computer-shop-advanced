@@ -30,6 +30,64 @@
         nav a:hover {
             color: #23527c;
         }
+        #add-pc-btn {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+        #add-pc-btn:hover {
+            background-color: #45a049;
+        }
+        /* Модальное окно */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .modal-buttons {
+            margin-top: 10px;
+            text-align: right;
+        }
+        .modal-buttons button {
+            padding: 8px 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .modal-buttons .save {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .modal-buttons .cancel {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -41,7 +99,57 @@
         <li><a href="laptop-table.html">Ноутбуки</a></li>
     </ul>
 </nav>
-<table id="computer-table">
+
+
+<button id="add-pc-btn">Добавить ПК</button>
+
+<!-- Модальное окно -->
+<div id="modal-overlay"></div>
+<div id="modal">
+    <h2>Добавить продукт</h2>
+    <form id="add-pc-form">
+        <label>
+            Модель:
+            <select id="model" name="model" required>
+                <option value="" disabled selected>Выберите модель</option>
+            </select>
+        </label>
+        <br><br>
+        <label>
+            Скорость:
+            <input type="text" id="speed" name="speed" required>
+        </label>
+        <br><br>
+        <label>
+            ОЗУ:
+            <input type="text" id="ram" name="ram" required>
+        </label>
+        <br><br>
+        <label>
+            Жёсткий диск:
+            <input type="text" id="hd" name="hd" required>
+        </label>
+        <br><br>
+        <label>
+            Дисковод:
+            <input type="text" id="cd" name="cd" required>
+        </label>
+        <br><br>
+        <label>
+            Цена:
+            <input type="text" id="price" name="price" required>
+        </label>
+        <br><br>
+
+        <br>
+        <div class="modal-buttons">
+            <button type="button" class="save" id="save-btn">Сохранить</button>
+            <button type="button" class="cancel" id="cancel-btn">Закрыть</button>
+        </div>
+    </form>
+</div>
+
+<table id="pc-table">
     <thead>
     <tr>
         <th>Код</th>
@@ -54,11 +162,136 @@
 
     </tr>
     </thead>
-    <tbody id="computer-body">
+    <tbody id="pc-body">
     </tbody>
 </table>
 
 <script>
+    const addPCBtn = document.getElementById('add-pc-btn');
+    const modal = document.getElementById('modal');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const tableBody = document.getElementById('pc-body');
+
+    const loadModels = () => {
+        fetch('http://localhost:8080/products/all')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const modelSelect = document.getElementById('model');
+                // Очистим предыдущие опции, если они есть
+                modelSelect.innerHTML = '<option value="" disabled selected>Выберите модель</option>';
+
+                // Отфильтровать только модели с типом PC
+                const pcs = data.filter(product => product.type === 'PC');
+                pcs.forEach(pc => {
+                    const option = document.createElement('option');
+                    option.value = pc.model; // Устанавливаем значение модели
+                    option.textContent = pc.model; // Отображаем название модели
+                    modelSelect.appendChild(option);
+                });
+
+                if (pcs.length === 0) {
+                    const noOption = document.createElement('option');
+                    noOption.value = "";
+                    noOption.textContent = "Нет доступных моделей";
+                    modelSelect.appendChild(noOption);
+                }
+            })
+            .catch(error => console.error('Ошибка загрузки моделей:', error));
+    };
+
+    // Открыть модальное окно и загрузить модели
+    addPCBtn.addEventListener('click', () => {
+        loadModels(); // Загружаем модели перед открытием модального окна
+        modal.style.display = 'block';
+        modalOverlay.style.display = 'block';
+    });
+
+    // Открыть модальное окно
+    addPCBtn.addEventListener('click', () => {
+        loadModels();
+        modal.style.display = 'block';
+        modalOverlay.style.display = 'block';
+    });
+
+    // Закрыть модальное окно
+    const closeModal = () => {
+        modal.style.display = 'none';
+        modalOverlay.style.display = 'none';
+        document.getElementById('add-pc-form').reset(); // Сброс формы
+    };
+
+    cancelBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+
+    // Сохранить продукт
+    saveBtn.addEventListener('click', () => {
+        const model = document.getElementById('model').value;
+        const speed = document.getElementById('speed').value;
+        const ram = document.getElementById('ram').value;
+        const hd = document.getElementById('hd').value;
+        const cd = document.getElementById('cd').value;
+        const price = document.getElementById('price').value;
+
+
+        if (model && speed && ram && hd && cd && price) {
+            const pc = {
+                model,
+                speed,
+                ram,
+                hd,
+                cd,
+                price,
+            };
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(pc),
+            };
+
+            fetch('http://localhost:8080/pcs', options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('ПК успешно добавлен:', data);
+
+                    // Добавить новый продукт в таблицу
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${data.model}</td>
+                        <td>${data.speed}</td>
+                        <td>${data.ram}</td>
+                        <td>${data.hd}</td>
+                        <td>${data.cd}</td>
+                        <td>${data.price}</td>
+                        <td></td>
+                    `;
+                    tableBody.appendChild(newRow);
+
+                    closeModal(); // Закрыть модальное окно
+                })
+                .catch(error => {
+                    console.error('Ошибка сохранения:', error);
+                    alert('Произошла ошибка при добавлении ПК.');
+                });
+        } else {
+            alert('Пожалуйста, заполните все поля.');
+        }
+    });
+
     fetch('http://localhost:8080/pcs/all')
         .then(response => {
             if (!response.ok) {
@@ -67,7 +300,7 @@
             return response.json();
         })
         .then(data => {
-            const tableBody = document.getElementById('computer-body');
+            const tableBody = document.getElementById('pc-body');
             data.forEach(pc => {
                 const row = document.createElement('tr');
                 row.innerHTML = `

@@ -30,6 +30,64 @@
         nav a:hover {
             color: #23527c;
         }
+        #add-printer-btn {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+        #add-printer-btn:hover {
+            background-color: #45a049;
+        }
+        /* Модальное окно */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .modal-buttons {
+            margin-top: 10px;
+            text-align: right;
+        }
+        .modal-buttons button {
+            padding: 8px 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .modal-buttons .save {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .modal-buttons .cancel {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -41,6 +99,44 @@
         <li><a href="laptop-table.html">Ноутбуки</a></li>
     </ul>
 </nav>
+
+<button id="add-printer-btn">Добавить принтер</button>
+
+<!-- Модальное окно -->
+<div id="modal-overlay"></div>
+<div id="modal">
+    <h2>Добавить продукт</h2>
+    <form id="add-printer-form">
+        <label>
+            Модель:
+            <select id="model" name="model" required>
+                <option value="" disabled selected>Выберите модель</option>
+            </select>
+        </label>
+        <br><br>
+        <label>
+            Цветной или нет(y/n):
+            <input type="text" id="color" name="color" required>
+        </label>
+        <br><br>
+        <label>
+            Тип:
+            <input type="text" id="type" name="type" required>
+        </label>
+        <br><br>
+            Цена:
+            <input type="text" id="price" name="price" required>
+        </label>
+        <br><br>
+
+        <br>
+        <div class="modal-buttons">
+            <button type="button" class="save" id="save-btn">Сохранить</button>
+            <button type="button" class="cancel" id="cancel-btn">Закрыть</button>
+        </div>
+    </form>
+</div>
+
 <table id="printer-table">
     <thead>
     <tr>
@@ -58,6 +154,127 @@
 </table>
 
 <script>
+
+    const addPrinterBtn = document.getElementById('add-printer-btn');
+    const modal = document.getElementById('modal');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const tableBody = document.getElementById('printer-body');
+
+    const loadModels = () => {
+        fetch('http://localhost:8080/products/all')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const modelSelect = document.getElementById('model');
+                // Очистим предыдущие опции, если они есть
+                modelSelect.innerHTML = '<option value="" disabled selected>Выберите модель</option>';
+
+                // Отфильтровать только модели с типом printer
+                const printers = data.filter(product => product.type === 'Printer');
+                printers.forEach(printer => {
+                    const option = document.createElement('option');
+                    option.value = printer.model; // Устанавливаем значение модели
+                    option.textContent = printer.model; // Отображаем название модели
+                    modelSelect.appendChild(option);
+                });
+
+                if (printers.length === 0) {
+                    const noOption = document.createElement('option');
+                    noOption.value = "";
+                    noOption.textContent = "Нет доступных моделей";
+                    modelSelect.appendChild(noOption);
+                }
+            })
+            .catch(error => console.error('Ошибка загрузки моделей:', error));
+    };
+
+    // Открыть модальное окно и загрузить модели
+    addPrinterBtn.addEventListener('click', () => {
+        loadModels(); // Загружаем модели перед открытием модального окна
+        modal.style.display = 'block';
+        modalOverlay.style.display = 'block';
+    });
+
+    // Открыть модальное окно
+    addPrinterBtn.addEventListener('click', () => {
+        loadModels();
+        modal.style.display = 'block';
+        modalOverlay.style.display = 'block';
+    });
+
+    // Закрыть модальное окно
+    const closeModal = () => {
+        modal.style.display = 'none';
+        modalOverlay.style.display = 'none';
+        document.getElementById('add-printer-form').reset(); // Сброс формы
+    };
+
+    cancelBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+
+    // Сохранить продукт
+    saveBtn.addEventListener('click', () => {
+        const model = document.getElementById('model').value;
+        const color = document.getElementById('color').value;
+        const type = document.getElementById('type').value;
+        const price = document.getElementById('price').value;
+
+
+        if (model && color && type && price) {
+            const printer = {
+                model,
+                color,
+                type,
+                price,
+            };
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(printer),
+            };
+
+            fetch('http://localhost:8080/printers', options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('принтер успешно добавлен:', data);
+
+                    // Добавить новый продукт в таблицу
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${data.model}</td>
+                        <td>${data.color}</td>
+                        <td>${data.type}</td>
+                        <td>${data.price}</td>
+                        <td></td>
+                    `;
+                    tableBody.appendChild(newRow);
+
+                    closeModal(); // Закрыть модальное окно
+                })
+                .catch(error => {
+                    console.error('Ошибка сохранения:', error);
+                    alert('Произошла ошибка при добавлении принтера.');
+                });
+        } else {
+            alert('Пожалуйста, заполните все поля.');
+        }
+    });
+
+
     fetch('http://localhost:8080/printers/all')
         .then(response => {
             if (!response.ok) {

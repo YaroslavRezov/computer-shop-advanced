@@ -15,7 +15,8 @@ public interface DeviceRepository extends CrudRepository<ProductEntity, String>{
             FROM laptop
             UNION ALL
             SELECT model, price
-            FROM printer""")
+            FROM printer
+            ORDER BY 1;""")
     Iterable<DeviceView> findAllDevices();
 
     @Query(nativeQuery = true, value = """

@@ -14,7 +14,8 @@ public interface PcRepository extends CrudRepository<PcEntity, Long> {
             FROM laptop
             UNION ALL
             SELECT model, price
-            FROM printer""")
+            FROM printer
+            ORDER BY 1""")
     Iterable<DeviceView> findAllDevices();
 
     @Query(nativeQuery = true, value = """

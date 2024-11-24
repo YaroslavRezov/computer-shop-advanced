@@ -18,7 +18,8 @@ public interface ProductRepository extends CrudRepository<ProductEntity, String>
                  FROM printer
                  UNION
                  SELECT model, code
-                 FROM pc)as bruh
+                 FROM pc
+                 ORDER BY code)as bruh
                     RIGHT OUTER JOIN product ON bruh.model=product.model;""")
     Iterable<ProductJoinedView> findAllProductsJoined();
 
