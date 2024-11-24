@@ -115,8 +115,12 @@
         </label>
         <br><br>
         <label>
-            Цветной или нет(y/n):
-            <input type="text" id="color" name="color" required>
+            Цветной или нет:
+            <select id="color" name="color" required>
+                <option value="" disabled selected>Выберите</option>
+                <option value="y">Да (y)</option>
+                <option value="n">Нет (n)</option>
+            </select>
         </label>
         <br><br>
         <label>
