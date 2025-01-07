@@ -101,6 +101,8 @@
 </nav>
 
 <button id="add-product-btn">Добавить продукт</button>
+<input type="text" id="delete-input" placeholder="Введите code для удаления" />
+<button id="delete-product-btn">Удалить Продукт</button>
 
 <!-- Модальное окно -->
 <div id="modal-overlay"></div>
@@ -144,6 +146,8 @@
     const cancelBtn = document.getElementById('cancel-btn');
     const saveBtn = document.getElementById('save-btn');
     const tableBody = document.getElementById('products-body');
+    const deleteProductBtn = document.getElementById('delete-product-btn');
+    const deleteInput = document.getElementById('delete-input');
 
     // Открыть модальное окно
     addProductBtn.addEventListener('click', () => {
@@ -206,10 +210,51 @@
                     console.error('Ошибка сохранения:', error);
                     alert('Произошла ошибка при добавлении продукта.');
                 });
+            loadTable()
         } else {
             alert('Пожалуйста, заполните все поля.');
         }
     });
+
+    // Удаление ПК по code
+    deleteProductBtn.addEventListener('click', () => {
+        const model = deleteInput.value.trim();
+        if (!model) {
+            alert('Введите model для удаления.');
+            return;
+        }
+
+        fetch(`http://localhost:8080/products/${model}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    alert(`Продукт с model ${model} успешно удален.`);
+                    loadTable(); // Обновить таблицу после удаления
+                } else {
+                    alert(`Продукт с model ${model} не найден.`);
+                }
+            })
+            .catch(error => console.error('Ошибка удаления:', error));
+        loadTable()
+    });
+
+    const loadTable = () => {
+        fetch('http://localhost:8080/products/fullproduct')
+            .then(response => response.json())
+            .then(data => {
+                tableBody.innerHTML = ''; // Очистить таблицу перед загрузкой
+                data.forEach(product => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product.model}</td>
+                        <td>${product.type}</td>
+                        <td>${product.maker}</td>
+                        <td>${product.code}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Ошибка:', error));
+    };
 
     // Загрузка данных
     fetch('http://localhost:8080/products/fullproduct')
