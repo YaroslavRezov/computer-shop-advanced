@@ -101,6 +101,8 @@
 </nav>
 
 <button id="add-printer-btn">Добавить принтер</button>
+<input type="text" id="delete-input" placeholder="Введите code для удаления" />
+<button id="delete-printer-btn">Удалить Принтер</button>
 
 <!-- Модальное окно -->
 <div id="modal-overlay"></div>
@@ -165,6 +167,8 @@
     const cancelBtn = document.getElementById('cancel-btn');
     const saveBtn = document.getElementById('save-btn');
     const tableBody = document.getElementById('printer-body');
+    const deletePrinterBtn = document.getElementById('delete-printer-btn');
+    const deleteInput = document.getElementById('delete-input');
 
     const loadModels = () => {
         fetch('http://localhost:8080/products/all')
@@ -203,6 +207,7 @@
         loadModels(); // Загружаем модели перед открытием модального окна
         modal.style.display = 'block';
         modalOverlay.style.display = 'block';
+        loadTable()
     });
 
     // Открыть модальное окно
@@ -217,6 +222,7 @@
         modal.style.display = 'none';
         modalOverlay.style.display = 'none';
         document.getElementById('add-printer-form').reset(); // Сброс формы
+        loadTable()
     };
 
     cancelBtn.addEventListener('click', closeModal);
@@ -276,6 +282,47 @@
         } else {
             alert('Пожалуйста, заполните все поля.');
         }
+    });
+
+    const loadTable = () => {
+        fetch('http://localhost:8080/printers/all')
+            .then(response => response.json())
+            .then(data => {
+                tableBody.innerHTML = ''; // Очистить таблицу перед загрузкой
+                data.forEach(printer => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${printer.code}</td>
+                        <td>${printer.model}</td>
+                        <td>${printer.color}</td>
+                        <td>${printer.type}</td>
+                        <td>${printer.price}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Ошибка:', error));
+    };
+
+    // Удаление printer по code
+    deletePrinterBtn.addEventListener('click', () => {
+        const code = deleteInput.value.trim();
+        if (!code) {
+            alert('Введите code для удаления.');
+            return;
+        }
+
+        fetch(`http://localhost:8080/printers/${code}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    alert(`Принтер с code ${code} успешно удален.`);
+                    loadTable(); // Обновить таблицу после удаления
+                } else {
+                    alert(`Принтер с code ${code} не найден.`);
+                }
+            })
+            .catch(error => console.error('Ошибка удаления:', error));
+        loadTable()
     });
 
 
