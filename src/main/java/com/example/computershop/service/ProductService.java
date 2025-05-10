@@ -7,6 +7,8 @@ import com.example.computershop.model.entity.ProductJoinedView;
 import com.example.computershop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,30 @@ public class ProductService {
         productRepository.deleteById(model);
 
     }
+
+    public ProductDto updateProductPartially(@PathVariable String model, @RequestBody ProductDto productDto) {
+        ProductEntity setProductEntity = productRepository.findById(model).orElse(null);
+
+        if (productDto.getType() != null) {
+            setProductEntity.setType(productDto.getType());
+        }
+        if (productDto.getMaker() != null) {
+            setProductEntity.setMaker(productDto.getMaker());
+        }
+        if (productDto.getModel() != null) {
+            setProductEntity.setModel(productDto.getModel());
+        }
+
+        productRepository.save(setProductEntity);
+
+        ProductDto responseProductDto = new ProductDto();
+        responseProductDto.setMaker(setProductEntity.getMaker());
+        responseProductDto.setType(setProductEntity.getType());
+        responseProductDto.setModel(setProductEntity.getModel());
+
+        return responseProductDto;
+    }
+
     private String translateDataBaseCode(String fromGetCode) {
         if(Objects.equals(fromGetCode, "null")){
             return "нет отделного дивайса";
