@@ -75,9 +75,6 @@ public class PcService {
         PcEntity setPcEntity = pcRepository.findById(code).orElse(null);
 //        ProductEntity foundProductEntity = productRepository.findById(pcDto.getModel()).orElse(null);
 
-        if (pcDto.getCode() != null) {
-            setPcEntity.setCode(pcDto.getCode());
-        }
         if (pcDto.getSpeed() != 0) {
             setPcEntity.setSpeed(pcDto.getSpeed());
         }

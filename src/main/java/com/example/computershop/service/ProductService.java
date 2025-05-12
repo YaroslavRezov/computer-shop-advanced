@@ -65,15 +65,11 @@ public class ProductService {
     public ProductDto updateProductPartially(@PathVariable String model, @RequestBody ProductDto productDto) {
         ProductEntity setProductEntity = productRepository.findById(model).orElse(null);
 
-        if (productDto.getType() != null) {
-            setProductEntity.setType(productDto.getType());
-        }
+
         if (productDto.getMaker() != null) {
             setProductEntity.setMaker(productDto.getMaker());
         }
-        if (productDto.getModel() != null) {
-            setProductEntity.setModel(productDto.getModel());
-        }
+
 
         productRepository.save(setProductEntity);
 
