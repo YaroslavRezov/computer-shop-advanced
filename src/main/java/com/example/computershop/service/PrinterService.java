@@ -1,6 +1,8 @@
 package com.example.computershop.service;
 
+
 import com.example.computershop.model.dto.PrinterDto;
+
 import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.ProductEntity;
@@ -8,6 +10,8 @@ import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +56,31 @@ public class PrinterService {
 
 
         PrinterEntity savedPrinterEntity = printerRepository.save(sourcePrinterEntity);
+
+        PrinterDto responsePrinterDto = new PrinterDto();
+        responsePrinterDto.setModel(savedPrinterEntity.getProduct().getModel());
+        responsePrinterDto.setColor(savedPrinterEntity.getColor());
+        responsePrinterDto.setType(savedPrinterEntity.getType());
+        responsePrinterDto.setPrice(savedPrinterEntity.getPrice());
+        responsePrinterDto.setCode(savedPrinterEntity.getCode());
+        return responsePrinterDto;
+    }
+
+    public PrinterDto updatePrinterPartially(@PathVariable Long code, @RequestBody PrinterDto printerDto) {
+        PrinterEntity setPrinterEntity = printerRepository.findById(code).orElse(null);
+//        ProductEntity foundProductEntity = productRepository.findById(printerDto.getModel()).orElse(null);
+
+        if (printerDto.getColor() != null) {
+            setPrinterEntity.setColor(printerDto.getColor());
+        }
+        if (printerDto.getType() != null) {
+            setPrinterEntity.setType(printerDto.getType());
+        }
+        if (printerDto.getPrice() != 0) {
+            setPrinterEntity.setPrice(printerDto.getPrice());
+        }
+
+        PrinterEntity savedPrinterEntity = printerRepository.save(setPrinterEntity);
 
         PrinterDto responsePrinterDto = new PrinterDto();
         responsePrinterDto.setModel(savedPrinterEntity.getProduct().getModel());

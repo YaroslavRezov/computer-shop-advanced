@@ -254,11 +254,13 @@
         modal.style.display = 'none';
         modalOverlay.style.display = 'none';
         document.getElementById('add-product-form').reset(); // Сброс формы
+        loadTable()
     };
     const closeModalUpdate = () => {
         modalUpdate.style.display = 'none';
         modalUpdateOverlay.style.display = 'none';
         document.getElementById('update-product-form').reset(); // Сброс формы
+        loadTable()
     };
 
     cancelBtn.addEventListener('click', closeModal);
@@ -361,6 +363,7 @@
                     tableBody.appendChild(newRow);
 
                     closeModalUpdate(); // Закрыть модальное окно
+                    loadTable()
                 })
                 .catch(error => {
                     console.error('Ошибка изменения:', error);

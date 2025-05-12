@@ -223,12 +223,6 @@
         loadTable()
     });
 
-    // Открыть модальное окно
-    addLaptopBtn.addEventListener('click', () => {
-        loadModels();
-        modal.style.display = 'block';
-        modalOverlay.style.display = 'block';
-    });
 
     // Закрыть модальное окно
     const closeModal = () => {
@@ -344,7 +338,6 @@
                 }
             })
             .catch(error => console.error('Ошибка удаления:', error));
-        loadTable()
     });
 
     fetch('http://localhost:8080/laptops/all')

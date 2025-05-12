@@ -1,5 +1,6 @@
 package com.example.computershop.controller;
 import com.example.computershop.model.dto.PrinterDto;
+import com.example.computershop.model.dto.PrinterDto;
 import com.example.computershop.service.PrinterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,10 @@ public class PrinterController {
     @PostMapping()
     PrinterDto insertIntoPrinter(@RequestBody PrinterDto printerDto) {
         return printerService.save(printerDto);
+    }
+    @PatchMapping("/{code}")
+    public PrinterDto patchPrinterPartially(@PathVariable Long code, @RequestBody PrinterDto printerDto) {
+        return printerService.updatePrinterPartially(code, printerDto);
     }
 
     @DeleteMapping("/{code}")

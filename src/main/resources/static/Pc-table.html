@@ -227,7 +227,7 @@
     <form id="update-pc-form">
         <label>
             Код:
-            <input type="text" id="update-code" name="speed" required>
+            <input type="text" id="update-code" name="code" required>
         </label>
         <br><br>
         <label>
@@ -433,7 +433,7 @@
         const cd = document.getElementById('update-cd').value;
         const price = document.getElementById('update-price').value;
 
-        if (speed && ram && hd && cd && price) {
+        if (code && speed && ram && hd && cd && price) {
             const pc = {
                 code,
                 speed,
@@ -527,7 +527,6 @@
                 }
             })
             .catch(error => console.error('Ошибка удаления:', error));
-        loadTable()
     });
 
     fetch('http://localhost:8080/pcs/all')
