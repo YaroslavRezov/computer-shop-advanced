@@ -56,6 +56,20 @@
         #add-pc-btn:hover {
             background-color: #45a049;
         }
+        #update-pc-btn {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            background-color: #4f1666;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+        #update-pc-btn:hover {
+            background-color: #45a049;
+        }
         /* Модальное окно */
         #modal {
             display: none;
@@ -100,6 +114,49 @@
             border: none;
             border-radius: 4px;
         }
+        #modal-update {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        #modal-update-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .modal-update-buttons {
+            margin-top: 10px;
+            text-align: right;
+        }
+        .modal-update-buttons button {
+            padding: 8px 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .modal-update-buttons .update {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .modal-update-buttons .cancel {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -114,13 +171,14 @@
 
 
 <button id="add-pc-btn">Добавить ПК</button>
+<button id="update-pc-btn">Изменить ПК</button>
 <input type="text" id="delete-input" placeholder="Введите code для удаления" />
 <button id="delete-pc-btn">Удалить ПК</button>
 
 <!-- Модальное окно -->
 <div id="modal-overlay"></div>
 <div id="modal">
-    <h2>Добавить продукт</h2>
+    <h2>Добавить ПК</h2>
     <form id="add-pc-form">
         <label>
             Модель:
@@ -163,6 +221,56 @@
     </form>
 </div>
 
+<div id="modal-update-overlay"></div>
+<div id="modal-update">
+    <h2>Изменить ПК</h2>
+    <form id="update-pc-form">
+        <label>
+            Код:
+            <input type="text" id="update-code" name="speed" required>
+        </label>
+        <label>
+            Модель:
+            <select id="update-model" name="model" required>
+                <option value="" disabled selected>Выберите модель</option>
+            </select>
+        </label>
+        <br><br>
+        <label>
+            Скорость:
+            <input type="text" id="update-speed" name="speed" required>
+        </label>
+        <br><br>
+        <label>
+            ОЗУ:
+            <input type="text" id="update-ram" name="ram" required>
+        </label>
+        <br><br>
+        <label>
+            Жёсткий диск:
+            <input type="text" id="update-hd" name="hd" required>
+        </label>
+        <br><br>
+        <label>
+            Дисковод:
+            <input type="text" id="update-cd" name="cd" required>
+        </label>
+        <br><br>
+        <label>
+            Цена:
+            <input type="text" id="update-price" name="price" required>
+        </label>
+        <br><br>
+
+        <br>
+        <div class="modal-update-buttons">
+            <button type="button" class="update" id="update-btn">Изменить</button>
+            <button type="button" class="cancel" id="cancel-update-btn">Закрыть</button>
+        </div>
+    </form>
+</div>
+
+
 <table id="pc-table">
     <thead>
     <tr>
@@ -189,6 +297,11 @@
     const tableBody = document.getElementById('pc-body');
     const deletePCBtn = document.getElementById('delete-pc-btn');
     const deleteInput = document.getElementById('delete-input');
+    const modalUpdate = document.getElementById('modal-update');
+    const modalUpdateOverlay = document.getElementById('modal-update-overlay');
+    const updateBtn = document.getElementById('update-btn');
+    const updatePcBtn = document.getElementById('update-pc-btn')
+    const cancelUpdateBtn = document.getElementById('cancel-update-btn');
 
     const loadModels = () => {
         fetch('http://localhost:8080/products/all')
@@ -244,9 +357,17 @@
         document.getElementById('add-pc-form').reset();
         loadTable()// Сброс формы
     };
+    const closeModalUpdate = () => {
+        modalUpdate.style.display = 'none';
+        modalUpdateOverlay.style.display = 'none';
+        document.getElementById('update-pc-form').reset();
+        loadTable();
+    };
 
     cancelBtn.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
+    cancelUpdateBtn.addEventListener('click', closeModalUpdate);
+    modalUpdateOverlay.addEventListener('click', closeModalUpdate);
 
     // Сохранить продукт
     saveBtn.addEventListener('click', () => {
@@ -310,6 +431,77 @@
             alert('Пожалуйста, заполните все поля.');
         }
     });
+
+    updatePcBtn.addEventListener('click', () => {
+        loadModels();
+        modalUpdate.style.display = 'block';
+        modalUpdateOverlay.style.display = 'block';
+    });
+
+    updateBtn.addEventListener('click', () => {
+        const code = document.getElementById('update-code').value;
+        const model = document.getElementById('update-model').value;
+        const speed = document.getElementById('update-speed').value;
+        const ram = document.getElementById('update-ram').value;
+        const hd = document.getElementById('update-hd').value;
+        const cd = document.getElementById('update-cd').value;
+        const price = document.getElementById('update-price').value;
+
+        if (code && model && speed && ram && hd && cd && price) {
+            const pc = {
+                code,
+                model,
+                speed,
+                ram,
+                hd,
+                cd,
+                price,
+            };
+
+            const options = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(pc),
+            };
+
+            fetch(`http://localhost:8080/pcs/${code}`, options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('ПК успешно изменён:', data);
+
+
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${data.code}</td>
+                        <td>${data.model}</td>
+                        <td>${data.speed}</td>
+                        <td>${data.ram}</td>
+                        <td>${data.hd}</td>
+                        <td>${data.cd}</td>
+                        <td>${data.price}</td>
+                        <td></td>
+                    `;
+                    tableBody.appendChild(newRow);
+
+                    closeModalUpdate(); // Закрыть модальное окно
+                })
+                .catch(error => {
+                    console.error('Ошибка изменения:', error);
+                    alert('Произошла ошибка при изменении пк.');
+                });
+            loadTable()
+        } else {
+            alert('Пожалуйста, заполните все поля.');
+        }
+    });
+
     const loadTable = () => {
         fetch('http://localhost:8080/pcs/all')
             .then(response => response.json())

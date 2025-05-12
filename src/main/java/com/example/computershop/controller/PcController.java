@@ -2,6 +2,7 @@ package com.example.computershop.controller;
 
 import com.example.computershop.model.dto.LaptopDto;
 import com.example.computershop.model.dto.PcDto;
+import com.example.computershop.model.dto.ProductDto;
 import com.example.computershop.service.PcService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,12 @@ public class PcController {
     PcDto insertIntoPc(@RequestBody PcDto pcDto) {
         return pcService.save(pcDto);
     }
+
+    @PatchMapping("/{code}")
+    public PcDto patchPcPartially(@PathVariable Long code, @RequestBody PcDto pcDto) {
+        return pcService.updatePcPartially(code, pcDto);
+    }
+
     @DeleteMapping("/{code}")
     void deleteFromPc(@PathVariable("code") Long code) {
         pcService.delete(code);
