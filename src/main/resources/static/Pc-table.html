@@ -229,12 +229,6 @@
             Код:
             <input type="text" id="update-code" name="speed" required>
         </label>
-        <label>
-            Модель:
-            <select id="update-model" name="model" required>
-                <option value="" disabled selected>Выберите модель</option>
-            </select>
-        </label>
         <br><br>
         <label>
             Скорость:
@@ -343,13 +337,6 @@
         loadTable()
     });
 
-    // Открыть модальное окно
-    addPCBtn.addEventListener('click', () => {
-        loadModels();
-        modal.style.display = 'block';
-        modalOverlay.style.display = 'block';
-    });
-
     // Закрыть модальное окно
     const closeModal = () => {
         modal.style.display = 'none';
@@ -433,24 +420,22 @@
     });
 
     updatePcBtn.addEventListener('click', () => {
-        loadModels();
         modalUpdate.style.display = 'block';
         modalUpdateOverlay.style.display = 'block';
+        loadTable()
     });
 
     updateBtn.addEventListener('click', () => {
         const code = document.getElementById('update-code').value;
-        const model = document.getElementById('update-model').value;
         const speed = document.getElementById('update-speed').value;
         const ram = document.getElementById('update-ram').value;
         const hd = document.getElementById('update-hd').value;
         const cd = document.getElementById('update-cd').value;
         const price = document.getElementById('update-price').value;
 
-        if (code && model && speed && ram && hd && cd && price) {
+        if (code && speed && ram && hd && cd && price) {
             const pc = {
                 code,
-                model,
                 speed,
                 ram,
                 hd,
