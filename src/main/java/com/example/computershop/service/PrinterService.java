@@ -67,7 +67,7 @@ public class PrinterService {
     }
 
     public PrinterDto updatePrinterPartially(@PathVariable Long code, @RequestBody PrinterDto printerDto) {
-        PrinterEntity setPrinterEntity = printerRepository.findById(code).orElse(null);
+        PrinterEntity setPrinterEntity = printerRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого принтера"));
 //        ProductEntity foundProductEntity = productRepository.findById(printerDto.getModel()).orElse(null);
 
         if (printerDto.getColor() != null) {

@@ -63,7 +63,7 @@ public class ProductService {
     }
 
     public ProductDto updateProductPartially(@PathVariable String model, @RequestBody ProductDto productDto) {
-        ProductEntity setProductEntity = productRepository.findById(model).orElse(null);
+        ProductEntity setProductEntity = productRepository.findById(model).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
 
 
         if (productDto.getMaker() != null) {

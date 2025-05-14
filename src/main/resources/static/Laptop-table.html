@@ -52,6 +52,20 @@
         #add-laptop-btn:hover {
             background-color: #45a049;
         }
+        #update-laptop-btn {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            background-color: #4f1666;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+        #update-laptop-btn:hover {
+            background-color: #45a049;
+        }
         /* Модальное окно */
         #modal {
             display: none;
@@ -96,19 +110,63 @@
             border: none;
             border-radius: 4px;
         }
+        #modal-update {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        #modal-update-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .modal-update-buttons {
+            margin-top: 10px;
+            text-align: right;
+        }
+        .modal-update-buttons button {
+            padding: 8px 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .modal-update-buttons .update {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .modal-update-buttons .cancel {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
 <h1>Таблица Ноутбуков</h1>
 <nav>
     <ul>
-        <li><a href="pc-table.html">Компьютеры</a></li>
+        <li><a href="laptop-table.html">Компьютеры</a></li>
         <li><a href="printer-table.html">Принтеры</a></li>
         <li><a href="index.html">Главная</a></li>
     </ul>
 </nav>
 
 <button id="add-laptop-btn">Добавить Ноутбук</button>
+<button id="update-laptop-btn">Изменить ноутбук</button>
 <input type="text" id="delete-input" placeholder="Введите code для удаления" />
 <button id="delete-laptop-btn">Удалить Ноутбук</button>
 
@@ -156,6 +214,48 @@
     </form>
 </div>
 
+<div id="modal-update-overlay"></div>
+<div id="modal-update">
+    <h2>Изменить ноутбук</h2>
+    <form id="update-laptop-form">
+        <label>
+            Код:
+            <input type="text" id="update-code" name="code" required>
+        </label>
+        <br><br>
+        <label>
+            Скорость:
+            <input type="text" id="update-speed" name="speed" required>
+        </label>
+        <br><br>
+        <label>
+            ОЗУ:
+            <input type="text" id="update-ram" name="ram" required>
+        </label>
+        <br><br>
+        <label>
+            Жёсткий диск:
+            <input type="text" id="update-hd" name="hd" required>
+        </label>
+        <br><br>
+        <label>
+            Цена:
+            <input type="text" id="update-price" name="price" required>
+        </label>
+        <br><br>
+        <label>
+            Дюймы:
+            <input type="text" id="update-screen" name="screen" required>
+        </label>
+
+        <br>
+        <div class="modal-update-buttons">
+            <button type="button" class="update" id="update-btn">Изменить</button>
+            <button type="button" class="cancel" id="cancel-update-btn">Закрыть</button>
+        </div>
+    </form>
+</div>
+
 <table id="laptop-table">
     <thead>
     <tr>
@@ -182,6 +282,11 @@
     const tableBody = document.getElementById('laptop-body');
     const deleteLaptopBtn = document.getElementById('delete-laptop-btn');
     const deleteInput = document.getElementById('delete-input');
+    const modalUpdate = document.getElementById('modal-update');
+    const modalUpdateOverlay = document.getElementById('modal-update-overlay');
+    const updateBtn = document.getElementById('update-btn');
+    const updateLaptopBtn = document.getElementById('update-laptop-btn')
+    const cancelUpdateBtn = document.getElementById('cancel-update-btn');
 
     const loadModels = () => {
         fetch('http://localhost:8080/products/all')
@@ -231,9 +336,17 @@
         document.getElementById('add-laptop-form').reset(); // Сброс формы
         loadTable()
     };
+    const closeModalUpdate = () => {
+        modalUpdate.style.display = 'none';
+        modalUpdateOverlay.style.display = 'none';
+        document.getElementById('update-laptop-form').reset();
+        loadTable();
+    };
 
     cancelBtn.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
+    cancelUpdateBtn.addEventListener('click', closeModalUpdate);
+    modalUpdateOverlay.addEventListener('click', closeModalUpdate);
 
     // Сохранить продукт
     saveBtn.addEventListener('click', () => {
@@ -319,6 +432,74 @@
             })
             .catch(error => console.error('Ошибка:', error));
     };
+
+    updateLaptopBtn.addEventListener('click', () => {
+        modalUpdate.style.display = 'block';
+        modalUpdateOverlay.style.display = 'block';
+        loadTable()
+    });
+
+    updateBtn.addEventListener('click', () => {
+        const code = document.getElementById('update-code').value;
+        const speed = document.getElementById('update-speed').value;
+        const ram = document.getElementById('update-ram').value;
+        const hd = document.getElementById('update-hd').value;
+        const price = document.getElementById('update-price').value;
+        const screen = document.getElementById('update-screen').value;
+
+        if (code && speed && ram && hd && price && screen) {
+            const laptop = {
+                code,
+                speed,
+                ram,
+                hd,
+                price,
+                screen,
+            };
+
+            const options = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(laptop),
+            };
+
+            fetch(`http://localhost:8080/laptops/${code}`, options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('ноутбук успешно изменён:', data);
+
+
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${data.code}</td>
+                        <td>${data.model}</td>
+                        <td>${data.speed}</td>
+                        <td>${data.ram}</td>
+                        <td>${data.hd}</td>
+                        <td>${data.price}</td>
+                        <td>${data.screen}</td>
+                        <td></td>
+                    `;
+                    tableBody.appendChild(newRow);
+
+                    closeModalUpdate(); // Закрыть модальное окно
+                })
+                .catch(error => {
+                    console.error('Ошибка изменения:', error);
+                    alert('Произошла ошибка при изменении ноутбука.');
+                });
+            loadTable()
+        } else {
+            alert('Пожалуйста, заполните все поля.');
+        }
+    });
 
     // Удаление laptop по code
     deleteLaptopBtn.addEventListener('click', () => {

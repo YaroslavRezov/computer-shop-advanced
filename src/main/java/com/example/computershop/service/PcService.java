@@ -72,7 +72,7 @@ public class PcService {
     }
 
     public PcDto updatePcPartially(@PathVariable Long code, @RequestBody PcDto pcDto) {
-        PcEntity setPcEntity = pcRepository.findById(code).orElse(null);
+        PcEntity setPcEntity = pcRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ПК"));
 //        ProductEntity foundProductEntity = productRepository.findById(pcDto.getModel()).orElse(null);
 
         if (pcDto.getSpeed() != 0) {

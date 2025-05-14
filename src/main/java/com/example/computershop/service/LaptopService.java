@@ -1,12 +1,16 @@
 package com.example.computershop.service;
 
 import com.example.computershop.model.dto.LaptopDto;
+import com.example.computershop.model.dto.LaptopDto;
+import com.example.computershop.model.entity.LaptopEntity;
 import com.example.computershop.model.entity.LaptopEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +70,39 @@ public class LaptopService {
         responseLaptopDto.setCode(savedLaptopEntity.getCode());
         return responseLaptopDto;
     }
+    public LaptopDto updateLaptopPartially(@PathVariable Long code, @RequestBody LaptopDto laptopDto) {
+        LaptopEntity setLaptopEntity = laptopRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ноута"));
+//        ProductEntity foundProductEntity = productRepository.findById(laptopDto.getModel()).orElse(null);
+
+        if (laptopDto.getSpeed() != 0) {
+            setLaptopEntity.setSpeed(laptopDto.getSpeed());
+        }
+        if (laptopDto.getRam() != 0) {
+            setLaptopEntity.setRam(laptopDto.getRam());
+        }
+        if (laptopDto.getHd() != 0) {
+            setLaptopEntity.setHd(laptopDto.getHd());
+        }
+        if (laptopDto.getPrice() != 0) {
+            setLaptopEntity.setPrice(laptopDto.getPrice());
+        }
+        if (laptopDto.getScreen() != 0) {
+            setLaptopEntity.setScreen(laptopDto.getScreen());
+        }
+
+        LaptopEntity savedLaptopEntity = laptopRepository.save(setLaptopEntity);
+
+        LaptopDto responseLaptopDto = new LaptopDto();
+        responseLaptopDto.setModel(savedLaptopEntity.getProduct().getModel());
+        responseLaptopDto.setSpeed(savedLaptopEntity.getSpeed());
+        responseLaptopDto.setRam(savedLaptopEntity.getRam());
+        responseLaptopDto.setHd(savedLaptopEntity.getHd());
+        responseLaptopDto.setScreen(savedLaptopEntity.getScreen());
+        responseLaptopDto.setPrice(savedLaptopEntity.getPrice());
+        responseLaptopDto.setCode(savedLaptopEntity.getCode());
+        return responseLaptopDto;
+    }
+
     public void delete(Long code){
         laptopRepository.deleteById(code);
 
