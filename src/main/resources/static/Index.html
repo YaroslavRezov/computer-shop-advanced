@@ -287,7 +287,7 @@
                 body: JSON.stringify(product),
             };
 
-            fetch('http://localhost:8080/products', options)
+            fetch('http://localhost:8080/admin/products', options)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -342,7 +342,7 @@
                 body: JSON.stringify(product),
             };
 
-            fetch(`http://localhost:8080/products/${model}`, options)
+            fetch(`http://localhost:8080/admin/products/${model}`, options)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -382,7 +382,7 @@
             return;
         }
 
-        fetch(`http://localhost:8080/products/${model}`, { method: 'DELETE' })
+        fetch(`http://localhost:8080/admin/products/${model}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
                     alert(`Продукт с model ${model} успешно удален.`);
@@ -396,7 +396,7 @@
     });
 
     const loadTable = () => {
-        fetch('http://localhost:8080/products/fullproduct')
+        fetch('http://localhost:8080/admin/products/fullproduct')
             .then(response => response.json())
             .then(data => {
                 tableBody.innerHTML = ''; // Очистить таблицу перед загрузкой
@@ -415,7 +415,7 @@
     };
 
     // Загрузка данных
-    fetch('http://localhost:8080/products/fullproduct')
+    fetch('http://localhost:8080/admin/products/fullproduct')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
