@@ -46,7 +46,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
 
-    fetch(`http://localhost:8080/laptops?code=${code}`)
+    fetch(`http://localhost:8080/admin/laptops?code=${code}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Ошибка ${response.status}: ${response.statusText}`);

@@ -1,8 +1,6 @@
 package com.example.computershop.controller;
 
-import com.example.computershop.model.dto.LaptopDto;
 import com.example.computershop.model.dto.PcDto;
-import com.example.computershop.model.dto.ProductDto;
 import com.example.computershop.service.PcService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +9,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/pcs")
+@RequestMapping("/admin/pcs")
 public class PcController {
     private final PcService pcService;
 

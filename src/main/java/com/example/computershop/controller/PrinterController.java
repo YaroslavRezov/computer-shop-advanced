@@ -1,6 +1,5 @@
 package com.example.computershop.controller;
 import com.example.computershop.model.dto.PrinterDto;
-import com.example.computershop.model.dto.PrinterDto;
 import com.example.computershop.service.PrinterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +8,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/printers")
+@RequestMapping("/admin/printers")
 public class PrinterController {
     private final PrinterService printerService;
 

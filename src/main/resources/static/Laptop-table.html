@@ -173,7 +173,7 @@
 <!-- Модальное окно -->
 <div id="modal-overlay"></div>
 <div id="modal">
-    <h2>Добавить продукт</h2>
+    <h2>Добавить Ноутбук</h2>
     <form id="add-laptop-form">
         <label>
             Модель:
@@ -289,7 +289,7 @@
     const cancelUpdateBtn = document.getElementById('cancel-update-btn');
 
     const loadModels = () => {
-        fetch('http://localhost:8080/products/all')
+        fetch('http://localhost:8080/admin/products/all')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -375,7 +375,7 @@
                 body: JSON.stringify(laptop),
             };
 
-            fetch('http://localhost:8080/laptops', options)
+            fetch('http://localhost:8080/admin/laptops', options)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -412,7 +412,7 @@
     });
 
     const loadTable = () => {
-        fetch('http://localhost:8080/laptops/all')
+        fetch('http://localhost:8080/admin/laptops/all')
             .then(response => response.json())
             .then(data => {
                 tableBody.innerHTML = ''; // Очистить таблицу перед загрузкой
@@ -465,7 +465,7 @@
                 body: JSON.stringify(laptop),
             };
 
-            fetch(`http://localhost:8080/laptops/${code}`, options)
+            fetch(`http://localhost:8080/admin/laptops/${code}`, options)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -509,7 +509,7 @@
             return;
         }
 
-        fetch(`http://localhost:8080/laptops/${code}`, { method: 'DELETE' })
+        fetch(`http://localhost:8080/admin/laptops/${code}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
                     alert(`Ноутбук с code ${code} успешно удален.`);
@@ -521,7 +521,7 @@
             .catch(error => console.error('Ошибка удаления:', error));
     });
 
-    fetch('http://localhost:8080/laptops/all')
+    fetch('http://localhost:8080/admin/laptops/all')
         .then(response => {
             if (!response.ok) {
                 throw new Error("Ошибка ${response.status}: ${response.statusText}");

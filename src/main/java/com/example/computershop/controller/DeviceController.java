@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/devices")
+@RequestMapping("/admin/devices")
 public class DeviceController {
 
 
