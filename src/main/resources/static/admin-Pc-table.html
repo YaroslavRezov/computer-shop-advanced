@@ -1,9 +1,13 @@
+<!--При нажати на удалить также выполняеться окртие модели так как кнопка удалить находться в строке таблицы-->
+
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Таблица продуктов</title>
+    <title>Таблица Компьютеров</title>
     <style>
         body {
             background-image: url('/images/hammerAndAnother.png'); /* скрещённый молоток и ключ */
@@ -13,7 +17,6 @@
             background-attachment: scroll;
             background-color: #f0f0f0; /* фон под иконкой */
         }
-
         table {
             border-collapse: collapse;
         }
@@ -39,7 +42,7 @@
         nav a:hover {
             color: #23527c;
         }
-        #add-product-btn {
+        #add-pc-btn {
             display: inline-block;
             margin-bottom: 10px;
             padding: 10px 20px;
@@ -50,10 +53,10 @@
             cursor: pointer;
             text-align: center;
         }
-        #add-product-btn:hover {
+        #add-pc-btn:hover {
             background-color: #45a049;
         }
-        #update-product-btn {
+        #update-pc-btn {
             display: inline-block;
             margin-bottom: 10px;
             padding: 10px 20px;
@@ -64,7 +67,7 @@
             cursor: pointer;
             text-align: center;
         }
-        #update-product-btn:hover {
+        #update-pc-btn:hover {
             background-color: #45a049;
         }
         /* Модальное окно */
@@ -111,7 +114,6 @@
             border: none;
             border-radius: 4px;
         }
-
         #modal-update {
             display: none;
             position: fixed;
@@ -158,34 +160,59 @@
     </style>
 </head>
 <body>
-<h1>Таблица продуктов</h1>
+<h1>Таблица Компьютеров</h1>
 <nav>
     <ul>
-        <li><a href="pc-table.html">Компьютеры</a></li>
-        <li><a href="printer-table.html">Принтеры</a></li>
-        <li><a href="laptop-table.html">Ноутбуки</a></li>
+        <li><a href="admin-index.html">Главная</a></li>
+        <li><a href="admin-printer-table.html">Принтеры</a></li>
+        <li><a href="admin-laptop-table.html">Ноутбуки</a></li>
     </ul>
 </nav>
 
-<button id="add-product-btn">Добавить продукт</button>
-<button id="update-product-btn">Изменить продукт</button>
-<input type="text" id="delete-input" placeholder="Введите model для удаления" />
-<button id="delete-product-btn">Удалить Продукт</button>
+
+<button id="add-pc-btn">Добавить ПК</button>
+<button id="update-pc-btn">Изменить ПК</button>
+<input type="text" id="delete-input" placeholder="Введите code для удаления" />
+<button id="delete-pc-btn">Удалить ПК</button>
 
 <!-- Модальное окно -->
 <div id="modal-overlay"></div>
 <div id="modal">
-    <h2>Добавить продукт</h2>
-    <form id="add-product-form">
+    <h2>Добавить ПК</h2>
+    <form id="add-pc-form">
         <label>
-            Тип:
-            <input type="text" id="type" name="type" required>
+            Модель:
+            <select id="model" name="model" required>
+                <option value="" disabled selected>Выберите модель</option>
+            </select>
         </label>
         <br><br>
         <label>
-            Производитель:
-            <input type="text" id="maker" name="maker" required>
+            Скорость:
+            <input type="text" id="speed" name="speed" required>
         </label>
+        <br><br>
+        <label>
+            ОЗУ:
+            <input type="text" id="ram" name="ram" required>
+        </label>
+        <br><br>
+        <label>
+            Жёсткий диск:
+            <input type="text" id="hd" name="hd" required>
+        </label>
+        <br><br>
+        <label>
+            Дисковод:
+            <input type="text" id="cd" name="cd" required>
+        </label>
+        <br><br>
+        <label>
+            Цена:
+            <input type="text" id="price" name="price" required>
+        </label>
+        <br><br>
+
         <br>
         <div class="modal-buttons">
             <button type="button" class="save" id="save-btn">Сохранить</button>
@@ -196,17 +223,39 @@
 
 <div id="modal-update-overlay"></div>
 <div id="modal-update">
-    <h2>Изменить продукт</h2>
-    <form id="update-product-form">
+    <h2>Изменить ПК</h2>
+    <form id="update-pc-form">
         <label>
-            Модель:
-            <input type="text" id="model" name="model" required>
+            Код:
+            <input type="text" id="update-code" name="code" required>
         </label>
         <br><br>
         <label>
-            Производитель:
-            <input type="text" id="update-maker" name="maker" required>
+            Скорость:
+            <input type="text" id="update-speed" name="speed" required>
         </label>
+        <br><br>
+        <label>
+            ОЗУ:
+            <input type="text" id="update-ram" name="ram" required>
+        </label>
+        <br><br>
+        <label>
+            Жёсткий диск:
+            <input type="text" id="update-hd" name="hd" required>
+        </label>
+        <br><br>
+        <label>
+            Дисковод:
+            <input type="text" id="update-cd" name="cd" required>
+        </label>
+        <br><br>
+        <label>
+            Цена:
+            <input type="text" id="update-price" name="price" required>
+        </label>
+        <br><br>
+
         <br>
         <div class="modal-update-buttons">
             <button type="button" class="update" id="update-btn">Изменить</button>
@@ -215,52 +264,91 @@
     </form>
 </div>
 
-<table id="products-table">
+
+<table id="pc-table">
     <thead>
     <tr>
-        <th>Модель</th>
-        <th>Тип</th>
-        <th>Производитель</th>
         <th>Код</th>
+        <th>Модель</th>
+        <th>Скорость</th>
+        <th>ОЗУ</th>
+        <th>Жёстрий диск</th>
+        <th>Дисковод</th>
+        <th>Цена</th>
+
     </tr>
     </thead>
-    <tbody id="products-body">
+    <tbody id="pc-body">
     </tbody>
 </table>
 
 <script>
-    const addProductBtn = document.getElementById('add-product-btn');
+    const addPCBtn = document.getElementById('add-pc-btn');
     const modal = document.getElementById('modal');
     const modalOverlay = document.getElementById('modal-overlay');
-    const modalUpdate = document.getElementById('modal-update');
-    const modalUpdateOverlay = document.getElementById('modal-update-overlay');
     const cancelBtn = document.getElementById('cancel-btn');
     const saveBtn = document.getElementById('save-btn');
-    const tableBody = document.getElementById('products-body');
-    const deleteProductBtn = document.getElementById('delete-product-btn');
+    const tableBody = document.getElementById('pc-body');
+    const deletePCBtn = document.getElementById('delete-pc-btn');
     const deleteInput = document.getElementById('delete-input');
+    const modalUpdate = document.getElementById('modal-update');
+    const modalUpdateOverlay = document.getElementById('modal-update-overlay');
     const updateBtn = document.getElementById('update-btn');
-    const updateProductBtn = document.getElementById('update-product-btn')
+    const updatePcBtn = document.getElementById('update-pc-btn')
     const cancelUpdateBtn = document.getElementById('cancel-update-btn');
 
-    // Открыть модальное окно
-    addProductBtn.addEventListener('click', () => {
+    const loadModels = () => {
+        fetch('http://localhost:8080/admin/products/all')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const modelSelect = document.getElementById('model');
+                // Очистим предыдущие опции, если они есть
+                modelSelect.innerHTML = '<option value="" disabled selected>Выберите модель</option>';
+
+                // Отфильтровать только модели с типом PC
+                const pcs = data.filter(product => product.type === 'PC');
+                pcs.forEach(pc => {
+                    const option = document.createElement('option');
+                    option.value = pc.model; // Устанавливаем значение модели
+                    option.textContent = pc.model; // Отображаем название модели
+                    modelSelect.appendChild(option);
+                });
+
+                if (pcs.length === 0) {
+                    const noOption = document.createElement('option');
+                    noOption.value = "";
+                    noOption.textContent = "Нет доступных моделей";
+                    modelSelect.appendChild(noOption);
+                }
+            })
+            .catch(error => console.error('Ошибка загрузки моделей:', error));
+    };
+
+    // Открыть модальное окно и загрузить модели
+    addPCBtn.addEventListener('click', () => {
+        loadModels(); // Загружаем модели перед открытием модального окна
         modal.style.display = 'block';
         modalOverlay.style.display = 'block';
+        loadTable()
     });
 
     // Закрыть модальное окно
     const closeModal = () => {
         modal.style.display = 'none';
         modalOverlay.style.display = 'none';
-        document.getElementById('add-product-form').reset(); // Сброс формы
-        loadTable()
+        document.getElementById('add-pc-form').reset();
+        loadTable()// Сброс формы
     };
     const closeModalUpdate = () => {
         modalUpdate.style.display = 'none';
         modalUpdateOverlay.style.display = 'none';
-        document.getElementById('update-product-form').reset(); // Сброс формы
-        loadTable()
+        document.getElementById('update-pc-form').reset();
+        loadTable();
     };
 
     cancelBtn.addEventListener('click', closeModal);
@@ -270,13 +358,22 @@
 
     // Сохранить продукт
     saveBtn.addEventListener('click', () => {
-        const type = document.getElementById('type').value;
-        const maker = document.getElementById('maker').value;
+        const model = document.getElementById('model').value;
+        const speed = document.getElementById('speed').value;
+        const ram = document.getElementById('ram').value;
+        const hd = document.getElementById('hd').value;
+        const cd = document.getElementById('cd').value;
+        const price = document.getElementById('price').value;
 
-        if (type && maker) {
-            const product = {
-                type,
-                maker,
+
+        if (model && speed && ram && hd && cd && price) {
+            const pc = {
+                model,
+                speed,
+                ram,
+                hd,
+                cd,
+                price,
             };
 
             const options = {
@@ -284,10 +381,10 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(product),
+                body: JSON.stringify(pc),
             };
 
-            fetch('http://localhost:8080/admin/products', options)
+            fetch('http://localhost:8080/admin/pcs', options)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -295,14 +392,17 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Продукт успешно добавлен:', data);
+                    console.log('ПК успешно добавлен:', data);
 
                     // Добавить новый продукт в таблицу
                     const newRow = document.createElement('tr');
                     newRow.innerHTML = `
                         <td>${data.model}</td>
-                        <td>${data.type}</td>
-                        <td>${data.maker}</td>
+                        <td>${data.speed}</td>
+                        <td>${data.ram}</td>
+                        <td>${data.hd}</td>
+                        <td>${data.cd}</td>
+                        <td>${data.price}</td>
                         <td></td>
                     `;
                     tableBody.appendChild(newRow);
@@ -311,7 +411,7 @@
                 })
                 .catch(error => {
                     console.error('Ошибка сохранения:', error);
-                    alert('Произошла ошибка при добавлении продукта.');
+                    alert('Произошла ошибка при добавлении ПК.');
                 });
             loadTable()
         } else {
@@ -319,19 +419,28 @@
         }
     });
 
-    updateProductBtn.addEventListener('click', () => {
+    updatePcBtn.addEventListener('click', () => {
         modalUpdate.style.display = 'block';
         modalUpdateOverlay.style.display = 'block';
+        loadTable()
     });
 
     updateBtn.addEventListener('click', () => {
-        const model = document.getElementById('model').value;
-        const maker = document.getElementById('update-maker').value;
+        const code = document.getElementById('update-code').value;
+        const speed = document.getElementById('update-speed').value;
+        const ram = document.getElementById('update-ram').value;
+        const hd = document.getElementById('update-hd').value;
+        const cd = document.getElementById('update-cd').value;
+        const price = document.getElementById('update-price').value;
 
-        if (model && maker) {
-            const product = {
-                model,
-                maker,
+        if (code && speed && ram && hd && cd && price) {
+            const pc = {
+                code,
+                speed,
+                ram,
+                hd,
+                cd,
+                price,
             };
 
             const options = {
@@ -339,10 +448,10 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(product),
+                body: JSON.stringify(pc),
             };
 
-            fetch(`http://localhost:8080/admin/products/${model}`, options)
+            fetch(`http://localhost:8080/admin/pcs/${code}`, options)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -350,24 +459,27 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Продукт успешно изменён:', data);
+                    console.log('ПК успешно изменён:', data);
 
 
                     const newRow = document.createElement('tr');
                     newRow.innerHTML = `
+                        <td>${data.code}</td>
                         <td>${data.model}</td>
-                        <td>${data.type}</td>
-                        <td>${data.maker}</td>
+                        <td>${data.speed}</td>
+                        <td>${data.ram}</td>
+                        <td>${data.hd}</td>
+                        <td>${data.cd}</td>
+                        <td>${data.price}</td>
                         <td></td>
                     `;
                     tableBody.appendChild(newRow);
 
                     closeModalUpdate(); // Закрыть модальное окно
-                    loadTable()
                 })
                 .catch(error => {
                     console.error('Ошибка изменения:', error);
-                    alert('Произошла ошибка при изменении продукта.');
+                    alert('Произошла ошибка при изменении пк.');
                 });
             loadTable()
         } else {
@@ -375,38 +487,21 @@
         }
     });
 
-    deleteProductBtn.addEventListener('click', () => {
-        const model = deleteInput.value.trim();
-        if (!model) {
-            alert('Введите model для удаления.');
-            return;
-        }
-
-        fetch(`http://localhost:8080/admin/products/${model}`, { method: 'DELETE' })
-            .then(response => {
-                if (response.ok) {
-                    alert(`Продукт с model ${model} успешно удален.`);
-                    loadTable(); // Обновить таблицу после удаления
-                } else {
-                    alert(`Продукт с model ${model} не найден.`);
-                }
-            })
-            .catch(error => console.error('Ошибка удаления:', error));
-        loadTable()
-    });
-
     const loadTable = () => {
-        fetch('http://localhost:8080/admin/products/fullproduct')
+        fetch('http://localhost:8080/admin/pcs/all')
             .then(response => response.json())
             .then(data => {
                 tableBody.innerHTML = ''; // Очистить таблицу перед загрузкой
-                data.forEach(product => {
+                data.forEach(pc => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${product.model}</td>
-                        <td>${product.type}</td>
-                        <td>${product.maker}</td>
-                        <td>${product.code}</td>
+                        <td>${pc.code}</td>
+                        <td>${pc.model}</td>
+                        <td>${pc.speed}</td>
+                        <td>${pc.ram}</td>
+                        <td>${pc.hd}</td>
+                        <td>${pc.cd}</td>
+                        <td>${pc.price}</td>
                     `;
                     tableBody.appendChild(row);
                 });
@@ -414,38 +509,50 @@
             .catch(error => console.error('Ошибка:', error));
     };
 
-    // Загрузка данных
-    fetch('http://localhost:8080/admin/products/fullproduct')
+    // Удаление ПК по code
+    deletePCBtn.addEventListener('click', () => {
+        const code = deleteInput.value.trim();
+        if (!code) {
+            alert('Введите code для удаления.');
+            return;
+        }
+
+        fetch(`http://localhost:8080/admin/pcs/${code}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    alert(`ПК с code ${code} успешно удален.`);
+                    loadTable(); // Обновить таблицу после удаления
+                } else {
+                    alert(`ПК с code ${code} не найден.`);
+                }
+            })
+            .catch(error => console.error('Ошибка удаления:', error));
+    });
+
+    fetch('http://localhost:8080/admin/pcs/all')
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+                throw new Error("Ошибка ${response.status}: ${response.statusText}");
             }
             return response.json();
         })
         .then(data => {
-            data.forEach(product => {
+            const tableBody = document.getElementById('pc-body');
+            data.forEach(pc => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${product.model}</td>
-                    <td>${product.type}</td>
-                    <td>${product.maker}</td>
-                    <td>${product.code}</td>
+                    <td>${pc.code}</td>
+                    <td>${pc.model}</td>
+                    <td>${pc.speed}</td>
+                    <td>${pc.ram}</td>
+                    <td>${pc.hd}</td>
+                    <td>${pc.cd}</td>
+                    <td>${pc.price}</td>
+
                 `;
                 row.addEventListener('click', () => {
                     let url;
-                    switch (product.type) {
-                        case 'Laptop':
-                            url = `laptop.html?code=${product.code}`;
-                            break;
-                        case 'Printer':
-                            url = `printer.html?code=${product.code}`;
-                            break;
-                        case 'PC':
-                            url = `pc.html?code=${product.code}`;
-                            break;
-                        default:
-                            return;
-                    }
+                    url = `admin-pc.html?code=${pc.code}`;
                     window.location.href = url;
                 });
                 tableBody.appendChild(row);

@@ -159,9 +159,9 @@
 <h1>Таблица Ноутбуков</h1>
 <nav>
     <ul>
-        <li><a href="laptop-table.html">Компьютеры</a></li>
-        <li><a href="printer-table.html">Принтеры</a></li>
-        <li><a href="index.html">Главная</a></li>
+        <li><a href="admin-pc-table.html">Компьютеры</a></li>
+        <li><a href="admin-printer-table.html">Принтеры</a></li>
+        <li><a href="admin-index.html">Главная</a></li>
     </ul>
 </nav>
 
@@ -544,7 +544,7 @@
                 `;
                 row.addEventListener('click', () => {
                     let url;
-                    url = `laptop.html?code=${laptop.code}`;
+                    url = `admin-laptop.html?code=${laptop.code}`;
                     window.location.href = url;
                 });
                 tableBody.appendChild(row);
