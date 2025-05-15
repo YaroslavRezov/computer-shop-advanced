@@ -411,7 +411,13 @@
                         <td>${printer.type}</td>
                         <td>${printer.price}</td>
                     `;
+                    row.addEventListener('click', () => {
+                        let url;
+                        url = `admin-pc.html?code=${printer.code}`;
+                        window.location.href = url;
+                    });
                     tableBody.appendChild(row);
+
                 });
             })
             .catch(error => console.error('Ошибка:', error));

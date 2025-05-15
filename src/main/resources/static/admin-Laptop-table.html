@@ -427,6 +427,11 @@
                         <td>${laptop.price}</td>
                         <td>${laptop.screen}</td>
                     `;
+                    row.addEventListener('click', () => {
+                        let url;
+                        url = `admin-pc.html?code=${pc.code}`;
+                        window.location.href = url;
+                    });
                     tableBody.appendChild(row);
                 });
             })

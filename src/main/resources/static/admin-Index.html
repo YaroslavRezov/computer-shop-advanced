@@ -408,6 +408,23 @@
                         <td>${product.maker}</td>
                         <td>${product.code}</td>
                     `;
+                    row.addEventListener('click', () => {
+                        let url;
+                        switch (product.type) {
+                            case 'Laptop':
+                                url = `admin-laptop.html?code=${product.code}`;
+                                break;
+                            case 'Printer':
+                                url = `admin-printer.html?code=${product.code}`;
+                                break;
+                            case 'PC':
+                                url = `admin-pc.html?code=${product.code}`;
+                                break;
+                            default:
+                                return;
+                        }
+                        window.location.href = url;
+                    });
                     tableBody.appendChild(row);
                 });
             })

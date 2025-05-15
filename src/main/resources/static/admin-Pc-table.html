@@ -503,6 +503,11 @@
                         <td>${pc.cd}</td>
                         <td>${pc.price}</td>
                     `;
+                    row.addEventListener('click', () => {
+                        let url;
+                        url = `admin-pc.html?code=${pc.code}`;
+                        window.location.href = url;
+                    });
                     tableBody.appendChild(row);
                 });
             })
