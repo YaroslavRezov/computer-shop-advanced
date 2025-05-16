@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карточка Принтера</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .printer-card {
+            width: 500px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .printer-card h2 {
+            margin-top: 0;
+        }
+        .printer-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .printer-card li {
+            margin-bottom: 10px;
+        }
+        .printer-card li span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="printer-card">
+</div>
+<nav>
+    <ul>
+        <li><a href="admin-index.html">Главная</a></li>
+        <li><a href="admin-printer-table.html">Принтер</a></li>
+    </ul>
+</nav>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    fetch(`http://localhost:8080/admin/printers?code=${code}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const computerCard = document.querySelector('.printer-card');
+            computerCard.innerHTML = `
+                    <h2>Карточка Принетера</h2>
+                    <ul>
+                        <li><span>Серийный номер:</span> ${data.code}</li>
+                        <li><span>Модель:</span> ${data.model}</li>
+                        <li><span>Цветной или нет:</span> ${data.color} </li>
+                        <li><span>Тип:</span> ${data.type} </li>
+                        <li><span>Цена:</span> ${data.price} $</li>
+                    </ul>
+                `;
+        })
+        .catch(error => console.error('Ошибка:', error));
+</script>
+</body>
+</html>

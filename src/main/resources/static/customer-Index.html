@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таблица продуктов</title>
+    <style>
+        body {
+            background-image: url('/images/hammerAndAnother.png'); /* скрещённый молоток и ключ */
+            background-repeat: no-repeat;
+            background-position: right;
+            background-size: 200px;
+            background-attachment: scroll;
+            background-color: #f0f0f0; /* фон под иконкой */
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            cursor: pointer;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        nav li {
+            margin-right: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #337ab7;
+        }
+        nav a:hover {
+            color: #23527c;
+        }
+        #add-product-btn {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+        #add-product-btn:hover {
+            background-color: #45a049;
+        }
+        #update-product-btn {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            background-color: #4f1666;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+        #update-product-btn:hover {
+            background-color: #45a049;
+        }
+        /* Модальное окно */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .modal-buttons {
+            margin-top: 10px;
+            text-align: right;
+        }
+        .modal-buttons button {
+            padding: 8px 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .modal-buttons .save {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .modal-buttons .cancel {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        #modal-update {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        #modal-update-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .modal-update-buttons {
+            margin-top: 10px;
+            text-align: right;
+        }
+        .modal-update-buttons button {
+            padding: 8px 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .modal-update-buttons .update {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .modal-update-buttons .cancel {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<h1>Таблица продуктов</h1>
+<nav>
+    <ul>
+        <li><a href="admin-pc-table.html">Компьютеры</a></li>
+        <li><a href="admin-printer-table.html">Принтеры</a></li>
+        <li><a href="admin-laptop-table.html">Ноутбуки</a></li>
+    </ul>
+</nav>
+
+<button id="add-product-btn">Добавить продукт</button>
+<button id="update-product-btn">Изменить продукт</button>
+<input type="text" id="delete-input" placeholder="Введите model для удаления" />
+<button id="delete-product-btn">Удалить Продукт</button>
+
+<!-- Модальное окно -->
+<div id="modal-overlay"></div>
+<div id="modal">
+    <h2>Добавить продукт</h2>
+    <form id="add-product-form">
+        <label>
+            Тип:
+            <input type="text" id="type" name="type" required>
+        </label>
+        <br><br>
+        <label>
+            Производитель:
+            <input type="text" id="maker" name="maker" required>
+        </label>
+        <br>
+        <div class="modal-buttons">
+            <button type="button" class="save" id="save-btn">Сохранить</button>
+            <button type="button" class="cancel" id="cancel-btn">Закрыть</button>
+        </div>
+    </form>
+</div>
+
+<div id="modal-update-overlay"></div>
+<div id="modal-update">
+    <h2>Изменить продукт</h2>
+    <form id="update-product-form">
+        <label>
+            Модель:
+            <input type="text" id="model" name="model" required>
+        </label>
+        <br><br>
+        <label>
+            Производитель:
+            <input type="text" id="update-maker" name="maker" required>
+        </label>
+        <br>
+        <div class="modal-update-buttons">
+            <button type="button" class="update" id="update-btn">Изменить</button>
+            <button type="button" class="cancel" id="cancel-update-btn">Закрыть</button>
+        </div>
+    </form>
+</div>
+
+<table id="products-table">
+    <thead>
+    <tr>
+        <th>Модель</th>
+        <th>Тип</th>
+        <th>Производитель</th>
+        <th>Код</th>
+    </tr>
+    </thead>
+    <tbody id="products-body">
+    </tbody>
+</table>
+
+<script>
+    const addProductBtn = document.getElementById('add-product-btn');
+    const modal = document.getElementById('modal');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalUpdate = document.getElementById('modal-update');
+    const modalUpdateOverlay = document.getElementById('modal-update-overlay');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const tableBody = document.getElementById('products-body');
+    const deleteProductBtn = document.getElementById('delete-product-btn');
+    const deleteInput = document.getElementById('delete-input');
+    const updateBtn = document.getElementById('update-btn');
+    const updateProductBtn = document.getElementById('update-product-btn')
+    const cancelUpdateBtn = document.getElementById('cancel-update-btn');
+
+    // Открыть модальное окно
+    addProductBtn.addEventListener('click', () => {
+        modal.style.display = 'block';
+        modalOverlay.style.display = 'block';
+    });
+
+    // Закрыть модальное окно
+    const closeModal = () => {
+        modal.style.display = 'none';
+        modalOverlay.style.display = 'none';
+        document.getElementById('add-product-form').reset(); // Сброс формы
+        loadTable()
+    };
+    const closeModalUpdate = () => {
+        modalUpdate.style.display = 'none';
+        modalUpdateOverlay.style.display = 'none';
+        document.getElementById('update-product-form').reset(); // Сброс формы
+        loadTable()
+    };
+
+    cancelBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+    cancelUpdateBtn.addEventListener('click', closeModalUpdate);
+    modalUpdateOverlay.addEventListener('click', closeModalUpdate);
+
+    // Сохранить продукт
+    saveBtn.addEventListener('click', () => {
+        const type = document.getElementById('type').value;
+        const maker = document.getElementById('maker').value;
+
+        if (type && maker) {
+            const product = {
+                type,
+                maker,
+            };
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(product),
+            };
+
+            fetch('http://localhost:8080/admin/products', options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Продукт успешно добавлен:', data);
+
+                    // Добавить новый продукт в таблицу
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${data.model}</td>
+                        <td>${data.type}</td>
+                        <td>${data.maker}</td>
+                        <td></td>
+                    `;
+                    tableBody.appendChild(newRow);
+
+                    closeModal(); // Закрыть модальное окно
+                })
+                .catch(error => {
+                    console.error('Ошибка сохранения:', error);
+                    alert('Произошла ошибка при добавлении продукта.');
+                });
+            loadTable()
+        } else {
+            alert('Пожалуйста, заполните все поля.');
+        }
+    });
+
+    updateProductBtn.addEventListener('click', () => {
+        modalUpdate.style.display = 'block';
+        modalUpdateOverlay.style.display = 'block';
+    });
+
+    updateBtn.addEventListener('click', () => {
+        const model = document.getElementById('model').value;
+        const maker = document.getElementById('update-maker').value;
+
+        if (model && maker) {
+            const product = {
+                model,
+                maker,
+            };
+
+            const options = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(product),
+            };
+
+            fetch(`http://localhost:8080/admin/products/${model}`, options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Продукт успешно изменён:', data);
+
+
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${data.model}</td>
+                        <td>${data.type}</td>
+                        <td>${data.maker}</td>
+                        <td></td>
+                    `;
+                    tableBody.appendChild(newRow);
+
+                    closeModalUpdate(); // Закрыть модальное окно
+                    loadTable()
+                })
+                .catch(error => {
+                    console.error('Ошибка изменения:', error);
+                    alert('Произошла ошибка при изменении продукта.');
+                });
+            loadTable()
+        } else {
+            alert('Пожалуйста, заполните все поля.');
+        }
+    });
+
+    deleteProductBtn.addEventListener('click', () => {
+        const model = deleteInput.value.trim();
+        if (!model) {
+            alert('Введите model для удаления.');
+            return;
+        }
+
+        fetch(`http://localhost:8080/admin/products/${model}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    alert(`Продукт с model ${model} успешно удален.`);
+                    loadTable(); // Обновить таблицу после удаления
+                } else {
+                    alert(`Продукт с model ${model} не найден.`);
+                }
+            })
+            .catch(error => console.error('Ошибка удаления:', error));
+        loadTable()
+    });
+
+    const loadTable = () => {
+        fetch('http://localhost:8080/admin/products/fullproduct')
+            .then(response => response.json())
+            .then(data => {
+                tableBody.innerHTML = ''; // Очистить таблицу перед загрузкой
+                data.forEach(product => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product.model}</td>
+                        <td>${product.type}</td>
+                        <td>${product.maker}</td>
+                        <td>${product.code}</td>
+                    `;
+                    row.addEventListener('click', () => {
+                        let url;
+                        switch (product.type) {
+                            case 'Laptop':
+                                url = `admin-laptop.html?code=${product.code}`;
+                                break;
+                            case 'Printer':
+                                url = `admin-printer.html?code=${product.code}`;
+                                break;
+                            case 'PC':
+                                url = `admin-pc.html?code=${product.code}`;
+                                break;
+                            default:
+                                return;
+                        }
+                        window.location.href = url;
+                    });
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Ошибка:', error));
+    };
+
+    // Загрузка данных
+    fetch('http://localhost:8080/admin/products/fullproduct')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.model}</td>
+                    <td>${product.type}</td>
+                    <td>${product.maker}</td>
+                    <td>${product.code}</td>
+                `;
+                row.addEventListener('click', () => {
+                    let url;
+                    switch (product.type) {
+                        case 'Laptop':
+                            url = `admin-laptop.html?code=${product.code}`;
+                            break;
+                        case 'Printer':
+                            url = `admin-printer.html?code=${product.code}`;
+                            break;
+                        case 'PC':
+                            url = `admin-pc.html?code=${product.code}`;
+                            break;
+                        default:
+                            return;
+                    }
+                    window.location.href = url;
+                });
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Ошибка:', error));
+</script>
+</body>
+</html>
