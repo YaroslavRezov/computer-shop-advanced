@@ -22,19 +22,5 @@ public class LaptopController {
         return laptopService.getLaptop(code);
     }
 
-    @PostMapping()
-    LaptopDto insertIntoLaptop(@RequestBody LaptopDto laptopDto) {
-        return laptopService.save(laptopDto);
-    }
-
-    @PatchMapping("/{code}")
-    public LaptopDto patchLaptopPartially(@PathVariable Long code, @RequestBody LaptopDto laptopDto) {
-        return laptopService.updateLaptopPartially(code, laptopDto);
-    }
-    @DeleteMapping("/{code}")
-    void deleteFromLaptop(@PathVariable("code") Long code) {
-        laptopService.delete(code);
-
-    }
 }
 

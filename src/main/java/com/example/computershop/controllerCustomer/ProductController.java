@@ -29,20 +29,4 @@ public class ProductController {
     List<ProductJoinedDto> getJoinedProducts() {
         return productService.getAllProductsJoined();
     }
-
-    @PostMapping()
-    ProductDto insertIntoProduct(@RequestBody ProductDto productDto) {
-        return productService.save(productDto);
-    }
-
-    @PatchMapping("/{model}")
-    public ProductDto patchProductPartially(@PathVariable String model, @RequestBody ProductDto productDto) {
-        return productService.updateProductPartially(model, productDto);
-    }
-
-    @DeleteMapping("/{model}")
-    void deleteFromProduct(@PathVariable("model") String model) {
-        productService.delete(model);
-
-    }
 }

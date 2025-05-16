@@ -22,21 +22,4 @@ public class PcController {
         return pcService.getPc(code);
     }
 
-    @PostMapping()
-    PcDto insertIntoPc(@RequestBody PcDto pcDto) {
-        return pcService.save(pcDto);
-    }
-
-    @PatchMapping("/{code}")
-    public PcDto patchPcPartially(@PathVariable Long code, @RequestBody PcDto pcDto) {
-        return pcService.updatePcPartially(code, pcDto);
-    }
-
-    @DeleteMapping("/{code}")
-    void deleteFromPc(@PathVariable("code") Long code) {
-        pcService.delete(code);
-
-    }
-
-
 }
