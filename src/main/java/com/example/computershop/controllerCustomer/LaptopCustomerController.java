@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/customer/laptops")
 public class LaptopCustomerController {
+
     private final LaptopService laptopService;
 
     @GetMapping("/all")
