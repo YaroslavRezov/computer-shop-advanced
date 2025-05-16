@@ -8,8 +8,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/printers")
-public class PrinterController {
+@RequestMapping("/customer/printers")
+public class PrinterCustomerController {
     private final PrinterService printerService;
 
     @GetMapping("/all")

@@ -10,8 +10,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/products")
-public class ProductController {
+@RequestMapping("/customer/products")
+public class ProductCustomerController {
 
     private final ProductService productService;
 

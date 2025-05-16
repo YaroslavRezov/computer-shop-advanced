@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Таблица Принтеров</title>
+    <title>Таблица Ноутбуков</title>
     <style>
         body {
             background-image: url('/images/customer.jpg');
@@ -13,7 +13,6 @@
             background-attachment: scroll;
             background-color: #f0f0f0; /* фон под иконкой */
         }
-
         table {
             border-collapse: collapse;
         }
@@ -42,33 +41,35 @@
     </style>
 </head>
 <body>
-<h1>Таблица Принтеров</h1>
+<h1>Таблица Ноутбуков</h1>
 <nav>
     <ul>
-        <li><a href="customer-pc-table.html">Компютеры</a></li>
+        <li><a href="customer-pc-table.html">Компьютеры</a></li>
+        <li><a href="customer-printer-table.html">Принтеры</a></li>
         <li><a href="customer-index.html">Главная</a></li>
-        <li><a href="customer-laptop-table.html">Ноутбуки</a></li>
     </ul>
 </nav>
 
-<table id="printer-table">
+
+<table id="laptop-table">
     <thead>
     <tr>
         <th>Код</th>
         <th>Модель</th>
-        <th>Цвет</th>
-        <th>Тип</th>
+        <th>Скорость</th>
+        <th>ОЗУ</th>
+        <th>Жёстрий диск</th>
         <th>Цена</th>
-
+        <th>Дюймы</th>
 
     </tr>
     </thead>
-    <tbody id="printer-body">
+    <tbody id="laptop-body">
     </tbody>
 </table>
 
 <script>
-    const tableBody = document.getElementById('printer-body');
+    const tableBody = document.getElementById('laptop-body');
 
     const loadModels = () => {
         fetch('http://localhost:8080/customer/products/all')
@@ -83,16 +84,16 @@
                 // Очистим предыдущие опции, если они есть
                 modelSelect.innerHTML = '<option value="" disabled selected>Выберите модель</option>';
 
-                // Отфильтровать только модели с типом printer
-                const printers = data.filter(product => product.type === 'Printer');
-                printers.forEach(printer => {
+                // Отфильтровать только модели с типом Laptop
+                const laptops = data.filter(product => product.type === 'Laptop');
+                laptops.forEach(laptop => {
                     const option = document.createElement('option');
-                    option.value = printer.model; // Устанавливаем значение модели
-                    option.textContent = printer.model; // Отображаем название модели
+                    option.value = laptop.model; // Устанавливаем значение модели
+                    option.textContent = laptop.model; // Отображаем название модели
                     modelSelect.appendChild(option);
                 });
 
-                if (printers.length === 0) {
+                if (laptops.length === 0) {
                     const noOption = document.createElement('option');
                     noOption.value = "";
                     noOption.textContent = "Нет доступных моделей";
@@ -103,34 +104,33 @@
     };
 
     const loadTable = () => {
-        fetch('http://localhost:8080/customer/printers/all')
+        fetch('http://localhost:8080/customer/laptops/all')
             .then(response => response.json())
             .then(data => {
                 tableBody.innerHTML = ''; // Очистить таблицу перед загрузкой
-                data.forEach(printer => {
+                data.forEach(laptop => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${printer.code}</td>
-                        <td>${printer.model}</td>
-                        <td>${printer.color}</td>
-                        <td>${printer.type}</td>
-                        <td>${printer.price}</td>
+                        <td>${laptop.code}</td>
+                        <td>${laptop.model}</td>
+                        <td>${laptop.speed}</td>
+                        <td>${laptop.ram}</td>
+                        <td>${laptop.hd}</td>
+                        <td>${laptop.price}</td>
+                        <td>${laptop.screen}</td>
                     `;
                     row.addEventListener('click', () => {
                         let url;
-                        url = `customer-pc.html?code=${printer.code}`;
+                        url = `customer-pc.html?code=${pc.code}`;
                         window.location.href = url;
                     });
                     tableBody.appendChild(row);
-
                 });
             })
             .catch(error => console.error('Ошибка:', error));
     };
 
-
-
-    fetch('http://localhost:8080/customer/printers/all')
+    fetch('http://localhost:8080/customer/laptops/all')
         .then(response => {
             if (!response.ok) {
                 throw new Error("Ошибка ${response.status}: ${response.statusText}");
@@ -138,19 +138,22 @@
             return response.json();
         })
         .then(data => {
-            const tableBody = document.getElementById('printer-body');
-            data.forEach(printer => {
+            const tableBody = document.getElementById('laptop-body');
+            data.forEach(laptop => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${printer.code}</td>
-                    <td>${printer.model}</td>
-                    <td>${printer.color}</td>
-                    <td>${printer.type}</td>
-                    <td>${printer.price}</td>
+                    <td>${laptop.code}</td>
+                    <td>${laptop.model}</td>
+                    <td>${laptop.speed}</td>
+                    <td>${laptop.ram}</td>
+                    <td>${laptop.hd}</td>
+                    <td>${laptop.price}</td>
+                    <td>${laptop.screen}</td>
+
                 `;
                 row.addEventListener('click', () => {
                     let url;
-                    url = `customer-printer.html?code=${printer.code}`;
+                    url = `customer-laptop.html?code=${laptop.code}`;
                     window.location.href = url;
                 });
                 tableBody.appendChild(row);

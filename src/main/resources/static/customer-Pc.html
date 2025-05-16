@@ -37,8 +37,8 @@
 </div>
 <nav>
     <ul>
-        <li><a href="admin-index.html">Главная</a></li>
-        <li><a href="admin-pc-table.html">Компютеры</a></li>
+        <li><a href="customer-index.html">Главная</a></li>
+        <li><a href="customer-pc-table.html">Компютеры</a></li>
     </ul>
 </nav>
 
@@ -46,7 +46,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
 
-    fetch(`http://localhost:8080/admin/pcs?code=${code}`)
+    fetch(`http://localhost:8080/customer/pcs?code=${code}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Ошибка ${response.status}: ${response.statusText}`);

@@ -12,8 +12,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/devices")
-public class DeviceController {
+@RequestMapping("/customer/devices")
+public class DeviceCustomerController {
 
 
     private final DeviceService deviceService;

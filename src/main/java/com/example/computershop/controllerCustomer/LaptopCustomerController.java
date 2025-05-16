@@ -9,8 +9,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/laptops")
-public class LaptopController {
+@RequestMapping("/customer/laptops")
+public class LaptopCustomerController {
     private final LaptopService laptopService;
 
     @GetMapping("/all")

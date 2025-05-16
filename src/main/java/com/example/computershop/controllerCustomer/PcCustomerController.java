@@ -9,8 +9,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/pcs")
-public class PcController {
+@RequestMapping("/customer/pcs")
+public class PcCustomerController {
     private final PcService pcService;
 
     @GetMapping("/all")
