@@ -39,6 +39,23 @@
         nav a:hover {
             color: #23527c;
         }
+        .cart-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #337ab7;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+        .cart-button:hover {
+            background-color: #23527c;
+        }
     </style>
 </head>
 <body>
@@ -50,6 +67,8 @@
         <li><a href="customer-laptop-table.html">Ноутбуки</a></li>
     </ul>
 </nav>
+
+<a href="customer-Cart.html" class="cart-button">🛒 В корзину</a>
 
 <table id="printer-table">
     <thead>
