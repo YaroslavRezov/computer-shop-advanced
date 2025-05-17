@@ -11,4 +11,7 @@ public class CartDto {
     private Long code;
     private int price;
     private String userId;
+    public CartDto() {
+
+    }
 }
