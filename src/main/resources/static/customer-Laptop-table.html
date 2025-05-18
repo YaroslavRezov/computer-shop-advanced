@@ -55,6 +55,18 @@
         .cart-button:hover {
             background-color: #23527c;
         }
+        .add-to-cart {
+            padding: 5px 10px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .add-to-cart:hover {
+            background-color: #449d44;
+        }
+
     </style>
 </head>
 <body>
@@ -136,12 +148,55 @@
                         <td>${laptop.hd}</td>
                         <td>${laptop.price}</td>
                         <td>${laptop.screen}</td>
-                    `;
-                    row.addEventListener('click', () => {
-                        let url;
-                        url = `customer-pc.html?code=${pc.code}`;
-                        window.location.href = url;
+                        <td><button class="add-to-cart" data-code="${laptop.code}">В корзину</button></td>
+                        `;
+
+                    // Переход по клику на любую ячейку, кроме кнопки
+                    row.querySelectorAll('td:not(:last-child)').forEach(cell => {
+                        cell.addEventListener('click', () => {
+                            let url;
+                            url = `customer-laptop.html?code=${laptop.code}`;
+                            window.location.href = url;
+                        });
                     });
+
+                    // Обработчик кнопки "В корзину"
+                    const button = row.querySelector('.add-to-cart');
+                    button.addEventListener('click', (event) => {
+                        event.stopPropagation(); // не переходить по строке
+
+                        const code = laptop.code;
+                        const model = laptop.model;
+                        const userId = "customer";
+
+                        const cartItem = {
+                            model: model,
+                            code: code,
+                            userId : "customer"
+                        };
+
+                        fetch('http://localhost:8080/customer/products', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(cartItem)
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Ошибка при добавлении в корзину');
+                                }
+                                return response.json(); // если API возвращает ответ
+                            })
+                            .then(data => {
+                                alert(`Товар "${model}" добавлен в корзину!`);
+                            })
+                            .catch(error => {
+                                console.error('Ошибка добавления в корзину:', error);
+                                alert('Не удалось добавить в корзину.');
+                            });
+                    });
+
                     tableBody.appendChild(row);
                 });
             })
@@ -167,13 +222,55 @@
                     <td>${laptop.hd}</td>
                     <td>${laptop.price}</td>
                     <td>${laptop.screen}</td>
+                    <td><button class="add-to-cart" data-code="${laptop.code}">В корзину</button></td>
+                    `;
 
-                `;
-                row.addEventListener('click', () => {
-                    let url;
-                    url = `customer-laptop.html?code=${laptop.code}`;
-                    window.location.href = url;
+                // Переход по клику на любую ячейку, кроме кнопки
+                row.querySelectorAll('td:not(:last-child)').forEach(cell => {
+                    cell.addEventListener('click', () => {
+                        let url;
+                        url = `customer-laptop.html?code=${laptop.code}`;
+                        window.location.href = url;
+                    });
                 });
+
+                // Обработчик кнопки "В корзину"
+                const button = row.querySelector('.add-to-cart');
+                button.addEventListener('click', (event) => {
+                    event.stopPropagation(); // не переходить по строке
+
+                    const code = laptop.code;
+                    const model = laptop.model;
+                    const userId = "customer";
+
+                    const cartItem = {
+                        model: model,
+                        code: code,
+                        userId : "customer"
+                    };
+
+                    fetch('http://localhost:8080/customer/products', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(cartItem)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Ошибка при добавлении в корзину');
+                            }
+                            return response.json(); // если API возвращает ответ
+                        })
+                        .then(data => {
+                            alert(`Товар "${model}" добавлен в корзину!`);
+                        })
+                        .catch(error => {
+                            console.error('Ошибка добавления в корзину:', error);
+                            alert('Не удалось добавить в корзину.');
+                        });
+                });
+
                 tableBody.appendChild(row);
             });
         })
