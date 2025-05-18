@@ -1,10 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Корзина</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #337ab7;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+    </style>
 </head>
 <body>
+
+<h1>Список заказов (вся корзина)</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Модель</th>
+        <th>Код</th>
+        <th>Цена</th>
+        <th>User ID</th>
+        <th>Номер заказа</th>
+    </tr>
+    </thead>
+    <tbody id="cart-body">
+    <!-- данные будут вставлены здесь -->
+    </tbody>
+</table>
+
+<script>
+    const cartBody = document.getElementById("cart-body");
+
+    fetch("http://localhost:8080/customer/cart/user")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Ошибка загрузки корзины: " + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            cartBody.innerHTML = "";
+            data.forEach(item => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${item.model}</td>
+                    <td>${item.code}</td>
+                    <td>${item.price}</td>
+                    <td>${item.userId}</td>
+                    <td>${item.orderId ?? ''}</td>
+                `;
+                cartBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error("Ошибка:", error);
+            cartBody.innerHTML = `<tr><td colspan="5">Ошибка загрузки корзины</td></tr>`;
+        });
+</script>
+</script>
 
 </body>
 </html>
