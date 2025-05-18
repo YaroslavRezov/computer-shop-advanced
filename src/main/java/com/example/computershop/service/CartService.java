@@ -11,15 +11,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class CartService {
     private final CartRepository cartRepository;
+    private final ProductService productService;
 
     public CartDto save(CartDto requestCartDto) {
         CartEntity sourceCartEntity = new CartEntity();
+        int price = productService.getPriceByCode(requestCartDto.getCode())
+                .orElseThrow(() -> new IllegalArgumentException("Price not found for code " + requestCartDto.getCode()));
 
 
         sourceCartEntity.setModel(requestCartDto.getModel());
         sourceCartEntity.setCode(requestCartDto.getCode());
-        sourceCartEntity.setPrice(requestCartDto.getPrice());
+        sourceCartEntity.setPrice(price);
         sourceCartEntity.setUserId(requestCartDto.getUserId());
+
 
 
         CartEntity savedCartEntity = cartRepository.save(sourceCartEntity);

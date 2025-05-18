@@ -399,7 +399,7 @@
         fetch('http://localhost:8080/admin/products/fullproduct')
             .then(response => response.json())
             .then(data => {
-                tableBody.innerHTML = ''; // Очистить таблицу перед загрузкой
+                tableBody.innerHTML = '';
                 data.forEach(product => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
