@@ -30,6 +30,20 @@
         .computer-card li span {
             font-weight: bold;
         }
+        .add-to-cart-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #337ab7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #23527c;
+        }
     </style>
 </head>
 <body>
@@ -65,8 +79,36 @@
                         <li><span>Жесткий диск:</span> ${data.hd} ГБ</li>
                         <li><span>CD-ROM:</span> ${data.cd}</li>
                         <li><span>Цена:</span> ${data.price} $</li>
+                        <button class="add-to-cart-btn">Добавить в корзину</button>
                     </ul>
                 `;
+            const addToCartBtn = document.querySelector('.add-to-cart-btn');
+            addToCartBtn.addEventListener('click', () => {
+                const cartItem = {
+                    model: data.model,
+                    code: data.code,
+                    price: data.price,
+                    userId: "customer"
+                };
+
+                fetch("http://localhost:8080/customer/products", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(cartItem)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Ошибка добавления в корзину");
+                        }
+                        alert("Товар добавлен в корзину!");
+                    })
+                    .catch(error => {
+                        console.error("Ошибка:", error);
+                        alert("Ошибка при добавлении в корзину");
+                    });
+            });
         })
         .catch(error => console.error('Ошибка:', error));
 </script>
