@@ -62,4 +62,9 @@ public class CartService {
         responseCartDto.setOrderId(savedCartEntity.getOrderId());
         return responseCartDto;
     }
+
+    public void delete(String userId){
+        cartRepository.deleteByUserId(userId);
+
+    }
 }

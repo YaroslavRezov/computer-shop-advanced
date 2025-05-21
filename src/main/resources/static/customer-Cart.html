@@ -34,12 +34,26 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+        #clear-cart-btn {
+            margin: 20px;
+            padding: 10px 20px;
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #clear-cart-btn:hover {
+            background-color: #c9302c;
+        }
 
     </style>
 </head>
 <body>
 
-<h1>Список заказов (вся корзина)</h1>
+<h1>Список заказов <button id="clear-cart-btn">Очистить корзину</button></h1>
 
 <table>
     <thead>
@@ -52,7 +66,6 @@
     </tr>
     </thead>
     <tbody id="cart-body">
-    <!-- данные будут вставлены здесь -->
     </tbody>
 </table>
 
@@ -84,7 +97,28 @@
             console.error("Ошибка:", error);
             cartBody.innerHTML = `<tr><td colspan="5">Ошибка загрузки корзины</td></tr>`;
         });
-</script>
+
+
+    document.getElementById('clear-cart-btn').addEventListener('click', () => {
+        if (confirm("Вы уверены, что хотите очистить корзину?")) {
+            const userId = 'customer'; // если хотим удалить, то тут меняем у кого
+
+            fetch(`http://localhost:8080/customer/cart/user/${userId}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Корзина очищена');
+                        location.reload(); // или перерисуй корзину
+                    } else {
+                        throw new Error('Ошибка при очистке корзины');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при очистке корзины', error);
+                });
+        }
+    });
 </script>
 
 </body>

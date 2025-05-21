@@ -3,9 +3,8 @@ package com.example.computershop.controllerCustomer;
 import com.example.computershop.model.dto.CartDto;
 import com.example.computershop.service.CartService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,4 +22,9 @@ public class CartConsumerController {
     public List<CartDto> getCartForCustomer() {
         return cartService.getCartForUser("customer");
     }
+    @DeleteMapping("/user/{userId}")
+    public void clearCart(@PathVariable String userId) {
+        cartService.delete(userId);
+    }
+
 }
