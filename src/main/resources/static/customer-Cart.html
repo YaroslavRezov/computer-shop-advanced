@@ -60,12 +60,29 @@
         .delete-btn:hover {
             background-color: #d32f2f;
         }
+        #home-btn {
+            margin: 20px;
+            padding: 10px 20px;
+            background-color: #5bc0de;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #home-btn:hover {
+            background-color: #31b0d5;
+        }
 
     </style>
 </head>
 <body>
 
-<h1>Список заказов <button id="clear-cart-btn">Очистить корзину</button></h1>
+<h1>Список заказов
+    <button id="clear-cart-btn">Очистить корзину</button>
+    <button id="home-btn">На главную</button>
+</h1>
 
 <table>
     <thead>
@@ -209,6 +226,9 @@
         }
     });
 
+    document.getElementById('home-btn').addEventListener('click', () => {
+        window.location.href = "http://localhost:8080/customer-index.html";
+    });
 </script>
 
 </body>
