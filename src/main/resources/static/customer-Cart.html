@@ -84,7 +84,25 @@
 <script>
     const cartBody = document.getElementById("cart-body");
 
-    fetch("http://localhost:8080/customer/cart/user")
+    // Сначала загрузим все продукты, чтобы получить code => type
+    let productTypeMap = {};
+
+    fetch("http://localhost:8080/customer/products/fullproduct")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Ошибка загрузки продуктов: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(products => {
+            // Заполним мапу: code => type
+            products.forEach(p => {
+                productTypeMap[p.code] = p.type;
+            });
+
+            // Теперь загрузим корзину
+            return fetch("http://localhost:8080/customer/cart/all");
+        })
         .then(response => {
             if (!response.ok) {
                 throw new Error("Ошибка загрузки корзины: " + response.status);
@@ -94,50 +112,80 @@
         .then(data => {
             cartBody.innerHTML = "";
             data.forEach(item => {
+                const type = productTypeMap[item.code]; // берём тип из мапы
+
                 const row = document.createElement("tr");
+
                 row.innerHTML = `
                     <td>${item.model}</td>
                     <td>${item.code}</td>
                     <td>${item.price}</td>
                     <td>${item.userId}</td>
                     <td>${item.orderId ?? ''}</td>
-                    <td>
-                        <button class="delete-btn" onclick="deleteItem(${item.orderId})">Удалить</button>
-                    </td>
+                    <td><button class="delete-btn" data-orderid="${item.orderId}">Удалить</button></td>
                 `;
+
+                // 👉 Переход по строке (если есть тип)
+                if (type) {
+                    row.querySelectorAll('td:not(:last-child):not(:nth-child(6))').forEach(cell => {
+                        cell.addEventListener('click', () => {
+                            let url;
+                            switch (type) {
+                                case 'Laptop':
+                                    url = `customer-laptop.html?code=${item.code}`;
+                                    break;
+                                case 'Printer':
+                                    url = `customer-printer.html?code=${item.code}`;
+                                    break;
+                                case 'PC':
+                                    url = `customer-pc.html?code=${item.code}`;
+                                    break;
+                                default:
+                                    return;
+                            }
+                            window.location.href = url;
+                        });
+                    });
+                }
+
+                // 👉 Удаление
+                const deleteButton = row.querySelector('.delete-btn');
+                deleteButton.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const orderId = deleteButton.getAttribute('data-orderid');
+
+                    if (!orderId) {
+                        alert("Ошибка: orderId отсутствует");
+                        return;
+                    }
+
+                    if (confirm("Удалить этот товар из корзины?")) {
+                        fetch(`http://localhost:8080/customer/cart/${orderId}`, {
+                            method: 'DELETE'
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    location.reload();
+                                } else {
+                                    return response.text().then(text => {
+                                        console.error("Ошибка сервера:", text);
+                                        throw new Error('Ошибка при удалении товара');
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Ошибка при удалении:', error);
+                            });
+                    }
+                });
 
                 cartBody.appendChild(row);
             });
         })
         .catch(error => {
             console.error("Ошибка:", error);
-            cartBody.innerHTML = `<tr><td colspan="5">Ошибка загрузки корзины</td></tr>`;
+            cartBody.innerHTML = `<tr><td colspan="6">Ошибка загрузки корзины</td></tr>`;
         });
-
-    
-    function deleteItem(orderId) {
-        if (!orderId) {
-            alert("Ошибка: отсутствует orderId");
-            return;
-        }
-
-        if (confirm("Удалить этот товар из корзины?")) {
-            fetch(`http://localhost:8080/customer/cart/${orderId}`, {
-                method: 'DELETE'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('Товар удалён');
-                        location.reload(); // или перерисовать только таблицу
-                    } else {
-                        alert('Ошибка при удалении товара');
-                    }
-                })
-                .catch(error => {
-                    console.error('Ошибка при удалении:', error);
-                });
-        }
-    }
 
 
     document.getElementById('clear-cart-btn').addEventListener('click', () => {
