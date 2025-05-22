@@ -27,4 +27,10 @@ public class CartConsumerController {
         cartService.delete(userId);
     }
 
+    @DeleteMapping("/{orderId}")
+    void deleteOneFromCart(@PathVariable("orderId") Long orderId) {
+        cartService.delete(orderId);
+
+    }
+
 }

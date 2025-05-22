@@ -48,6 +48,18 @@
         #clear-cart-btn:hover {
             background-color: #c9302c;
         }
+        .delete-btn {
+            padding: 6px 12px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
 
     </style>
 </head>
@@ -89,7 +101,11 @@
                     <td>${item.price}</td>
                     <td>${item.userId}</td>
                     <td>${item.orderId ?? ''}</td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteItem(${item.orderId})">Удалить</button>
+                    </td>
                 `;
+
                 cartBody.appendChild(row);
             });
         })
@@ -97,6 +113,31 @@
             console.error("Ошибка:", error);
             cartBody.innerHTML = `<tr><td colspan="5">Ошибка загрузки корзины</td></tr>`;
         });
+
+    
+    function deleteItem(orderId) {
+        if (!orderId) {
+            alert("Ошибка: отсутствует orderId");
+            return;
+        }
+
+        if (confirm("Удалить этот товар из корзины?")) {
+            fetch(`http://localhost:8080/customer/cart/${orderId}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Товар удалён');
+                        location.reload(); // или перерисовать только таблицу
+                    } else {
+                        alert('Ошибка при удалении товара');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при удалении:', error);
+                });
+        }
+    }
 
 
     document.getElementById('clear-cart-btn').addEventListener('click', () => {
@@ -109,7 +150,7 @@
                 .then(response => {
                     if (response.ok) {
                         console.log('Корзина очищена');
-                        location.reload(); // или перерисуй корзину
+                        location.reload();
                     } else {
                         throw new Error('Ошибка при очистке корзины');
                     }
@@ -119,6 +160,7 @@
                 });
         }
     });
+
 </script>
 
 </body>

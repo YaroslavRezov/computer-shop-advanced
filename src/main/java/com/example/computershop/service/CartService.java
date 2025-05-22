@@ -67,4 +67,9 @@ public class CartService {
         cartRepository.deleteByUserId(userId);
 
     }
+
+    public void delete(Long orderId){
+        cartRepository.deleteById(orderId);
+
+    }
 }
