@@ -13,17 +13,17 @@ public class UsersService {
     private final PasswordEncoder passwordEncoder;
 
     public void save(UsersEntity usersEntity) {
-        usersEntity.setUserPassword(passwordEncoder.encode(usersEntity.getUserPassword()));
+        usersEntity.setPassword(passwordEncoder.encode(usersEntity.getPassword()));
         usersRepository.save(usersEntity);
     }
 
-    public boolean existsByUserId(String userId) {
-        return usersRepository.findByUserId(userId).isPresent();
+    public boolean existsByUsername(String username) {
+        return usersRepository.findByUsername(username).isPresent();
     }
 
-    public boolean authenticate(String userId, String rawPassword) {
-        return usersRepository.findByUserId(userId)
-                .map(user -> passwordEncoder.matches(rawPassword, user.getUserPassword()))
+    public boolean authenticate(String username, String rawPassword) {
+        return usersRepository.findByUsername(username)
+                .map(user -> passwordEncoder.matches(rawPassword, user.getPassword()))
                 .orElse(false);
     }
 }
