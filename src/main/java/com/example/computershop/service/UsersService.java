@@ -6,25 +6,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
+//@Service
+//@RequiredArgsConstructor
 public class UsersService {
-    private final UsersRepository usersRepository;
-    private final PasswordEncoder passwordEncoder;
+//    private final UsersRepository usersRepository;
+//    private final PasswordEncoder passwordEncoder;
 
-    public void save(UsersEntity usersEntity) {
-        usersEntity.setPassword(passwordEncoder.encode(usersEntity.getPassword()));
-        usersRepository.save(usersEntity);
-    }
+//    public void save(UsersEntity usersEntity) {
+//        usersEntity.setPassword(passwordEncoder.encode(usersEntity.getPassword()));
+//        usersRepository.save(usersEntity);
+//    }
 
-    public boolean existsByUsername(String username) {
-        return usersRepository.findByUsername(username).isPresent();
-    }
+//    public boolean existsByUsername(String username) {
+//        return usersRepository.findByUsername(username).isPresent();
+//    }
 
-    public boolean authenticate(String username, String rawPassword) {
-        return usersRepository.findByUsername(username)
-                .map(user -> passwordEncoder.matches(rawPassword, user.getPassword()))
-                .orElse(false);
-    }
+//    public boolean authenticate(String username, String rawPassword) {
+//        return usersRepository.findByUsername(username)
+//                .map(user -> passwordEncoder.matches(rawPassword, user.getPassword()))
+//                .orElse(false);
+//    }
 }
 

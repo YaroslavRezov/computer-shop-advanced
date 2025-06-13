@@ -1,37 +1,79 @@
 package com.example.computershop.config;
 
 
+import com.example.computershop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final UserService userService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
+        http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/login.html", "/register.html").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/login.html").permitAll()
+                        .requestMatchers("/register.html").permitAll()
+                        .requestMatchers("/admin/products/**").permitAll()
+                        .requestMatchers("/admin-index.html").permitAll()
+                        .requestMatchers("/customer/cart/**").authenticated()
+                        .requestMatchers("/customer/pcs/**").authenticated()
+                        .requestMatchers("/customer/devices/**").authenticated()
+                        .requestMatchers("/customer/laptops/**").authenticated()
+                        .requestMatchers("/customer/printers/**").authenticated()
+                        .requestMatchers("/customer/products/**").authenticated()
+                        .requestMatchers("/admin/pcs/**").authenticated()
+                        .requestMatchers("/admin/devices/**").authenticated()
+                        .requestMatchers("/admin/laptops/**").authenticated()
+                        .requestMatchers("/admin/printers/**").authenticated()
+                        .requestMatchers("/admin/products/**").authenticated()
+                        .requestMatchers("/admin/printers/**").authenticated()
+                        .requestMatchers("customer-Index.html").authenticated()
+
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults()) // или formLogin().disable()
-                .build();
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 }
