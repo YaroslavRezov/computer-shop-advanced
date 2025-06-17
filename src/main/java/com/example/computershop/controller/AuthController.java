@@ -5,7 +5,7 @@ import com.example.computershop.model.dto.LoginRequest;
 import com.example.computershop.model.dto.RegisterRequest;
 import com.example.computershop.model.entity.UsersEntity;
 import com.example.computershop.service.AuthService;
-import com.example.computershop.service.UsersService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

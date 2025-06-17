@@ -105,6 +105,12 @@
 
 <script>
     const tableBody = document.getElementById('products-body');
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+        alert("Вы не авторизованы. Пожалуйста, войдите в систему.");
+        window.location.href = "login.html";
+    }
 
     const loadTable = () => {
         fetch('http://localhost:8080/customer/products/fullproduct')
@@ -184,7 +190,12 @@
     };
 
     // Загрузка данных
-    fetch('http://localhost:8080/customer/products/fullproduct')
+    fetch('http://localhost:8080/customer/products/fullproduct', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -243,7 +254,7 @@
                     fetch('http://localhost:8080/customer/products', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token
                         },
                         body: JSON.stringify(cartItem)
                     })

@@ -21,16 +21,25 @@
 
         fetch('http://localhost:8080/api/auth/login', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(user)
         })
             .then(res => {
-                if (res.ok) {
-                    alert("Успешный вход");
-                    window.location.href = "customer-index.html";
-                } else {
-                    alert("Неверный логин или пароль");
+                if (!res.ok) {
+                    throw new Error("Неверный логин или пароль");
                 }
+                return res.json();
+            })
+            .then(data => {
+                // Предполагается, что токен возвращается в поле "token"
+                localStorage.setItem('authToken', data.token);
+                alert("Успешный вход");
+                window.location.href = "customer-index.html";
+            })
+            .catch(err => {
+                alert(err.message);
             });
     });
 </script>

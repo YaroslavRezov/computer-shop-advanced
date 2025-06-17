@@ -21,7 +21,7 @@ public class JwtService {
     private String secretKey;
 
     @Value("${jwt.expiration}")
-    private String jwtExpiration;
+    private Long jwtExpiration;
 
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
