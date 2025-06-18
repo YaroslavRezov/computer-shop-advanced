@@ -22,9 +22,9 @@ public class CartConsumerController {
     public List<CartDto> getCartForCustomer() {
         return cartService.getCartForUser("customer");
     }
-    @DeleteMapping("/user/{userId}")
-    public void clearCart(@PathVariable String userId) {
-        cartService.delete(userId);
+    @DeleteMapping("/user/{username}")
+    public void clearCart(@PathVariable String username) {
+        cartService.delete(username);
     }
 
     @DeleteMapping("/{orderId}")

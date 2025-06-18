@@ -90,7 +90,7 @@
         <th>Модель</th>
         <th>Код</th>
         <th>Цена</th>
-        <th>User ID</th>
+        <th>Username</th>
         <th>Номер заказа</th>
     </tr>
     </thead>
@@ -137,7 +137,7 @@
                     <td>${item.model}</td>
                     <td>${item.code}</td>
                     <td>${item.price}</td>
-                    <td>${item.userId}</td>
+                    <td>${item.username}</td>
                     <td>${item.orderId ?? ''}</td>
                     <td><button class="delete-btn" data-orderid="${item.orderId}">Удалить</button></td>
                 `;
@@ -207,9 +207,9 @@
 
     document.getElementById('clear-cart-btn').addEventListener('click', () => {
         if (confirm("Вы уверены, что хотите очистить корзину?")) {
-            const userId = 'customer'; // если хотим удалить, то тут меняем у кого
+            const username = 'customer'; // если хотим удалить, то тут меняем у кого
 
-            fetch(`http://localhost:8080/customer/cart/user/${userId}`, {
+            fetch(`http://localhost:8080/customer/cart/user/${username}`, {
                 method: 'DELETE'
             })
                 .then(response => {

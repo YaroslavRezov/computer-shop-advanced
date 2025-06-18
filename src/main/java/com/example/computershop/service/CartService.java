@@ -23,17 +23,17 @@ public class CartService {
         Iterable<CartEntity> cartEntities = cartRepository.findAll();
         List<CartDto> cartDtoList = new ArrayList<>();
         for(CartEntity cartEntity : cartEntities){
-            cartDtoList.add(new CartDto(cartEntity.getOrderId(), cartEntity.getModel(), cartEntity.getCode(), cartEntity.getPrice(), cartEntity.getUserId()));
+            cartDtoList.add(new CartDto(cartEntity.getOrderId(), cartEntity.getModel(), cartEntity.getCode(), cartEntity.getPrice(), cartEntity.getUsername()));
         }
 
         return cartDtoList;
     }
 
-    public List<CartDto> getCartForUser(String userId){
-        Iterable<CartEntity> cartEntities = cartRepository.findByUserId(userId);
+    public List<CartDto> getCartForUser(String username){
+        Iterable<CartEntity> cartEntities = cartRepository.findByUsername(username);
         List<CartDto> cartDtoList = new ArrayList<>();
         for(CartEntity cartEntity : cartEntities){
-            cartDtoList.add(new CartDto(cartEntity.getOrderId(), cartEntity.getModel(), cartEntity.getCode(), cartEntity.getPrice(), cartEntity.getUserId()));
+            cartDtoList.add(new CartDto(cartEntity.getOrderId(), cartEntity.getModel(), cartEntity.getCode(), cartEntity.getPrice(), cartEntity.getUsername()));
         }
 
         return cartDtoList;
@@ -48,7 +48,7 @@ public class CartService {
         sourceCartEntity.setModel(requestCartDto.getModel());
         sourceCartEntity.setCode(requestCartDto.getCode());
         sourceCartEntity.setPrice(price);
-        sourceCartEntity.setUserId(requestCartDto.getUserId());
+        sourceCartEntity.setUsername(requestCartDto.getUsername());
 
 
 
@@ -58,13 +58,13 @@ public class CartService {
         responseCartDto.setModel(savedCartEntity.getModel());
         responseCartDto.setCode(savedCartEntity.getCode());
         responseCartDto.setPrice(savedCartEntity.getPrice());
-        responseCartDto.setUserId(savedCartEntity.getUserId());
+        responseCartDto.setUsername(savedCartEntity.getUsername());
         responseCartDto.setOrderId(savedCartEntity.getOrderId());
         return responseCartDto;
     }
 
-    public void delete(String userId){
-        cartRepository.deleteByUserId(userId);
+    public void delete(String username){
+        cartRepository.deleteByUsername(username);
 
     }
 

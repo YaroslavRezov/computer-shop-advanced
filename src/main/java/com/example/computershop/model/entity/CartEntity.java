@@ -18,7 +18,7 @@ public class CartEntity {
     private String model;
     private Long code;
     private int price;
-    private String userId;
+    private String username;
 
 
 }
