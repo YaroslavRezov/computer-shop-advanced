@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Таблица Принтеров</title>
+    <title>Таблица Компьютеров</title>
     <style>
         body {
             background-image: url('/images/customer.jpg');
@@ -13,7 +13,6 @@
             background-attachment: scroll;
             background-color: #f0f0f0; /* фон под иконкой */
         }
-
         table {
             border-collapse: collapse;
         }
@@ -70,38 +69,49 @@
     </style>
 </head>
 <body>
-<h1>Таблица Принтеров</h1>
+<h1>Таблица Компьютеров</h1>
 <nav>
     <ul>
-        <li><a href="customer-pc-table.html">Компютеры</a></li>
         <li><a href="customer-index.html">Главная</a></li>
+        <li><a href="customer-printer-table.html">Принтеры</a></li>
         <li><a href="customer-laptop-table.html">Ноутбуки</a></li>
+
     </ul>
 </nav>
 
-<a href="customer-Cart.html" class="cart-button">🛒 В корзину</a>
+<a href="customer-cart.html" class="cart-button">🛒 В корзину</a>
 
-<table id="printer-table">
+<table id="pc-table">
     <thead>
     <tr>
         <th>Код</th>
         <th>Модель</th>
-        <th>Цвет</th>
-        <th>Тип</th>
+        <th>Скорость</th>
+        <th>ОЗУ</th>
+        <th>Жёстрий диск</th>
+        <th>Дисковод</th>
         <th>Цена</th>
-
 
     </tr>
     </thead>
-    <tbody id="printer-body">
+    <tbody id="pc-body">
     </tbody>
 </table>
 
 <script>
-    const tableBody = document.getElementById('printer-body');
+    const token = localStorage.getItem('authToken');
 
+    if (!token) {
+        alert("Вы не авторизованы. Пожалуйста, войдите в систему.");
+        window.location.href = "login.html";
+    }
+    const tableBody = document.getElementById('pc-body');
     const loadModels = () => {
-        fetch('http://localhost:8080/customer/products/all')
+        fetch('http://localhost:8080/customer/products/all', {
+            headers: {
+                "Content-Type": "application/json", 'Authorization': 'Bearer ' + token
+            }
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -113,16 +123,16 @@
                 // Очистим предыдущие опции, если они есть
                 modelSelect.innerHTML = '<option value="" disabled selected>Выберите модель</option>';
 
-                // Отфильтровать только модели с типом printer
-                const printers = data.filter(product => product.type === 'Printer');
-                printers.forEach(printer => {
+                // Отфильтровать только модели с типом PC
+                const pcs = data.filter(product => product.type === 'PC');
+                pcs.forEach(pc => {
                     const option = document.createElement('option');
-                    option.value = printer.model; // Устанавливаем значение модели
-                    option.textContent = printer.model; // Отображаем название модели
+                    option.value = pc.model; // Устанавливаем значение модели
+                    option.textContent = pc.model; // Отображаем название модели
                     modelSelect.appendChild(option);
                 });
 
-                if (printers.length === 0) {
+                if (pcs.length === 0) {
                     const noOption = document.createElement('option');
                     noOption.value = "";
                     noOption.textContent = "Нет доступных моделей";
@@ -133,26 +143,32 @@
     };
 
     const loadTable = () => {
-        fetch('http://localhost:8080/customer/printers/all')
+        fetch('http://localhost:8080/customer/pcs/all' , {
+            headers: {
+                "Content-Type": "application/json", 'Authorization': 'Bearer ' + token
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 tableBody.innerHTML = ''; // Очистить таблицу перед загрузкой
-                data.forEach(printer => {
+                data.forEach(pc => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${printer.code}</td>
-                        <td>${printer.model}</td>
-                        <td>${printer.color}</td>
-                        <td>${printer.type}</td>
-                        <td>${printer.price}</td>
-                        <td><button class="add-to-cart" data-code="${printer.code}">В корзину</button></td>
+                        <td>${pc.code}</td>
+                        <td>${pc.model}</td>
+                        <td>${pc.speed}</td>
+                        <td>${pc.ram}</td>
+                        <td>${pc.hd}</td>
+                        <td>${pc.cd}</td>
+                        <td>${pc.price}</td>
+                        <td><button class="add-to-cart" data-code="${pc.code}">В корзину</button></td>
                         `;
 
                     // Переход по клику на любую ячейку, кроме кнопки
                     row.querySelectorAll('td:not(:last-child)').forEach(cell => {
                         cell.addEventListener('click', () => {
                             let url;
-                            url = `customer-printer.html?code=${printer.code}`;
+                            url = `customer-pc.html?code=${pc.code}`;
                             window.location.href = url;
                         });
                     });
@@ -162,8 +178,8 @@
                     button.addEventListener('click', (event) => {
                         event.stopPropagation(); // не переходить по строке
 
-                        const code = printer.code;
-                        const model = printer.model;
+                        const code = pc.code;
+                        const model = pc.model;
                         const username = "customer";
 
                         const cartItem = {
@@ -175,7 +191,7 @@
                         fetch('http://localhost:8080/customer/products', {
                             method: 'POST',
                             headers: {
-                                'Content-Type': 'application/json'
+                                'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token
                             },
                             body: JSON.stringify(cartItem)
                         })
@@ -200,9 +216,11 @@
             .catch(error => console.error('Ошибка:', error));
     };
 
-
-
-    fetch('http://localhost:8080/customer/printers/all')
+    fetch('http://localhost:8080/customer/pcs/all' , {
+        headers: {
+            "Content-Type": "application/json", 'Authorization': 'Bearer ' + token
+        }
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error("Ошибка ${response.status}: ${response.statusText}");
@@ -210,23 +228,25 @@
             return response.json();
         })
         .then(data => {
-            const tableBody = document.getElementById('printer-body');
-            data.forEach(printer => {
+            const tableBody = document.getElementById('pc-body');
+            data.forEach(pc => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${printer.code}</td>
-                    <td>${printer.model}</td>
-                    <td>${printer.color}</td>
-                    <td>${printer.type}</td>
-                    <td>${printer.price}</td>
-                    <td><button class="add-to-cart" data-code="${printer.code}">В корзину</button></td>
+                    <td>${pc.code}</td>
+                    <td>${pc.model}</td>
+                    <td>${pc.speed}</td>
+                    <td>${pc.ram}</td>
+                    <td>${pc.hd}</td>
+                    <td>${pc.cd}</td>
+                    <td>${pc.price}</td>
+                    <td><button class="add-to-cart" data-code="${pc.code}">В корзину</button></td>
                     `;
 
                 // Переход по клику на любую ячейку, кроме кнопки
                 row.querySelectorAll('td:not(:last-child)').forEach(cell => {
                     cell.addEventListener('click', () => {
                         let url;
-                        url = `customer-printer.html?code=${printer.code}`;
+                        url = `customer-pc.html?code=${pc.code}`;
                         window.location.href = url;
                     });
                 });
@@ -236,8 +256,8 @@
                 button.addEventListener('click', (event) => {
                     event.stopPropagation(); // не переходить по строке
 
-                    const code = printer.code;
-                    const model = printer.model;
+                    const code = pc.code;
+                    const model = pc.model;
                     const username = "customer";
 
                     const cartItem = {
@@ -249,7 +269,7 @@
                     fetch('http://localhost:8080/customer/products', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token
                         },
                         body: JSON.stringify(cartItem)
                     })

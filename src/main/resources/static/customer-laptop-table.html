@@ -79,7 +79,7 @@
     </ul>
 </nav>
 
-<a href="customer-Cart.html" class="cart-button">🛒 В корзину</a>
+<a href="customer-cart.html" class="cart-button">🛒 В корзину</a>
 
 <table id="laptop-table">
     <thead>
@@ -100,6 +100,12 @@
 
 <script>
     const tableBody = document.getElementById('laptop-body');
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+        alert("Вы не авторизованы. Пожалуйста, войдите в систему.");
+        window.location.href = "login.html";
+    }
 
     const loadModels = () => {
         fetch('http://localhost:8080/customer/products/all')
@@ -178,7 +184,7 @@
                         fetch('http://localhost:8080/customer/products', {
                             method: 'POST',
                             headers: {
-                                'Content-Type': 'application/json'
+                                'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token
                             },
                             body: JSON.stringify(cartItem)
                         })
@@ -203,7 +209,11 @@
             .catch(error => console.error('Ошибка:', error));
     };
 
-    fetch('http://localhost:8080/customer/laptops/all')
+    fetch('http://localhost:8080/customer/laptops/all', {
+        headers: {
+            'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token
+        },
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error("Ошибка ${response.status}: ${response.statusText}");
@@ -252,7 +262,7 @@
                     fetch('http://localhost:8080/customer/products', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token
                         },
                         body: JSON.stringify(cartItem)
                     })

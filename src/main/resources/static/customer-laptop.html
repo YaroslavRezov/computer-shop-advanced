@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Карточка Принтера</title>
+    <title>Карточка Ноутбука</title>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
-        .printer-card {
+        .laptop-card {
             width: 500px;
             margin: 40px auto;
             padding: 20px;
@@ -16,18 +16,18 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .printer-card h2 {
+        .laptop-card h2 {
             margin-top: 0;
         }
-        .printer-card ul {
+        .laptop-card ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-        .printer-card li {
+        .laptop-card li {
             margin-bottom: 10px;
         }
-        .printer-card li span {
+        .laptop-card li span {
             font-weight: bold;
         }
         .add-to-cart-btn {
@@ -46,21 +46,31 @@
         }
     </style>
 </head>
+
 <body>
-<div class="printer-card">
+<div class="laptop-card">
 </div>
 <nav>
     <ul>
         <li><a href="customer-index.html">Главная</a></li>
-        <li><a href="customer-printer-table.html">Принтер</a></li>
+        <li><a href="customer-laptop-table.html">Ноутбуки</a></li>
     </ul>
 </nav>
-
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
+    const token = localStorage.getItem('authToken');
 
-    fetch(`http://localhost:8080/customer/printers?code=${code}`)
+    if (!token) {
+        alert("Вы не авторизованы. Пожалуйста, войдите в систему.");
+        window.location.href = "login.html";
+    }
+
+    fetch(`http://localhost:8080/customer/laptops?code=${code}`, {
+        headers: {
+            "Content-Type": "application/json", 'Authorization': 'Bearer ' + token
+        },
+    } )
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -68,15 +78,17 @@
             return response.json();
         })
         .then(data => {
-            const computerCard = document.querySelector('.printer-card');
+            const computerCard = document.querySelector('.laptop-card');
             computerCard.innerHTML = `
-                    <h2>Карточка Принетера</h2>
+                    <h2>Карточка Ноутбука</h2>
                     <ul>
                         <li><span>Серийный номер:</span> ${data.code}</li>
                         <li><span>Модель:</span> ${data.model}</li>
-                        <li><span>Цветной или нет:</span> ${data.color} </li>
-                        <li><span>Тип:</span> ${data.type} </li>
+                        <li><span>Скорость:</span> ${data.speed} МГц</li>
+                        <li><span>ОЗУ:</span> ${data.ram} ГБ</li>
+                        <li><span>Жесткий диск:</span> ${data.hd} ГБ</li>
                         <li><span>Цена:</span> ${data.price} $</li>
+                        <li><span>Дюймы:</span> ${data.screen} "</li>
                         <button class="add-to-cart-btn">Добавить в корзину</button>
                     </ul>
                 `;
@@ -92,7 +104,7 @@
                 fetch("http://localhost:8080/customer/products", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json", 'Authorization': 'Bearer ' + token
                     },
                     body: JSON.stringify(cartItem)
                 })

@@ -88,7 +88,7 @@
     </ul>
 </nav>
 
-<a href="customer-Cart.html" class="cart-button">🛒 В корзину</a>
+<a href="customer-cart.html" class="cart-button">🛒 В корзину</a>
 
 <table id="products-table">
     <thead>
@@ -113,7 +113,11 @@
     }
 
     const loadTable = () => {
-        fetch('http://localhost:8080/customer/products/fullproduct')
+        fetch('http://localhost:8080/customer/products/fullproduct', {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 tableBody.innerHTML = ''; // Очистить таблицу перед загрузкой
@@ -165,7 +169,7 @@
                         fetch('http://localhost:8080/customer/products', {
                             method: 'POST',
                             headers: {
-                                'Content-Type': 'application/json'
+                                'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token
                             },
                             body: JSON.stringify(cartItem)
                         })
