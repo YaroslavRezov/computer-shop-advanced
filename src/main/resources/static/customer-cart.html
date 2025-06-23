@@ -107,33 +107,12 @@
         window.location.href = "login.html";
     }
 
-    // Сначала загрузим все продукты, чтобы получить code => type
-    let productTypeMap = {};
 
-    fetch("http://localhost:8080/customer/products/fullproduct", {
+    fetch("http://localhost:8080/customer/cart/user",{
         headers: {
             'Authorization': 'Bearer ' + token
         }
     } )
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Ошибка загрузки продуктов: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(products => {
-            // Заполним мапу: code => type
-            products.forEach(p => {
-                productTypeMap[p.code] = p.type;
-            });
-
-            // Теперь загрузим корзину
-            return fetch("http://localhost:8080/customer/cart/all",{
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }
-            });
-        })
         .then(response => {
             if (!response.ok) {
                 throw new Error("Ошибка загрузки корзины: " + response.status);
@@ -143,8 +122,6 @@
         .then(data => {
             cartBody.innerHTML = "";
             data.forEach(item => {
-                const type = productTypeMap[item.code]; // берём тип из мапы
-
                 const row = document.createElement("tr");
 
                 row.innerHTML = `
@@ -156,33 +133,33 @@
                     <td><button class="delete-btn" data-orderid="${item.orderId}">Удалить</button></td>
                 `;
 
-                // 👉 Переход по строке (если есть тип)
-                if (type) {
-                    row.querySelectorAll('td:not(:last-child):not(:nth-child(6))').forEach(cell => {
-                        cell.addEventListener('click', () => {
-                            let url;
-                            switch (type) {
-                                case 'Laptop':
-                                    url = `customer-laptop.html?code=${item.code}`;
-                                    break;
-                                case 'Printer':
-                                    url = `customer-printer.html?code=${item.code}`;
-                                    break;
-                                case 'PC':
-                                    url = `customer-pc.html?code=${item.code}`;
-                                    break;
-                                default:
-                                    return;
-                            }
-                            window.location.href = url;
-                        });
+                // 👉 переход по строке на карточку товара
+                row.querySelectorAll('td:not(:last-child):not(:nth-child(6))').forEach(cell => {
+                    cell.addEventListener('click', () => {
+                        let url;
+                        switch (item.type) {
+                            case 'Laptop':
+                                url = `customer-laptop.html?code=${item.code}`;
+                                break;
+                            case 'Printer':
+                                url = `customer-printer.html?code=${item.code}`;
+                                break;
+                            case 'PC':
+                                url = `customer-pc.html?code=${item.code}`;
+                                break;
+                            default:
+                                console.warn("Неизвестный тип товара:", item.type);
+                                return;
+                        }
+                        window.location.href = url;
                     });
-                }
+                });
 
-                // 👉 Удаление
+                // 👉 обработчик кнопки "Удалить"
                 const deleteButton = row.querySelector('.delete-btn');
                 deleteButton.addEventListener('click', (event) => {
-                    event.stopPropagation();
+                    event.stopPropagation(); // чтобы не срабатывал переход
+
                     const orderId = deleteButton.getAttribute('data-orderid');
 
                     if (!orderId) {
@@ -199,6 +176,7 @@
                         })
                             .then(response => {
                                 if (response.ok) {
+                                    console.log('Товар удалён');
                                     location.reload();
                                 } else {
                                     return response.text().then(text => {
