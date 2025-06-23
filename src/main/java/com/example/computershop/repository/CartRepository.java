@@ -16,5 +16,5 @@ public interface CartRepository extends CrudRepository<CartEntity, Long> {
     @Modifying
     @Transactional
     @Query("DELETE FROM CartEntity c WHERE c.username = :username")
-    void deleteByUsername(@Param("username") String username);
+    void deleteByUsername(@Param("username") UsersEntity username);
 }

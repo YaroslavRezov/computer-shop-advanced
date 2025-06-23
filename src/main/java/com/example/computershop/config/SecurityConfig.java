@@ -50,6 +50,10 @@ public class SecurityConfig {
                         .requestMatchers("/customer-laptop-table.html").permitAll()
                         .requestMatchers("/customer-printer-table.html").permitAll()
                         .requestMatchers("/customer-printer.html").permitAll()
+                        .requestMatchers("/images/customer.jpg").permitAll()
+                        .requestMatchers("/images/навоз.png").permitAll()
+                        .requestMatchers("/favicon.ico").permitAll()
+
 
                         .anyRequest().authenticated()
                 )

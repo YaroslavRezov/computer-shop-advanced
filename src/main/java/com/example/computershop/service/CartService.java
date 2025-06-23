@@ -64,7 +64,7 @@ public class CartService {
         CartDto responseCartDto = new CartDto();
         responseCartDto.setModel(savedCartEntity.getProduct().getModel());
         responseCartDto.setCode(savedCartEntity.getCode());
-        responseCartDto.setPrice(price);
+        responseCartDto.setPrice(savedCartEntity.getPrice());
         responseCartDto.setUsername(savedCartEntity.getUsername().getUsername());
         responseCartDto.setOrderId(savedCartEntity.getOrderId());
 
@@ -72,7 +72,8 @@ public class CartService {
     }
 
     public void delete(String username){
-        cartRepository.deleteByUsername(username);
+        UsersEntity foundUsersEntity = usersRepository.findByUsername(username).orElse(null);
+        cartRepository.deleteByUsername(foundUsersEntity);
 
     }
 
@@ -81,3 +82,4 @@ public class CartService {
 
     }
 }
+
