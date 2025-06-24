@@ -29,17 +29,17 @@ public class CartService {
         Iterable<CartEntity> cartEntities = cartRepository.findAll();
         List<CartDto> cartDtoList = new ArrayList<>();
         for(CartEntity cartEntity : cartEntities){
-            cartDtoList.add(new CartDto(cartEntity.getOrderId(), cartEntity.getProduct().getModel(), cartEntity.getCode(), cartEntity.getProduct().getType(), cartEntity.getUsername().getUsername(), cartEntity.getPrice()));
+            cartDtoList.add(new CartDto(cartEntity.getOrderId(), cartEntity.getProduct().getModel(), cartEntity.getCode(), cartEntity.getProduct().getType(), cartEntity.getUser().getUsername(), cartEntity.getPrice()));
         }
 
         return cartDtoList;
     }
 
     public List<CartDto> getCartForUser(String username){
-        Iterable<CartEntity> cartEntities = cartRepository.findByUsername(usersRepository.findByUsername(username).orElse(null));
+        Iterable<CartEntity> cartEntities = cartRepository.findByUser(usersRepository.findByUsername(username).orElse(null));
         List<CartDto> cartDtoList = new ArrayList<>();
         for(CartEntity cartEntity : cartEntities){
-            cartDtoList.add(new CartDto(cartEntity.getOrderId(), cartEntity.getProduct().getModel(), cartEntity.getCode(), cartEntity.getProduct().getType(), cartEntity.getUsername().getUsername(), cartEntity.getPrice()));
+            cartDtoList.add(new CartDto(cartEntity.getOrderId(), cartEntity.getProduct().getModel(), cartEntity.getCode(), cartEntity.getProduct().getType() , cartEntity.getUser().getUsername(), cartEntity.getPrice()));
         }
 
         return cartDtoList;
@@ -53,7 +53,7 @@ public class CartService {
         ProductEntity foundProductEntity = productRepository.findById(requestCartDto.getModel()).orElse(null);
         UsersEntity foundUsersEntity = usersRepository.findByUsername(requestCartDto.getUsername()).orElse(null);
         cartEntity.setProduct(foundProductEntity);
-        cartEntity.setUsername(foundUsersEntity);
+        cartEntity.setUser(foundUsersEntity);
         cartEntity.setCode(requestCartDto.getCode());
         cartEntity.setPrice(price);
 
@@ -65,7 +65,7 @@ public class CartService {
         responseCartDto.setModel(savedCartEntity.getProduct().getModel());
         responseCartDto.setCode(savedCartEntity.getCode());
         responseCartDto.setPrice(savedCartEntity.getPrice());
-        responseCartDto.setUsername(savedCartEntity.getUsername().getUsername());
+        responseCartDto.setUsername(savedCartEntity.getUser().getUsername());
         responseCartDto.setOrderId(savedCartEntity.getOrderId());
 
         return responseCartDto;
@@ -73,7 +73,7 @@ public class CartService {
 
     public void delete(String username){
         UsersEntity foundUsersEntity = usersRepository.findByUsername(username).orElse(null);
-        cartRepository.deleteByUsername(foundUsersEntity);
+        cartRepository.deleteByUser(foundUsersEntity);
 
     }
 

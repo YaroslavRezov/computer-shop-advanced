@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -20,5 +22,9 @@ public class UserService implements UserDetailsService {
 
     public UsersEntity save(UsersEntity user) {
         return usersRepository.save(user);
+    }
+
+    public Optional<UsersEntity> findByUsername(String username) {
+        return usersRepository.findByUsername(username);
     }
 }

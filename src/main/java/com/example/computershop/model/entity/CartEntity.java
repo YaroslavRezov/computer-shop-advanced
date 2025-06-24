@@ -18,7 +18,7 @@ public class CartEntity {
     private ProductEntity product;
     @ManyToOne
     @JoinColumn(name = "username", referencedColumnName = "username", nullable = true)
-    private UsersEntity username;
+    private UsersEntity user;
     private Long code;
     private int price;
 

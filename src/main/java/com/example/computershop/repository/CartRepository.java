@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface CartRepository extends CrudRepository<CartEntity, Long> {
-    List<CartEntity> findByUsername(UsersEntity username);
+    List<CartEntity> findByUser(UsersEntity user); // Было findByUsername
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM CartEntity c WHERE c.username = :username")
-    void deleteByUsername(@Param("username") UsersEntity username);
+    @Query("DELETE FROM CartEntity c WHERE c.user = :user")
+    void deleteByUser(@Param("user") UsersEntity user); // Было deleteByUsername
 }
