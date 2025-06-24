@@ -18,7 +18,6 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    // Дополнительные методы для работы с пользователями
     public UsersEntity save(UsersEntity user) {
         return usersRepository.save(user);
     }
