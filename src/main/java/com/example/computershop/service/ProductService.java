@@ -1,13 +1,10 @@
 package com.example.computershop.service;
 
+import com.example.computershop.model.dto.CartDto;
 import com.example.computershop.model.dto.PrinterDto;
 import com.example.computershop.model.dto.ProductDto;
 import com.example.computershop.model.dto.ProductJoinedDto;
-import com.example.computershop.model.entity.LaptopEntity;
-import com.example.computershop.model.entity.PrinterEntity;
-import com.example.computershop.model.entity.PcEntity;
-import com.example.computershop.model.entity.ProductEntity;
-import com.example.computershop.model.entity.ProductJoinedView;
+import com.example.computershop.model.entity.*;
 import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.PrinterRepository;
@@ -34,7 +31,7 @@ public class ProductService {
         Iterable<ProductEntity> productEntities = productRepository.findAll();
         List<ProductDto> productDtoList = new ArrayList<>();
         for(ProductEntity productEntity : productEntities){
-            productDtoList.add(new ProductDto(productEntity.getMaker(), productEntity.getModel(), productEntity.getType()));
+            productDtoList.add(toProductDtoAndGet(productEntity));
         }
 
         return productDtoList;
@@ -43,7 +40,7 @@ public class ProductService {
     public ProductDto getProduct(String model) {
         ProductEntity productEntity = productRepository.findById(model).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
 
-        return new ProductDto(productEntity.getMaker(), productEntity.getModel(), productEntity.getType());
+        return toProductDtoAndGet(productEntity);
     }
     public List<ProductJoinedDto> getAllProductsJoined() {
         Iterable<ProductJoinedView> productsJoined = productRepository.findAllProductsJoined();
@@ -117,5 +114,10 @@ public class ProductService {
 
 
         return productEntity;
+    }
+
+    private ProductDto toProductDtoAndGet(ProductEntity productEntity) {
+        ProductDto productDto = new ProductDto(productEntity.getMaker(), productEntity.getModel(), productEntity.getType());
+        return productDto;
     }
 }

@@ -29,17 +29,17 @@ public class PrinterService {
         Iterable<PrinterEntity> printerEntities = printerRepository.findAll();
         List<PrinterDto> printerDtoList = new ArrayList<>();
         for(PrinterEntity printerEntity : printerEntities){
-            printerDtoList.add(new PrinterDto(printerEntity.getCode(), printerEntity.getProduct().getModel(), translateDataBaseColor(printerEntity.getColor()), printerEntity.getType(), printerEntity.getPrice()));
+            printerDtoList.add(toPrinterDtoAndGet(printerEntity));
         }
 
         return printerDtoList;
     }
 
     public PrinterDto getPrinter(Long code) {
-        PrinterEntity printerEntity = printerRepository.findById(code).orElse(null);
+        PrinterEntity printerEntity = printerRepository.findById(code).orElseThrow(() -> new RuntimeException("нет такаого принтера"));
 
 
-        return new PrinterDto(printerEntity.getCode(), printerEntity.getProduct().getModel(), translateDataBaseColor(printerEntity.getColor()), printerEntity.getType(), printerEntity.getPrice());
+        return toPrinterDtoAndGet(printerEntity);
     }
 
     public PrinterDto save(PrinterDto requestPrinterDto) {
@@ -106,5 +106,10 @@ public class PrinterService {
         } else if (Objects.equals(fromGetColor, "n")) {
             return "Чернобелый";
         } else return "error";
+    }
+
+    private PrinterDto toPrinterDtoAndGet(PrinterEntity printerEntity) {
+        PrinterDto printerDto = new PrinterDto(printerEntity.getCode(), printerEntity.getProduct().getModel(), translateDataBaseColor(printerEntity.getColor()), printerEntity.getType(), printerEntity.getPrice());
+        return printerDto;
     }
 }

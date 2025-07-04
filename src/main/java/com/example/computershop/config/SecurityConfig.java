@@ -55,7 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/favicon.ico").permitAll()
 
 
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

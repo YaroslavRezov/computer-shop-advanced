@@ -4,6 +4,7 @@ import com.example.computershop.model.dto.CartDto;
 
 import com.example.computershop.model.dto.CartDto;
 import com.example.computershop.model.dto.PcDto;
+import com.example.computershop.model.dto.PrinterDto;
 import com.example.computershop.model.entity.*;
 import com.example.computershop.model.entity.CartEntity;
 import com.example.computershop.repository.CartRepository;
@@ -28,7 +29,7 @@ public class CartService {
         Iterable<CartEntity> cartEntities = cartRepository.findAll();
         List<CartDto> cartDtoList = new ArrayList<>();
         for(CartEntity cartEntity : cartEntities){
-            cartDtoList.add(new CartDto(cartEntity.getOrderId(), cartEntity.getProduct().getModel(), cartEntity.getCode(), cartEntity.getProduct().getType(), cartEntity.getUser().getUsername(), cartEntity.getPrice()));
+            cartDtoList.add(toCartDtoAndGet(cartEntity));
         }
 
         return cartDtoList;
@@ -38,7 +39,7 @@ public class CartService {
         Iterable<CartEntity> cartEntities = cartRepository.findByUser(usersRepository.findByUsername(username).orElse(null));
         List<CartDto> cartDtoList = new ArrayList<>();
         for(CartEntity cartEntity : cartEntities){
-            cartDtoList.add(new CartDto(cartEntity.getOrderId(), cartEntity.getProduct().getModel(), cartEntity.getCode(), cartEntity.getProduct().getType() , cartEntity.getUser().getUsername(), cartEntity.getPrice()));
+            cartDtoList.add(toCartDtoAndGet(cartEntity));
         }
 
         return cartDtoList;
@@ -88,6 +89,11 @@ public class CartService {
         cartEntity.setCode(cartDto.getCode());
         cartEntity.setPrice(price);
         return cartEntity;
+    }
+
+    private CartDto toCartDtoAndGet(CartEntity cartEntity) {
+        CartDto cartDto = new CartDto(cartEntity.getOrderId(), cartEntity.getProduct().getModel(), cartEntity.getCode(), cartEntity.getProduct().getType() , cartEntity.getUser().getUsername(), cartEntity.getPrice());
+        return cartDto;
     }
 }
 

@@ -1,6 +1,8 @@
 package com.example.computershop.service;
 
 import com.example.computershop.model.dto.DeviceDto;
+import com.example.computershop.model.dto.PrinterDto;
+import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.repository.DeviceRepository;
 import com.example.computershop.model.entity.DeviceView;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ public class DeviceService {
         Iterable<DeviceView> BaseDevices = pcRepository.findAllDevices();
         List<DeviceDto> baseDeviceDtoList = new ArrayList<>();
         for(DeviceView deviceView : BaseDevices){
-            baseDeviceDtoList.add(new DeviceDto(deviceView.getModel(), deviceView.getPrice()));
+            baseDeviceDtoList.add(toDeviceDtoAndGet(deviceView));
         }
 
         return baseDeviceDtoList;
@@ -27,6 +29,11 @@ public class DeviceService {
     public DeviceDto getDevice(String model) {
         DeviceView deviceView = pcRepository.findDeviceByCode(model);
 
-        return new DeviceDto(deviceView.getModel(), deviceView.getPrice());
+        return toDeviceDtoAndGet(deviceView);
+    }
+
+    private DeviceDto toDeviceDtoAndGet(DeviceView deviceView) {
+        DeviceDto deviceDto = new DeviceDto(deviceView.getModel(), deviceView.getPrice());
+        return deviceDto;
     }
 }

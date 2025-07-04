@@ -29,7 +29,7 @@ public class LaptopService {
         Iterable<LaptopEntity> laptopEntities = laptopRepository.findAll();
         List<LaptopDto> laptopDtoList = new ArrayList<>();
         for(LaptopEntity laptopEntity : laptopEntities){
-            laptopDtoList.add(new LaptopDto(laptopEntity.getCode(), laptopEntity.getProduct().getModel(), laptopEntity.getSpeed(), laptopEntity.getRam(),laptopEntity.getHd(), laptopEntity.getPrice(), laptopEntity.getScreen()));
+            laptopDtoList.add(toLaptopDtoAndGet(laptopEntity));
         }
 
         return laptopDtoList;
@@ -39,7 +39,7 @@ public class LaptopService {
         LaptopEntity laptopEntity = laptopRepository.findById(code).orElse(null);
 
 
-        return new LaptopDto(laptopEntity.getCode(), laptopEntity.getProduct().getModel(), laptopEntity.getSpeed(), laptopEntity.getRam(),laptopEntity.getHd(),laptopEntity.getPrice(), laptopEntity.getScreen());
+        return toLaptopDtoAndGet(laptopEntity);
     }
 
     public LaptopDto save(LaptopDto requestLaptopDto) {
@@ -105,6 +105,11 @@ public class LaptopService {
         laptopEntity.setScreen(laptopDto.getScreen());
 
         return laptopEntity;
+    }
+
+    private LaptopDto toLaptopDtoAndGet(LaptopEntity laptopEntity) {
+        LaptopDto laptopDto = new LaptopDto(laptopEntity.getCode(), laptopEntity.getProduct().getModel(), laptopEntity.getSpeed(), laptopEntity.getRam(),laptopEntity.getHd(),laptopEntity.getPrice(), laptopEntity.getScreen());
+        return laptopDto;
     }
 
 

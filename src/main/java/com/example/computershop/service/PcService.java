@@ -27,7 +27,7 @@ public class PcService {
         Iterable<PcEntity> pcEntities = pcRepository.findAll();
         List<PcDto> pcDtoList = new ArrayList<>();
         for(PcEntity pcEntity : pcEntities) {
-            pcDtoList.add(new PcDto(pcEntity.getCode(), pcEntity.getProduct().getModel(), pcEntity.getSpeed(), pcEntity.getRam(),pcEntity.getHd(), pcEntity.getCd(), pcEntity.getPrice()));
+            pcDtoList.add(toPcDtoAndGet(pcEntity));
         }
 
         return pcDtoList;
@@ -37,7 +37,7 @@ public class PcService {
         PcEntity pcEntity = pcRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ПК"));
 
 
-        return new PcDto(pcEntity.getCode(), pcEntity.getProduct().getModel(), pcEntity.getSpeed(), pcEntity.getRam(),pcEntity.getHd(), pcEntity.getCd(),pcEntity.getPrice());
+        return toPcDtoAndGet(pcEntity);
     }
 
     public PcDto save(PcDto requestPcDto) {
@@ -105,4 +105,9 @@ public class PcService {
         pcEntity.setPrice(pcDto.getPrice());
         return pcEntity;
     }
+    private PcDto toPcDtoAndGet(PcEntity pcEntity) {
+        PcDto pcDto =new PcDto(pcEntity.getCode(), pcEntity.getProduct().getModel(), pcEntity.getSpeed(), pcEntity.getRam(),pcEntity.getHd(), pcEntity.getCd(), pcEntity.getPrice());
+        return pcDto;
+    }
+
 }
