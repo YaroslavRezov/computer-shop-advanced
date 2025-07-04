@@ -2,8 +2,10 @@ package com.example.computershop.service;
 
 import com.example.computershop.model.dto.LaptopDto;
 import com.example.computershop.model.dto.LaptopDto;
+import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.model.entity.LaptopEntity;
 import com.example.computershop.model.entity.LaptopEntity;
+import com.example.computershop.model.entity.PcEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.ProductRepository;
@@ -41,38 +43,15 @@ public class LaptopService {
     }
 
     public LaptopDto save(LaptopDto requestLaptopDto) {
-        ProductEntity foundProductEntity = productRepository.findById(requestLaptopDto.getModel()).orElse(null);
-
-        LaptopEntity sourceLaptopEntity = new LaptopEntity();
-
-
-
-        sourceLaptopEntity.setProduct(foundProductEntity);
-
-
-//        sourceLaptopEntity.setCode(requestLaptopDto.getCode());
-//        sourceLaptopEntity.setCode(getElCode());
-        sourceLaptopEntity.setSpeed(requestLaptopDto.getSpeed());
-        sourceLaptopEntity.setRam(requestLaptopDto.getRam());
-        sourceLaptopEntity.setHd(requestLaptopDto.getHd());
-        sourceLaptopEntity.setPrice(requestLaptopDto.getPrice());
-        sourceLaptopEntity.setScreen(requestLaptopDto.getScreen());
+        LaptopEntity sourceLaptopEntity = toLaptopEntity(requestLaptopDto);
 
         LaptopEntity savedLaptopEntity = laptopRepository.save(sourceLaptopEntity);
 
-        LaptopDto responseLaptopDto = new LaptopDto();
-        responseLaptopDto.setModel(savedLaptopEntity.getProduct().getModel());
-        responseLaptopDto.setSpeed(savedLaptopEntity.getSpeed());
-        responseLaptopDto.setRam(savedLaptopEntity.getRam());
-        responseLaptopDto.setHd(savedLaptopEntity.getHd());
-        responseLaptopDto.setPrice(savedLaptopEntity.getPrice());
-        responseLaptopDto.setScreen(savedLaptopEntity.getScreen());
-        responseLaptopDto.setCode(savedLaptopEntity.getCode());
+        LaptopDto responseLaptopDto = toLaptopDto(savedLaptopEntity);
         return responseLaptopDto;
     }
     public LaptopDto updateLaptopPartially(@PathVariable Long code, @RequestBody LaptopDto laptopDto) {
         LaptopEntity setLaptopEntity = laptopRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ноута"));
-//        ProductEntity foundProductEntity = productRepository.findById(laptopDto.getModel()).orElse(null);
 
         if (laptopDto.getSpeed() != 0) {
             setLaptopEntity.setSpeed(laptopDto.getSpeed());
@@ -92,14 +71,7 @@ public class LaptopService {
 
         LaptopEntity savedLaptopEntity = laptopRepository.save(setLaptopEntity);
 
-        LaptopDto responseLaptopDto = new LaptopDto();
-        responseLaptopDto.setModel(savedLaptopEntity.getProduct().getModel());
-        responseLaptopDto.setSpeed(savedLaptopEntity.getSpeed());
-        responseLaptopDto.setRam(savedLaptopEntity.getRam());
-        responseLaptopDto.setHd(savedLaptopEntity.getHd());
-        responseLaptopDto.setScreen(savedLaptopEntity.getScreen());
-        responseLaptopDto.setPrice(savedLaptopEntity.getPrice());
-        responseLaptopDto.setCode(savedLaptopEntity.getCode());
+        LaptopDto responseLaptopDto = toLaptopDto(savedLaptopEntity);
         return responseLaptopDto;
     }
 
@@ -107,18 +79,34 @@ public class LaptopService {
         laptopRepository.deleteById(code);
 
     }
-    private Long getElCode() {
-        Iterable<LaptopEntity> laptopEntities = laptopRepository.findAll();
-        Long elCode = Long.valueOf(0);
 
-        for(LaptopEntity laptopEntity : laptopEntities){
-            if (laptopEntity.getCode() > elCode) {
-            elCode = laptopEntity.getCode();}
-        }
-
-        elCode++;
-        return elCode;
+    private LaptopDto toLaptopDto (LaptopEntity laptopEntity) {
+        LaptopDto laptopDto = new LaptopDto();
+        laptopDto.setModel(laptopEntity.getProduct().getModel());
+        laptopDto.setSpeed(laptopEntity.getSpeed());
+        laptopDto.setRam(laptopEntity.getRam());
+        laptopDto.setHd(laptopEntity.getHd());
+        laptopDto.setPrice(laptopEntity.getPrice());
+        laptopDto.setScreen(laptopEntity.getScreen());
+        laptopDto.setCode(laptopEntity.getCode());
+        return laptopDto;
     }
+
+    private LaptopEntity toLaptopEntity(LaptopDto laptopDto) {
+        ProductEntity foundProductEntity = productRepository.findById(laptopDto.getModel()).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+        LaptopEntity laptopEntity = new LaptopEntity();
+
+        laptopEntity.setProduct(foundProductEntity);
+
+        laptopEntity.setSpeed(laptopDto.getSpeed());
+        laptopEntity.setRam(laptopDto.getRam());
+        laptopEntity.setHd(laptopDto.getHd());
+        laptopEntity.setPrice(laptopDto.getPrice());
+        laptopEntity.setScreen(laptopDto.getScreen());
+
+        return laptopEntity;
+    }
+
 
 
 

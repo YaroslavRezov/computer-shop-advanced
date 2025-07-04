@@ -1,5 +1,6 @@
 package com.example.computershop.service;
 
+import com.example.computershop.model.dto.PrinterDto;
 import com.example.computershop.model.dto.ProductDto;
 import com.example.computershop.model.dto.ProductJoinedDto;
 import com.example.computershop.model.entity.LaptopEntity;
@@ -40,7 +41,7 @@ public class ProductService {
     }
 
     public ProductDto getProduct(String model) {
-        ProductEntity productEntity = productRepository.findById(model).orElse(null);
+        ProductEntity productEntity = productRepository.findById(model).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
 
         return new ProductDto(productEntity.getMaker(), productEntity.getModel(), productEntity.getType());
     }
@@ -54,16 +55,11 @@ public class ProductService {
         return productJoinedDtoList;
     }
     public ProductDto save(ProductDto requestProductDto) {
-        ProductEntity sourceProductEntity = new ProductEntity();
-        sourceProductEntity.setMaker(requestProductDto.getMaker());
-        sourceProductEntity.setType(requestProductDto.getType());
+        ProductEntity sourceProductEntity = toProductEntity(requestProductDto);
 
         ProductEntity savedProductEntity = productRepository.save(sourceProductEntity);
 
-        ProductDto responseProductDto = new ProductDto();
-        responseProductDto.setMaker(savedProductEntity.getMaker());
-        responseProductDto.setType(savedProductEntity.getType());
-        responseProductDto.setModel(savedProductEntity.getModel());
+        ProductDto responseProductDto = toProductDto(savedProductEntity);
         return responseProductDto;
     }
     public void delete(String model){
@@ -82,10 +78,7 @@ public class ProductService {
 
         productRepository.save(setProductEntity);
 
-        ProductDto responseProductDto = new ProductDto();
-        responseProductDto.setMaker(setProductEntity.getMaker());
-        responseProductDto.setType(setProductEntity.getType());
-        responseProductDto.setModel(setProductEntity.getModel());
+        ProductDto responseProductDto = toProductDto(setProductEntity);
 
         return responseProductDto;
     }
@@ -107,5 +100,22 @@ public class ProductService {
         if (printer.isPresent()) return Optional.of(printer.get().getPrice());
 
         return Optional.empty(); // если не нашли
+    }
+
+    private ProductDto toProductDto (ProductEntity productEntity) {
+        ProductDto responseProductDto = new ProductDto();
+        responseProductDto.setMaker(productEntity.getMaker());
+        responseProductDto.setType(productEntity.getType());
+        responseProductDto.setModel(productEntity.getModel());
+        return responseProductDto;
+    }
+
+    private ProductEntity toProductEntity(ProductDto productDto) {
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setMaker(productDto.getMaker());
+        productEntity.setType(productDto.getType());
+
+
+        return productEntity;
     }
 }

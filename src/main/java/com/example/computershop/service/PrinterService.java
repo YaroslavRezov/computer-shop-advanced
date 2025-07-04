@@ -1,8 +1,10 @@
 package com.example.computershop.service;
 
 
+import com.example.computershop.model.dto.LaptopDto;
 import com.example.computershop.model.dto.PrinterDto;
 
+import com.example.computershop.model.entity.LaptopEntity;
 import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.ProductEntity;
@@ -41,35 +43,17 @@ public class PrinterService {
     }
 
     public PrinterDto save(PrinterDto requestPrinterDto) {
-        ProductEntity foundProductEntity = productRepository.findById(requestPrinterDto.getModel()).orElse(null);
 
-        PrinterEntity sourcePrinterEntity = new PrinterEntity();
-
-
-        sourcePrinterEntity.setProduct(foundProductEntity);
-
-//        sourcePrinterEntity.setCode(getElCode());
-//        sourcePrinterEntity.setCode(requestPrinterDto.getCode());
-        sourcePrinterEntity.setColor(requestPrinterDto.getColor());
-        sourcePrinterEntity.setType(requestPrinterDto.getType());
-        sourcePrinterEntity.setPrice(requestPrinterDto.getPrice());
-
+        PrinterEntity sourcePrinterEntity = toPrinterEntity(requestPrinterDto);
 
         PrinterEntity savedPrinterEntity = printerRepository.save(sourcePrinterEntity);
 
-        PrinterDto responsePrinterDto = new PrinterDto();
-        responsePrinterDto.setModel(savedPrinterEntity.getProduct().getModel());
-        responsePrinterDto.setColor(savedPrinterEntity.getColor());
-        responsePrinterDto.setType(savedPrinterEntity.getType());
-        responsePrinterDto.setPrice(savedPrinterEntity.getPrice());
-        responsePrinterDto.setCode(savedPrinterEntity.getCode());
+        PrinterDto responsePrinterDto = toPrinterDto(savedPrinterEntity);
         return responsePrinterDto;
     }
 
     public PrinterDto updatePrinterPartially(@PathVariable Long code, @RequestBody PrinterDto printerDto) {
         PrinterEntity setPrinterEntity = printerRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого принтера"));
-//        ProductEntity foundProductEntity = productRepository.findById(printerDto.getModel()).orElse(null);
-
         if (printerDto.getColor() != null) {
             setPrinterEntity.setColor(printerDto.getColor());
         }
@@ -82,12 +66,7 @@ public class PrinterService {
 
         PrinterEntity savedPrinterEntity = printerRepository.save(setPrinterEntity);
 
-        PrinterDto responsePrinterDto = new PrinterDto();
-        responsePrinterDto.setModel(savedPrinterEntity.getProduct().getModel());
-        responsePrinterDto.setColor(savedPrinterEntity.getColor());
-        responsePrinterDto.setType(savedPrinterEntity.getType());
-        responsePrinterDto.setPrice(savedPrinterEntity.getPrice());
-        responsePrinterDto.setCode(savedPrinterEntity.getCode());
+        PrinterDto responsePrinterDto = toPrinterDto(savedPrinterEntity);
         return responsePrinterDto;
     }
 
@@ -96,18 +75,31 @@ public class PrinterService {
 
     }
 
-    private Long getElCode() {
-        Iterable<PrinterEntity> printerEntities = printerRepository.findAll();
-        Long elCode = Long.valueOf(0);
 
-        for(PrinterEntity printerEntity : printerEntities){
-            if (printerEntity.getCode() > elCode) {
-                elCode = printerEntity.getCode();}
-        }
-
-        elCode++;
-        return elCode;
+    private PrinterDto toPrinterDto (PrinterEntity printerEntity) {
+        PrinterDto printerDto = new PrinterDto();
+        printerDto.setModel(printerEntity.getProduct().getModel());
+        printerDto.setColor(printerEntity.getColor());
+        printerDto.setType(printerEntity.getType());
+        printerDto.setPrice(printerEntity.getPrice());
+        printerDto.setCode(printerEntity.getCode());
+        return printerDto;
     }
+
+    private PrinterEntity toPrinterEntity(PrinterDto printerDto) {
+        ProductEntity foundProductEntity = productRepository.findById(printerDto.getModel()).orElseThrow(() -> new RuntimeException("нет такого продукта"));
+        PrinterEntity printerEntity = new PrinterEntity();
+
+        printerEntity.setProduct(foundProductEntity);
+
+        printerEntity.setColor(printerDto.getColor());
+        printerEntity.setType(printerDto.getType());
+        printerEntity.setPrice(printerDto.getPrice());
+
+
+        return printerEntity;
+    }
+
     private String translateDataBaseColor(String fromGetColor) {
         if(Objects.equals(fromGetColor, "y")){
             return "Цвтеной";

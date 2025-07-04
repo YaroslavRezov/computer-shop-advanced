@@ -26,7 +26,7 @@ public class PcService {
     public List<PcDto> getPcs() {
         Iterable<PcEntity> pcEntities = pcRepository.findAll();
         List<PcDto> pcDtoList = new ArrayList<>();
-        for(PcEntity pcEntity : pcEntities){
+        for(PcEntity pcEntity : pcEntities) {
             pcDtoList.add(new PcDto(pcEntity.getCode(), pcEntity.getProduct().getModel(), pcEntity.getSpeed(), pcEntity.getRam(),pcEntity.getHd(), pcEntity.getCd(), pcEntity.getPrice()));
         }
 
@@ -34,40 +34,19 @@ public class PcService {
     }
 
     public PcDto getPc(Long code) {
-        PcEntity pcEntity = pcRepository.findById(code).orElse(null);
+        PcEntity pcEntity = pcRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ПК"));
 
 
         return new PcDto(pcEntity.getCode(), pcEntity.getProduct().getModel(), pcEntity.getSpeed(), pcEntity.getRam(),pcEntity.getHd(), pcEntity.getCd(),pcEntity.getPrice());
     }
 
     public PcDto save(PcDto requestPcDto) {
-        ProductEntity foundProductEntity = productRepository.findById(requestPcDto.getModel()).orElse(null);
-
-        PcEntity sourcePcEntity = new PcEntity();
-
-
-        sourcePcEntity.setProduct(foundProductEntity);
-
-
-//        sourcePcEntity.setCode(requestPcDto.getCode());
-//        sourcePcEntity.setCode(getElCode());
-        sourcePcEntity.setSpeed(requestPcDto.getSpeed());
-        sourcePcEntity.setRam(requestPcDto.getRam());
-        sourcePcEntity.setHd(requestPcDto.getHd());
-        sourcePcEntity.setCd(requestPcDto.getCd());
-        sourcePcEntity.setPrice(requestPcDto.getPrice());
-
+        PcEntity sourcePcEntity = toPcEntity(requestPcDto);
 
         PcEntity savedPcEntity = pcRepository.save(sourcePcEntity);
 
-        PcDto responsePcDto = new PcDto();
-        responsePcDto.setModel(savedPcEntity.getProduct().getModel());
-        responsePcDto.setSpeed(savedPcEntity.getSpeed());
-        responsePcDto.setRam(savedPcEntity.getRam());
-        responsePcDto.setHd(savedPcEntity.getHd());
-        responsePcDto.setCd(savedPcEntity.getCd());
-        responsePcDto.setPrice(savedPcEntity.getPrice());
-        responsePcDto.setCode(savedPcEntity.getCode());
+        PcDto responsePcDto = toPcDto(savedPcEntity);
+
         return responsePcDto;
     }
 
@@ -93,31 +72,37 @@ public class PcService {
 
         PcEntity savedPcEntity = pcRepository.save(setPcEntity);
 
-        PcDto responsePcDto = new PcDto();
-        responsePcDto.setModel(savedPcEntity.getProduct().getModel());
-        responsePcDto.setSpeed(savedPcEntity.getSpeed());
-        responsePcDto.setRam(savedPcEntity.getRam());
-        responsePcDto.setHd(savedPcEntity.getHd());
-        responsePcDto.setCd(savedPcEntity.getCd());
-        responsePcDto.setPrice(savedPcEntity.getPrice());
-        responsePcDto.setCode(savedPcEntity.getCode());
+        PcDto responsePcDto = toPcDto(savedPcEntity);
         return responsePcDto;
     }
 
-    public void delete(Long code){
+    public void delete(Long code) {
         pcRepository.deleteById(code);
 
     }
-    private Long getElCode() {
-        Iterable<PcEntity> pcEntities = pcRepository.findAll();
-        Long elCode = Long.valueOf(0);
 
-        for(PcEntity pcEntity : pcEntities){
-            if (pcEntity.getCode() > elCode) {
-                elCode = pcEntity.getCode();}
-        }
+    private PcDto toPcDto (PcEntity pcEntity) {
+        PcDto pcDto = new PcDto();
+        pcDto.setModel(pcEntity.getProduct().getModel());
+        pcDto.setSpeed(pcEntity.getSpeed());
+        pcDto.setRam(pcEntity.getRam());
+        pcDto.setHd(pcEntity.getHd());
+        pcDto.setCd(pcEntity.getCd());
+        pcDto.setPrice(pcEntity.getPrice());
+        pcDto.setCode(pcEntity.getCode());
+        return pcDto;
+    }
 
-        elCode++;
-        return elCode;
+    private PcEntity toPcEntity(PcDto pcDto) {
+        ProductEntity foundProductEntity = productRepository.findById(pcDto.getModel()).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+        PcEntity pcEntity = new PcEntity();
+
+        pcEntity.setProduct(foundProductEntity);
+        pcEntity.setSpeed(pcDto.getSpeed());
+        pcEntity.setRam(pcDto.getRam());
+        pcEntity.setHd(pcDto.getHd());
+        pcEntity.setCd(pcDto.getCd());
+        pcEntity.setPrice(pcDto.getPrice());
+        return pcEntity;
     }
 }
