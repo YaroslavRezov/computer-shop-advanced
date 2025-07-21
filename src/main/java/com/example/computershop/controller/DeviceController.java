@@ -26,4 +26,6 @@ public class DeviceController {
     DeviceDto getDevice(@RequestParam String model){
         return deviceService.getDevice(model);
     }
+
+
 }

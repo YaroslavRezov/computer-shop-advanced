@@ -36,7 +36,7 @@ public class CartService {
     }
 
     public List<CartDto> getCartForUser(String username){
-        Iterable<CartEntity> cartEntities = cartRepository.findByUser(usersRepository.findByUsername(username).orElse(null));
+        Iterable<CartEntity> cartEntities = cartRepository.findByUser(usersRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Нет такого пользователя" + username)));
         List<CartDto> cartDtoList = new ArrayList<>();
         for(CartEntity cartEntity : cartEntities){
             cartDtoList.add(toCartDtoAndGet(cartEntity));

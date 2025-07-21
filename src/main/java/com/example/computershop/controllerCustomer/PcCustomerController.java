@@ -4,6 +4,7 @@ import com.example.computershop.model.dto.CartDto;
 import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.service.CartService;
 import com.example.computershop.service.PcService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class PcCustomerController {
     }
 
     @PostMapping()
-    CartDto insertIntoCart(@RequestBody CartDto cartDto) {
+    CartDto insertIntoCart(@Valid  @RequestBody CartDto cartDto) {
         return cartService.save(cartDto);
     }
 

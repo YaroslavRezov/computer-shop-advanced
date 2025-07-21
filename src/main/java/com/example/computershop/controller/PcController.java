@@ -2,10 +2,16 @@ package com.example.computershop.controller;
 
 import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.service.PcService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,12 +29,12 @@ public class PcController {
     }
 
     @PostMapping()
-    PcDto insertIntoPc(@RequestBody PcDto pcDto) {
+    PcDto insertIntoPc(@Valid @RequestBody PcDto pcDto) {
         return pcService.save(pcDto);
     }
 
     @PatchMapping("/{code}")
-    public PcDto patchPcPartially(@PathVariable Long code, @RequestBody PcDto pcDto) {
+    public PcDto patchPcPartially(@PathVariable Long code, @Valid @RequestBody PcDto pcDto) {
         return pcService.updatePcPartially(code, pcDto);
     }
 
@@ -37,6 +43,7 @@ public class PcController {
         pcService.delete(code);
 
     }
+
 
 
 }

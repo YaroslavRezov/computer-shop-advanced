@@ -5,6 +5,7 @@ import com.example.computershop.model.dto.ProductDto;
 import com.example.computershop.model.dto.ProductJoinedDto;
 import com.example.computershop.service.CartService;
 import com.example.computershop.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,7 @@ public class ProductCustomerController {
         return productService.getAllProductsJoined();
     }
     @PostMapping()
-    CartDto insertIntoCart(@RequestBody CartDto cartDto) {
+    CartDto insertIntoCart(@Valid @RequestBody CartDto cartDto) {
         return cartService.save(cartDto);
     }
 }
