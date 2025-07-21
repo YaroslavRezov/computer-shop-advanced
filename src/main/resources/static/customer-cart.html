@@ -101,6 +101,7 @@
 <script>
     const cartBody = document.getElementById("cart-body");
     const token = localStorage.getItem('authToken');
+    const username = localStorage.getItem('username');
 
     if (!token) {
         alert("Вы не авторизованы. Пожалуйста, войдите в систему.");
@@ -202,7 +203,6 @@
 
     document.getElementById('clear-cart-btn').addEventListener('click', () => {
         if (confirm("Вы уверены, что хотите очистить корзину?")) {
-            const username = 'customer'; // если хотим удалить, то тут меняем у кого
 
             fetch(`http://localhost:8080/customer/cart/user/${username}`, {
                 method: 'DELETE',

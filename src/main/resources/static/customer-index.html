@@ -106,6 +106,7 @@
 <script>
     const tableBody = document.getElementById('products-body');
     const token = localStorage.getItem('authToken');
+    const username = localStorage.getItem('username');
 
     if (!token) {
         alert("Вы не авторизованы. Пожалуйста, войдите в систему.");
