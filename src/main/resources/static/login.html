@@ -12,8 +12,10 @@
     <button type="submit">Войти</button>
 </form>
 <script>
+
     document.getElementById('loginForm').addEventListener('submit', function (e) {
         e.preventDefault();
+        const username = document.getElementById('username').value
         const user = {
             username: document.getElementById('username').value,
             password: document.getElementById('password').value
@@ -34,8 +36,10 @@
             })
             .then(data => {
                 // Предполагается, что токен возвращается в поле "token"
+
                 localStorage.setItem('authToken', data.token);
-                localStorage.setItem('username', data.username);
+                localStorage.setItem('username', username);
+                console.log(username)
                 alert("Успешный вход");
                 window.location.href = "customer-index.html";
             })

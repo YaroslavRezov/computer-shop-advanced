@@ -18,8 +18,8 @@ public class CartConsumerController {
     public List<CartDto> getAllCartItems() {
         return cartService.getAll();
     }
-    @GetMapping("/user")
-    public List<CartDto> getCartForCustomer(String username) {
+    @GetMapping("/user/{username}")
+    public List<CartDto> getCartForCustomer(@PathVariable String username) {
         return cartService.getCartForUser(username);
     }
     @DeleteMapping("/user/{username}")
