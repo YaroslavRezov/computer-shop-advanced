@@ -100,6 +100,7 @@
 
 <script>
     const token = localStorage.getItem('authToken');
+    const username = localStorage.getItem('username');
 
     if (!token) {
         alert("Вы не авторизованы. Пожалуйста, войдите в систему.");
@@ -180,12 +181,11 @@
 
                         const code = pc.code;
                         const model = pc.model;
-                        const username = "customer";
 
                         const cartItem = {
                             model: model,
                             code: code,
-                            username : "customer"
+                            username : username
                         };
 
                         fetch('http://localhost:8080/customer/products', {
@@ -258,12 +258,11 @@
 
                     const code = pc.code;
                     const model = pc.model;
-                    const username = "customer";
 
                     const cartItem = {
                         model: model,
                         code: code,
-                        username : "customer"
+                        username : username
                     };
 
                     fetch('http://localhost:8080/customer/products', {

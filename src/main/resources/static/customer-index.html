@@ -159,12 +159,11 @@
 
                         const code = product.code;
                         const model = product.model;
-                        const username = "customer";
 
                         const cartItem = {
                             model: model,
                             code: code,
-                            username : "customer"
+                            username : username
                         };
 
                         fetch('http://localhost:8080/customer/products', {
@@ -248,12 +247,11 @@
 
                     const code = product.code;
                     const model = product.model;
-                    const username = "customer";
 
                     const cartItem = {
                         model: model,
                         code: code,
-                        username : "customer"
+                        username : username
                     };
 
                     fetch('http://localhost:8080/customer/products', {

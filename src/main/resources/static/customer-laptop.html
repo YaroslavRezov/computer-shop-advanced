@@ -60,6 +60,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const token = localStorage.getItem('authToken');
+    const username = localStorage.getItem('username');
 
     if (!token) {
         alert("Вы не авторизованы. Пожалуйста, войдите в систему.");
@@ -98,7 +99,7 @@
                     model: data.model,
                     code: data.code,
                     price: data.price,
-                    username: "customer"
+                    username: username
                 };
 
                 fetch("http://localhost:8080/customer/products", {
