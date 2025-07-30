@@ -45,6 +45,7 @@
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
+    const token = localStorage.getItem('authToken');
 
     fetch(`http://localhost:8080/admin/pcs?code=${code}`)
         .then(response => {

@@ -159,6 +159,18 @@
 </head>
 <body>
 <h1>Таблица продуктов</h1>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <div id="user-info" style="font-weight: bold; font-size: 16px;"></div>
+    <button onclick="signOut()" style="
+        background-color: #d9534f;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+    ">Выйти</button>
+</div>
 <nav>
     <ul>
         <li><a href="admin-pc-table.html">Компьютеры</a></li>
@@ -242,6 +254,8 @@
     const updateBtn = document.getElementById('update-btn');
     const updateProductBtn = document.getElementById('update-product-btn')
     const cancelUpdateBtn = document.getElementById('cancel-update-btn');
+    const token = localStorage.getItem('authToken');
+    const username = localStorage.getItem('username');
 
     // Открыть модальное окно
     addProductBtn.addEventListener('click', () => {
@@ -282,7 +296,8 @@
             const options = {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token
+
                 },
                 body: JSON.stringify(product),
             };
@@ -337,7 +352,7 @@
             const options = {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token
                 },
                 body: JSON.stringify(product),
             };
@@ -382,7 +397,12 @@
             return;
         }
 
-        fetch(`http://localhost:8080/admin/products/${model}`, { method: 'DELETE' })
+        fetch(`http://localhost:8080/admin/products/${model}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
             .then(response => {
                 if (response.ok) {
                     alert(`Продукт с model ${model} успешно удален.`);
@@ -396,7 +416,11 @@
     });
 
     const loadTable = () => {
-        fetch('http://localhost:8080/admin/products/fullproduct')
+        fetch('http://localhost:8080/admin/products/fullproduct',  {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 tableBody.innerHTML = '';
@@ -432,7 +456,11 @@
     };
 
     // Загрузка данных
-    fetch('http://localhost:8080/admin/products/fullproduct')
+    fetch('http://localhost:8080/admin/products/fullproduct', {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -469,6 +497,12 @@
             });
         })
         .catch(error => console.error('Ошибка:', error));
+    document.getElementById("user-info").innerText = "Вы вошли как: " + (username || "Гость")
+    function signOut() {
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("username");
+        window.location.href = "login-for-admin.html";
+    }
 </script>
 </body>
 </html>

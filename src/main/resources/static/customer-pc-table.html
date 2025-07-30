@@ -70,6 +70,18 @@
 </head>
 <body>
 <h1>Таблица Компьютеров</h1>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <div id="user-info" style="font-weight: bold; font-size: 16px;"></div>
+    <button onclick="signOut()" style="
+        background-color: #d9534f;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+    ">Выйти</button>
+</div>
 <nav>
     <ul>
         <li><a href="customer-index.html">Главная</a></li>
@@ -291,6 +303,12 @@
             });
         })
         .catch(error => console.error('Ошибка:', error));
+    document.getElementById("user-info").innerText = "Вы вошли как: " + (username || "Гость")
+    function signOut() {
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("username");
+        window.location.href = "login.html";
+    }
 </script>
 </body>
 </html>

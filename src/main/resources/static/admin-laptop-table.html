@@ -287,6 +287,7 @@
     const updateBtn = document.getElementById('update-btn');
     const updateLaptopBtn = document.getElementById('update-laptop-btn')
     const cancelUpdateBtn = document.getElementById('cancel-update-btn');
+    const token = localStorage.getItem('authToken');
 
     const loadModels = () => {
         fetch('http://localhost:8080/admin/products/all')
@@ -412,7 +413,11 @@
     });
 
     const loadTable = () => {
-        fetch('http://localhost:8080/admin/laptops/all')
+        fetch('http://localhost:8080/admin/laptops/all', {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 tableBody.innerHTML = ''; // Очистить таблицу перед загрузкой
@@ -465,7 +470,7 @@
             const options = {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token
                 },
                 body: JSON.stringify(laptop),
             };
@@ -514,7 +519,12 @@
             return;
         }
 
-        fetch(`http://localhost:8080/admin/laptops/${code}`, { method: 'DELETE' })
+        fetch(`http://localhost:8080/admin/laptops/${code}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
             .then(response => {
                 if (response.ok) {
                     alert(`Ноутбук с code ${code} успешно удален.`);
@@ -526,7 +536,11 @@
             .catch(error => console.error('Ошибка удаления:', error));
     });
 
-    fetch('http://localhost:8080/admin/laptops/all')
+    fetch('http://localhost:8080/admin/laptops/all', {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error("Ошибка ${response.status}: ${response.statusText}");

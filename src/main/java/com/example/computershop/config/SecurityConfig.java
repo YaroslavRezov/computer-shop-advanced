@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/login.html").permitAll()
+                        .requestMatchers("/login-for-admin.html").permitAll()
                         .requestMatchers("/register.html").permitAll()
                         .requestMatchers("/customer-index.html").permitAll()
                         .requestMatchers("/customer-cart.html").permitAll()
@@ -53,6 +54,7 @@ public class SecurityConfig {
                         .requestMatchers("/images/customer.jpg").permitAll()
                         .requestMatchers("/images/навоз.png").permitAll()
                         .requestMatchers("/favicon.ico").permitAll()
+                        .requestMatchers("/images/hammerAndAnother.png").permitAll()
 
 
                         .anyRequest().authenticated()

@@ -279,6 +279,7 @@
     const updateBtn = document.getElementById('update-btn');
     const updatePrinterBtn = document.getElementById('update-printer-btn')
     const cancelUpdateBtn = document.getElementById('cancel-update-btn');
+    const token = localStorage.getItem('authToken');
 
     const loadModels = () => {
         fetch('http://localhost:8080/admin/products/all')
