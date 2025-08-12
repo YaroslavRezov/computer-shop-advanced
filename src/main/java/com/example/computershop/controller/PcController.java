@@ -2,6 +2,7 @@ package com.example.computershop.controller;
 
 import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.service.PcService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Tag(name = "tag_at_class_lvl. Its pc controller", description = "Pc controller is here")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/admin/pcs")
@@ -28,6 +30,9 @@ public class PcController {
         return pcService.getPc(code);
     }
 
+    @Tag(name = "create")
+    @Tag(name = "common_tag_at_method_level")
+    @Tag(name = "createPc")
     @PostMapping()
     PcDto insertIntoPc(@Valid @RequestBody PcDto pcDto) {
         return pcService.save(pcDto);

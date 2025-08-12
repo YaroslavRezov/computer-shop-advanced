@@ -55,9 +55,10 @@ public class SecurityConfig {
                         .requestMatchers("/images/навоз.png").permitAll()
                         .requestMatchers("/favicon.ico").permitAll()
                         .requestMatchers("/images/hammerAndAnother.png").permitAll()
+                        .requestMatchers("/swagger-ui/index.html").permitAll()
 
 
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
