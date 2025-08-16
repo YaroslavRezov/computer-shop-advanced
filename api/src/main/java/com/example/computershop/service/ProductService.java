@@ -9,6 +9,7 @@ import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -73,9 +74,9 @@ public class ProductService {
         }
 
 
-        productRepository.save(setProductEntity);
+        ProductEntity savedProductEntity = productRepository.save(setProductEntity);
 
-        ProductDto responseProductDto = toProductDto(setProductEntity);
+        ProductDto responseProductDto = toProductDto(savedProductEntity);
 
         return responseProductDto;
     }

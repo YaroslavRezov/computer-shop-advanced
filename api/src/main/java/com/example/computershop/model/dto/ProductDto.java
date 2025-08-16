@@ -14,8 +14,6 @@ public class ProductDto {
     @NotNull(message = "maker is mandatory")
     String maker;
     String model;
-    @NotBlank(message = "model is mandatory")
-    @NotNull(message = "type is mandatory")
     String type;
 
     public ProductDto() {
