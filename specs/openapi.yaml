@@ -1,0 +1,5 @@
+tags:
+  - name: pcs
+    description: Everything1111 about your pcs
+    externalDocs:
+      url: http://localhost:8080/admin/pcs/all
