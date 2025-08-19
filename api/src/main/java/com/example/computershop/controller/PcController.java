@@ -25,16 +25,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-@OpenAPIDefinition(tags = {
-        @Tag(name = "create", description = "Add pc to inventory"),
-        @Tag(name = "delete", description = "Delete  from inventory"),
-        @Tag(name = "find", description = "Find pc from inventory"),
-        @Tag(name = "update", description = "Update pc in inventory"),
-        @Tag(name = "createPc", description = "Add pc to inventory"),
-        @Tag(name = "deletePc", description = "Delete pc from inventory"),
-        @Tag(name = "findPc", description = "Find pc from inventory"),
-        @Tag(name = "updatePc", description = "Update pc in inventory")
-})
+//@OpenAPIDefinition(tags = {
+//        @Tag(name = "create", description = "Add pc to inventory"),
+//        @Tag(name = "delete", description = "Delete  from inventory"),
+//        @Tag(name = "find", description = "Find pc from inventory"),
+//        @Tag(name = "update", description = "Update pc in inventory"),
+//        @Tag(name = "createPc", description = "Add pc to inventory"),
+//        @Tag(name = "deletePc", description = "Delete pc from inventory"),
+//        @Tag(name = "findPc", description = "Find pc from inventory"),
+//        @Tag(name = "updatePc", description = "Update pc in inventory")
+//})
 @Tag(name = "tag_at_class_lvl. Its pc controller", description = "Pc controller is here")
 @RequiredArgsConstructor
 @RestController
@@ -42,7 +42,7 @@ import java.util.Map;
 public class PcController {
     private final PcService pcService;
 
-    @Tag(name = "find all")
+
     @GetMapping("/all")
     List<PcDto> getPcs(){
         return pcService.getPcs();
