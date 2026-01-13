@@ -28,5 +28,6 @@ public interface ProductRepository extends CrudRepository<ProductEntity, String>
 //                INSERT INTO product(model, type, maker) values (model, type, maker);""")
 //    ProductDto insertIntoProduct(ProductEntity productEntity);
     
-
+    // there is a bug we need to delete cascade because if cart has the item, its imposible to delete it
+    // via admin func ERROR: update or delete on table "product" violates foreign key constraint "cart_product_model_fk" on table "cart"
 }
