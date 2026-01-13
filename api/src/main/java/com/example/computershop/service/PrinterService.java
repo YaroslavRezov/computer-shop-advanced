@@ -12,8 +12,6 @@ import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +50,7 @@ public class PrinterService {
         return responsePrinterDto;
     }
 
-    public PrinterDto updatePrinterPartially(@PathVariable Long code, @RequestBody PrinterDto printerDto) {
+    public PrinterDto updatePrinterPartially(Long code, PrinterDto printerDto) {
         PrinterEntity setPrinterEntity = printerRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого принтера"));
         if (printerDto.getColor() != null) {
             setPrinterEntity.setColor(printerDto.getColor());

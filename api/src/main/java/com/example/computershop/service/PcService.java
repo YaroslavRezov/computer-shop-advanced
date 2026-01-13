@@ -11,8 +11,7 @@ import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +49,7 @@ public class PcService {
         return responsePcDto;
     }
 
-    public PcDto updatePcPartially(@PathVariable Long code, @RequestBody PcDto pcDto) {
+    public PcDto updatePcPartially(Long code, PcDto pcDto) {
         PcEntity setPcEntity = pcRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ПК"));
 //        ProductEntity foundProductEntity = productRepository.findById(pcDto.getModel()).orElse(null);
 

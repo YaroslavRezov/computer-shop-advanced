@@ -11,8 +11,7 @@ import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +23,10 @@ public class LaptopService {
     private final ProductRepository productRepository;
 
 
-
     public List<LaptopDto> getLaptops() {
         Iterable<LaptopEntity> laptopEntities = laptopRepository.findAll();
         List<LaptopDto> laptopDtoList = new ArrayList<>();
-        for(LaptopEntity laptopEntity : laptopEntities){
+        for (LaptopEntity laptopEntity : laptopEntities) {
             laptopDtoList.add(toLaptopDtoAndGet(laptopEntity));
         }
 
@@ -50,7 +48,8 @@ public class LaptopService {
         LaptopDto responseLaptopDto = toLaptopDto(savedLaptopEntity);
         return responseLaptopDto;
     }
-    public LaptopDto updateLaptopPartially(@PathVariable Long code, @RequestBody LaptopDto laptopDto) {
+
+    public LaptopDto updateLaptopPartially(Long code, LaptopDto laptopDto) {
         LaptopEntity setLaptopEntity = laptopRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ноута"));
 
         if (laptopDto.getSpeed() != 0) {
@@ -75,12 +74,12 @@ public class LaptopService {
         return responseLaptopDto;
     }
 
-    public void delete(Long code){
+    public void delete(Long code) {
         laptopRepository.deleteById(code);
 
     }
 
-    private LaptopDto toLaptopDto (LaptopEntity laptopEntity) {
+    private LaptopDto toLaptopDto(LaptopEntity laptopEntity) {
         LaptopDto laptopDto = new LaptopDto();
         laptopDto.setModel(laptopEntity.getProduct().getModel());
         laptopDto.setSpeed(laptopEntity.getSpeed());
@@ -108,12 +107,9 @@ public class LaptopService {
     }
 
     private LaptopDto toLaptopDtoAndGet(LaptopEntity laptopEntity) {
-        LaptopDto laptopDto = new LaptopDto(laptopEntity.getCode(), laptopEntity.getProduct().getModel(), laptopEntity.getSpeed(), laptopEntity.getRam(),laptopEntity.getHd(),laptopEntity.getPrice(), laptopEntity.getScreen());
+        LaptopDto laptopDto = new LaptopDto(laptopEntity.getCode(), laptopEntity.getProduct().getModel(), laptopEntity.getSpeed(), laptopEntity.getRam(), laptopEntity.getHd(), laptopEntity.getPrice(), laptopEntity.getScreen());
         return laptopDto;
     }
-
-
-
 
 
 }

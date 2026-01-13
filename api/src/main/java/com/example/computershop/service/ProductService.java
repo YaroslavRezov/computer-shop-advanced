@@ -1,7 +1,5 @@
 package com.example.computershop.service;
 
-import com.example.computershop.model.dto.CartDto;
-import com.example.computershop.model.dto.PrinterDto;
 import com.example.computershop.model.dto.ProductDto;
 import com.example.computershop.model.dto.ProductJoinedDto;
 import com.example.computershop.model.entity.*;
@@ -9,11 +7,8 @@ import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +60,7 @@ public class ProductService {
 
     }
 
-    public ProductDto updateProductPartially(@PathVariable String model, @RequestBody ProductDto productDto) {
+    public ProductDto updateProductPartially(String model, ProductDto productDto) {
         ProductEntity setProductEntity = productRepository.findById(model).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
 
 
