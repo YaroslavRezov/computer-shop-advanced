@@ -2,7 +2,6 @@ package com.example.computershop.controller;
 
 import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.service.PcService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -31,13 +30,11 @@ public class PcController {
         return pcService.save(pcDto);
     }
 
-    @Tag(name = "change")
     @PatchMapping("/{code}")
     public PcDto patchPcPartially(@PathVariable Long code, @Valid @RequestBody PcDto pcDto) {
         return pcService.updatePcPartially(code, pcDto);
     }
 
-    @Tag(name = "delete")
     @DeleteMapping("/{code}")
     void deleteFromPc(@PathVariable("code") Long code) {
         pcService.delete(code);
