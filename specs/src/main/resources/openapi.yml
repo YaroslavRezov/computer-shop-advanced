@@ -1465,7 +1465,7 @@
   },
   "components": {
     "schemas": {
-      "CartDto": {
+      "Cart": {
         "required": [
           "model",
           "price",
@@ -1526,7 +1526,7 @@
           }
         }
       },
-      "ProductDto": {
+      "Product": {
         "required": [
           "maker"
         ],
@@ -1543,7 +1543,7 @@
           }
         }
       },
-      "PrinterDto": {
+      "Printer": {
         "required": [
           "color",
           "price",
@@ -1570,7 +1570,7 @@
           }
         }
       },
-      "PcDto": {
+      "Pc": {
         "required": [
           "cd",
           "hd",
@@ -1608,7 +1608,7 @@
           }
         }
       },
-      "LaptopDto": {
+      "Laptop": {
         "required": [
           "hd",
           "model",
@@ -1648,7 +1648,7 @@
           }
         }
       },
-      "ProductJoinedDto": {
+      "ProductJoined": {
         "type": "object",
         "properties": {
           "maker": {
@@ -1665,7 +1665,7 @@
           }
         }
       },
-      "DeviceDto": {
+      "Device": {
         "type": "object",
         "properties": {
           "model": {
