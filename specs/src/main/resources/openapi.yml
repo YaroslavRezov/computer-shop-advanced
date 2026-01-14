@@ -39,7 +39,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductDto"
+                  "$ref": "#/components/schemas/Product"
                 }
               }
             }
@@ -55,7 +55,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CartDto"
+                "$ref": "#/components/schemas/Cart"
               }
             }
           },
@@ -67,7 +67,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/CartDto"
+                  "$ref": "#/components/schemas/Cart"
                 }
               }
             }
@@ -98,7 +98,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrinterDto"
+                  "$ref": "#/components/schemas/Printer"
                 }
               }
             }
@@ -114,7 +114,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CartDto"
+                "$ref": "#/components/schemas/Cart"
               }
             }
           },
@@ -126,7 +126,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/CartDto"
+                  "$ref": "#/components/schemas/Cart"
                 }
               }
             }
@@ -157,7 +157,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PcDto"
+                  "$ref": "#/components/schemas/Pc"
                 }
               }
             }
@@ -173,7 +173,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CartDto"
+                "$ref": "#/components/schemas/Cart"
               }
             }
           },
@@ -185,7 +185,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/CartDto"
+                  "$ref": "#/components/schemas/Cart"
                 }
               }
             }
@@ -216,7 +216,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/LaptopDto"
+                  "$ref": "#/components/schemas/Laptop"
                 }
               }
             }
@@ -232,7 +232,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CartDto"
+                "$ref": "#/components/schemas/Cart"
               }
             }
           },
@@ -244,7 +244,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/CartDto"
+                  "$ref": "#/components/schemas/Cart"
                 }
               }
             }
@@ -347,7 +347,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductDto"
+                  "$ref": "#/components/schemas/Product"
                 }
               }
             }
@@ -363,7 +363,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProductDto"
+                "$ref": "#/components/schemas/Product"
               }
             }
           },
@@ -388,7 +388,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductDto"
+                  "$ref": "#/components/schemas/Product"
                 }
               }
             }
@@ -432,7 +432,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrinterDto"
+                  "$ref": "#/components/schemas/Printer"
                 }
               }
             }
@@ -448,7 +448,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PrinterDto"
+                "$ref": "#/components/schemas/Printer"
               }
             }
           },
@@ -473,7 +473,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrinterDto"
+                  "$ref": "#/components/schemas/Printer"
                 }
               }
             }
@@ -509,7 +509,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PcDto"
+                  "$ref": "#/components/schemas/Pc"
                 }
               }
             }
@@ -532,7 +532,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PcDto"
+                "$ref": "#/components/schemas/Pc"
               },
               "example": {
                 "code": "код",
@@ -550,7 +550,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PcDto"
+                  "$ref": "#/components/schemas/Pc"
                 }
               }
             }
@@ -594,7 +594,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/LaptopDto"
+                  "$ref": "#/components/schemas/Laptop"
                 }
               }
             }
@@ -610,7 +610,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LaptopDto"
+                "$ref": "#/components/schemas/Laptop"
               }
             }
           },
@@ -635,7 +635,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/LaptopDto"
+                  "$ref": "#/components/schemas/Laptop"
                 }
               }
             }
@@ -697,7 +697,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProductDto"
+                "$ref": "#/components/schemas/Product"
               }
             }
           },
@@ -722,7 +722,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductDto"
+                  "$ref": "#/components/schemas/Product"
                 }
               }
             }
@@ -786,7 +786,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PrinterDto"
+                "$ref": "#/components/schemas/Printer"
               }
             }
           },
@@ -811,7 +811,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrinterDto"
+                  "$ref": "#/components/schemas/Printer"
                 }
               }
             }
@@ -864,7 +864,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PcDto"
+                "$ref": "#/components/schemas/Pc"
               }
             }
           },
@@ -876,7 +876,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PcDto"
+                  "$ref": "#/components/schemas/Pc"
                 }
               }
             }
@@ -940,7 +940,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LaptopDto"
+                "$ref": "#/components/schemas/Laptop"
               }
             }
           },
@@ -965,7 +965,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/LaptopDto"
+                  "$ref": "#/components/schemas/Laptop"
                 }
               }
             }
@@ -987,7 +987,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProductJoinedDto"
+                    "$ref": "#/components/schemas/ProductJoined"
                   }
                 }
               }
@@ -1010,7 +1010,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProductDto"
+                    "$ref": "#/components/schemas/Product"
                   }
                 }
               }
@@ -1033,7 +1033,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PrinterDto"
+                    "$ref": "#/components/schemas/Printer"
                   }
                 }
               }
@@ -1056,7 +1056,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PcDto"
+                    "$ref": "#/components/schemas/Pc"
                   }
                 }
               }
@@ -1079,7 +1079,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/LaptopDto"
+                    "$ref": "#/components/schemas/Laptop"
                   }
                 }
               }
@@ -1110,7 +1110,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeviceDto"
+                  "$ref": "#/components/schemas/Device"
                 }
               }
             }
@@ -1132,7 +1132,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DeviceDto"
+                    "$ref": "#/components/schemas/Device"
                   }
                 }
               }
@@ -1165,7 +1165,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CartDto"
+                    "$ref": "#/components/schemas/Cart"
                   }
                 }
               }
@@ -1209,7 +1209,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CartDto"
+                    "$ref": "#/components/schemas/Cart"
                   }
                 }
               }
@@ -1245,7 +1245,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProductJoinedDto"
+                    "$ref": "#/components/schemas/ProductJoined"
                   }
                 }
               }
@@ -1281,7 +1281,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProductDto"
+                    "$ref": "#/components/schemas/Product"
                   }
                 }
               }
@@ -1317,7 +1317,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PrinterDto"
+                    "$ref": "#/components/schemas/Printer"
                   }
                 }
               }
@@ -1340,7 +1340,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PcDto"
+                    "$ref": "#/components/schemas/Pc"
                   }
                 }
               }
@@ -1376,7 +1376,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/LaptopDto"
+                    "$ref": "#/components/schemas/Laptop"
                   }
                 }
               }
@@ -1407,7 +1407,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeviceDto"
+                  "$ref": "#/components/schemas/Device"
                 }
               }
             }
@@ -1429,7 +1429,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DeviceDto"
+                    "$ref": "#/components/schemas/Device"
                   }
                 }
               }
