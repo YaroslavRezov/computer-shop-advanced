@@ -47,7 +47,7 @@ public class CartService {
 
     public CartDto save(CartDto requestCartDto) {
 
-        CartEntity cartEntity = toCartEntity(requestCartDto);
+        CartEntity cartEntity = getCartEntity(requestCartDto);
 
         CartEntity savedCartEntity = cartRepository.save(cartEntity);
 
@@ -78,7 +78,7 @@ public class CartService {
         return cartDto;
     }
 
-    private CartEntity toCartEntity(CartDto cartDto) {
+    private CartEntity getCartEntity(CartDto cartDto) {
         CartEntity cartEntity = new CartEntity();
         int price = productService.getPriceByCode(cartDto.getCode())
                 .orElseThrow(() -> new IllegalArgumentException("Price not found for code " + cartDto.getCode()));
