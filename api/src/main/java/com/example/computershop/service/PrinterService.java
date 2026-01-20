@@ -1,11 +1,7 @@
 package com.example.computershop.service;
 
 
-import com.example.computershop.model.dto.LaptopDto;
 import com.example.computershop.model.dto.PrinterDto;
-
-import com.example.computershop.model.entity.LaptopEntity;
-import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.PrinterRepository;
@@ -25,11 +21,7 @@ public class PrinterService {
 
     public List<PrinterDto> getPrinters() {
         Iterable<PrinterEntity> printerEntities = printerRepository.findAll();
-        List<PrinterDto> printerDtoList = new ArrayList<>();
-        for(PrinterEntity printerEntity : printerEntities){
-            printerDtoList.add(toPrinterDtoAndGet(printerEntity));
-        }
-
+        List<PrinterDto> printerDtoList = toPrinterDtoList(printerEntities);
         return printerDtoList;
     }
 
@@ -109,5 +101,13 @@ public class PrinterService {
     private PrinterDto toPrinterDtoAndGet(PrinterEntity printerEntity) {
         PrinterDto printerDto = new PrinterDto(printerEntity.getCode(), printerEntity.getProduct().getModel(), translateDataBaseColor(printerEntity.getColor()), printerEntity.getType(), printerEntity.getPrice());
         return printerDto;
+    }
+
+    private List<PrinterDto> toPrinterDtoList(Iterable<PrinterEntity> printerEntities) {
+        List<PrinterDto> printerDtoList = new ArrayList<>();
+        for(PrinterEntity printerEntity : printerEntities){
+            printerDtoList.add(toPrinterDtoAndGet(printerEntity));
+        }
+        return printerDtoList;
     }
 }

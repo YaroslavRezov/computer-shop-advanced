@@ -1,17 +1,12 @@
 package com.example.computershop.service;
 
 import com.example.computershop.model.dto.LaptopDto;
-import com.example.computershop.model.dto.LaptopDto;
-import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.model.entity.LaptopEntity;
-import com.example.computershop.model.entity.LaptopEntity;
-import com.example.computershop.model.entity.PcEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +20,7 @@ public class LaptopService {
 
     public List<LaptopDto> getLaptops() {
         Iterable<LaptopEntity> laptopEntities = laptopRepository.findAll();
-        List<LaptopDto> laptopDtoList = new ArrayList<>();
-        for (LaptopEntity laptopEntity : laptopEntities) {
-            laptopDtoList.add(toLaptopDtoAndGet(laptopEntity));
-        }
+        List<LaptopDto> laptopDtoList = toLaptopDtoList(laptopEntities);
 
         return laptopDtoList;
     }
@@ -109,6 +101,15 @@ public class LaptopService {
     private LaptopDto toLaptopDtoAndGet(LaptopEntity laptopEntity) {
         LaptopDto laptopDto = new LaptopDto(laptopEntity.getCode(), laptopEntity.getProduct().getModel(), laptopEntity.getSpeed(), laptopEntity.getRam(), laptopEntity.getHd(), laptopEntity.getPrice(), laptopEntity.getScreen());
         return laptopDto;
+    }
+
+
+    private List<LaptopDto> toLaptopDtoList(Iterable<LaptopEntity> laptopEntities) {
+        List<LaptopDto> laptopDtoList = new ArrayList<>();
+        for (LaptopEntity laptopEntity : laptopEntities) {
+            laptopDtoList.add(toLaptopDtoAndGet(laptopEntity));
+        }
+        return laptopDtoList;
     }
 
 
