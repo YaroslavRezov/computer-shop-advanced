@@ -33,7 +33,7 @@ public class LaptopService {
     }
 
     public LaptopDto save(LaptopDto requestLaptopDto) {
-        LaptopEntity sourceLaptopEntity = toLaptopEntity(requestLaptopDto);
+        LaptopEntity sourceLaptopEntity = toLaptopEntity(requestLaptopDto, getLaptopEntity(requestLaptopDto));
 
         LaptopEntity savedLaptopEntity = laptopRepository.save(sourceLaptopEntity);
 
@@ -83,10 +83,13 @@ public class LaptopService {
         return laptopDto;
     }
 
-    private LaptopEntity toLaptopEntity(LaptopDto laptopDto) {
+    private ProductEntity getLaptopEntity(LaptopDto laptopDto) {
         ProductEntity foundProductEntity = productRepository.findById(laptopDto.getModel()).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
-        LaptopEntity laptopEntity = new LaptopEntity();
+        return foundProductEntity;
+    }
 
+    private LaptopEntity toLaptopEntity(LaptopDto laptopDto, ProductEntity foundProductEntity) {
+        LaptopEntity laptopEntity = new LaptopEntity();
         laptopEntity.setProduct(foundProductEntity);
 
         laptopEntity.setSpeed(laptopDto.getSpeed());

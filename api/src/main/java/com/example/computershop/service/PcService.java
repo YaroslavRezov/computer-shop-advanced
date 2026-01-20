@@ -1,5 +1,6 @@
 package com.example.computershop.service;
 
+import com.example.computershop.model.dto.LaptopDto;
 import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.model.entity.PcEntity;
 import com.example.computershop.model.entity.ProductEntity;
@@ -31,7 +32,7 @@ public class PcService {
     }
 
     public PcDto save(PcDto requestPcDto) {
-        PcEntity sourcePcEntity = toPcEntity(requestPcDto);
+        PcEntity sourcePcEntity = toPcEntity(requestPcDto, getPcEntity(requestPcDto));
 
         PcEntity savedPcEntity = pcRepository.save(sourcePcEntity);
 
@@ -83,8 +84,12 @@ public class PcService {
         return pcDto;
     }
 
-    private PcEntity toPcEntity(PcDto pcDto) {
+    private ProductEntity getPcEntity(PcDto pcDto) {
         ProductEntity foundProductEntity = productRepository.findById(pcDto.getModel()).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+        return foundProductEntity;
+    }
+
+    private PcEntity toPcEntity(PcDto pcDto, ProductEntity foundProductEntity) {
         PcEntity pcEntity = new PcEntity();
 
         pcEntity.setProduct(foundProductEntity);

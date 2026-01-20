@@ -1,6 +1,7 @@
 package com.example.computershop.service;
 
 
+import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.model.dto.PrinterDto;
 import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.ProductEntity;
@@ -34,7 +35,7 @@ public class PrinterService {
 
     public PrinterDto save(PrinterDto requestPrinterDto) {
 
-        PrinterEntity sourcePrinterEntity = toPrinterEntity(requestPrinterDto);
+        PrinterEntity sourcePrinterEntity = toPrinterEntity(requestPrinterDto, getPrinterEntity(requestPrinterDto));
 
         PrinterEntity savedPrinterEntity = printerRepository.save(sourcePrinterEntity);
 
@@ -76,8 +77,12 @@ public class PrinterService {
         return printerDto;
     }
 
-    private PrinterEntity toPrinterEntity(PrinterDto printerDto) {
+    private ProductEntity getPrinterEntity(PrinterDto printerDto) {
         ProductEntity foundProductEntity = productRepository.findById(printerDto.getModel()).orElseThrow(() -> new RuntimeException("нет такого продукта"));
+        return foundProductEntity;
+    }
+
+    private PrinterEntity toPrinterEntity(PrinterDto printerDto, ProductEntity foundProductEntity) {
         PrinterEntity printerEntity = new PrinterEntity();
 
         printerEntity.setProduct(foundProductEntity);
