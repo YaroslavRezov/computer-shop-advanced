@@ -1,6 +1,5 @@
 package com.example.computershop.service;
 
-import com.example.computershop.model.dto.LaptopDto;
 import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.model.entity.PcEntity;
 import com.example.computershop.model.entity.ProductEntity;
