@@ -17,16 +17,16 @@ public class PrinterCustomerController {
     private final CartService cartService;
 
     @GetMapping("/all")
-    List<PrinterDto> getPrinters(){
+    List<PrinterDto> getCustomerPrinters(){
         return printerService.getPrinters();
     }
     @GetMapping
-    PrinterDto getPrinter(@RequestParam Long code){
+    PrinterDto getCustomerPrinter(@RequestParam Long code){
         return printerService.getPrinter(code);
     }
 
     @PostMapping()
-    CartDto insertIntoCart(@Valid  @RequestBody CartDto cartDto) {
+    CartDto insertCustomerIntoCart(@Valid  @RequestBody CartDto cartDto) {
         return cartService.save(cartDto);
     }
 }

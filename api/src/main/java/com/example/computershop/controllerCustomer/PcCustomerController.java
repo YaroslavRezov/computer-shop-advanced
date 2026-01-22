@@ -18,16 +18,16 @@ public class PcCustomerController {
     private final CartService cartService;
 
     @GetMapping("/all")
-    List<PcDto> getPcs(){
+    List<PcDto> getCustomerPcs(){
         return pcService.getPcs();
     }
     @GetMapping
-    PcDto getPc(@RequestParam Long code){
+    PcDto getCustomerPc(@RequestParam Long code){
         return pcService.getPc(code);
     }
 
     @PostMapping()
-    CartDto insertIntoCart(@Valid  @RequestBody CartDto cartDto) {
+    CartDto insertCustomerIntoCart(@Valid  @RequestBody CartDto cartDto) {
         return cartService.save(cartDto);
     }
 

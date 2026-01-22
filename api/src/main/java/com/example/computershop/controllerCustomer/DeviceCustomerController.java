@@ -1,6 +1,7 @@
 package com.example.computershop.controllerCustomer;
-import com.example.computershop.model.dto.DeviceDto;
+
 import com.example.computershop.service.DeviceService;
+import com.example.specs.generated.model.DeviceDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +19,11 @@ public class DeviceCustomerController {
     private final DeviceService deviceService;
 
     @GetMapping("/all")
-    List<DeviceDto> getDevices(){
+    List<DeviceDto> getCustomerDevices(){
         return deviceService.getAllDevices();
     }
     @GetMapping
-    DeviceDto getDevice(@RequestParam String model){
+    DeviceDto getCustomerDevice(@RequestParam String model){
         return deviceService.getDevice(model);
     }
 }

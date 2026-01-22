@@ -15,7 +15,7 @@ public class CartConsumerController {
     private final CartService cartService;
 
     @GetMapping("/all")
-    public List<CartDto> getAllCartItems() {
+    public List<CartDto> getCustomerAllCartItems() {
         return cartService.getAll();
     }
     @GetMapping("/user/{username}")
@@ -23,12 +23,12 @@ public class CartConsumerController {
         return cartService.getCartForUser(username);
     }
     @DeleteMapping("/user/{username}")
-    public void clearCart(@PathVariable String username) {
+    public void clearCustomerCart(@PathVariable String username) {
         cartService.delete(username);
     }
 
     @DeleteMapping("/{orderId}")
-    void deleteOneFromCart(@PathVariable("orderId") Long orderId) {
+    void deleteCustomerOneFromCart(@PathVariable("orderId") Long orderId) {
         cartService.delete(orderId);
 
     }

@@ -2,6 +2,7 @@ package com.example.computershop.controller;
 
 import com.example.computershop.model.dto.LaptopDto;
 import com.example.computershop.service.LaptopService;
+import com.example.specs.generated.api.LaptopControllerApi;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

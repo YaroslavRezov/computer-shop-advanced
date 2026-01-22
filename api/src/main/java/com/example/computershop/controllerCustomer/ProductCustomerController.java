@@ -5,6 +5,7 @@ import com.example.computershop.model.dto.ProductDto;
 import com.example.computershop.model.dto.ProductJoinedDto;
 import com.example.computershop.service.CartService;
 import com.example.computershop.service.ProductService;
+import com.example.specs.generated.api.ProductCustomerControllerApi;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,21 +21,22 @@ public class ProductCustomerController {
     private final CartService cartService;
 
     @GetMapping("/all")
-    List<ProductDto> getProducts() {
+
+    List<ProductDto> getCustomerProducts() {
         return productService.getProducts();
     }
 
     @GetMapping
-    ProductDto getProduct(@RequestParam String model) {
+    ProductDto getCustomerProduct(@RequestParam String model) {
         return productService.getProduct(model);
     }
 
     @GetMapping("/fullproduct")
-    List<ProductJoinedDto> getJoinedProducts() {
+    List<ProductJoinedDto> getCustomerJoinedProducts() {
         return productService.getAllProductsJoined();
     }
     @PostMapping()
-    CartDto insertIntoCart(@Valid @RequestBody CartDto cartDto) {
+    CartDto insertCustomerIntoCart(@Valid @RequestBody CartDto cartDto) {
         return cartService.save(cartDto);
     }
 }
