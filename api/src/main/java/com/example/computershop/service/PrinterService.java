@@ -1,7 +1,6 @@
 package com.example.computershop.service;
 
 
-import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.model.dto.PrinterDto;
 import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.ProductEntity;

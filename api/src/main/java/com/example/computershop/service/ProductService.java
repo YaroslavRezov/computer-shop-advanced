@@ -109,14 +109,6 @@ public class ProductService {
         return productDto;
     }
 
-    private List<ProductJoinedDto> toProductJoinedDto (Iterable<ProductJoinedView> productsJoined) {
-        List<ProductJoinedDto> productJoinedDtoList = new ArrayList<>();
-        for(ProductJoinedView productJoinedView : productsJoined){
-            productJoinedDtoList.add(new ProductJoinedDto(productJoinedView.getMaker(), productJoinedView.getModel(), productJoinedView.getType(), translateDataBaseCode(String.valueOf(productJoinedView.getCode()))));
-        }
-        return productJoinedDtoList;
-    }
-
     private List<ProductDto> toProductDtoList(Iterable<ProductEntity> productEntities) {
         List<ProductDto> productDtoList = new ArrayList<>();
         for(ProductEntity productEntity : productEntities){
