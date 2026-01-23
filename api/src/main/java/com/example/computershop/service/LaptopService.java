@@ -33,12 +33,11 @@ public class LaptopService {
     }
 
     public LaptopDto save(LaptopDto requestLaptopDto) {
-        LaptopEntity sourceLaptopEntity = toLaptopEntity(requestLaptopDto, getLaptopEntity(requestLaptopDto));
-
+        ProductEntity foundProductEntity = productRepository.findById(requestLaptopDto.getModel())
+                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+        LaptopEntity sourceLaptopEntity = toLaptopEntity(requestLaptopDto, foundProductEntity);
         LaptopEntity savedLaptopEntity = laptopRepository.save(sourceLaptopEntity);
-
-        LaptopDto responseLaptopDto = toLaptopDto(savedLaptopEntity);
-        return responseLaptopDto;
+        return toLaptopDto(savedLaptopEntity);
     }
 
     public LaptopDto updateLaptopPartially(Long code, LaptopDto laptopDto) {
@@ -81,11 +80,6 @@ public class LaptopService {
         laptopDto.setScreen(laptopEntity.getScreen());
         laptopDto.setCode(laptopEntity.getCode());
         return laptopDto;
-    }
-
-    private ProductEntity getLaptopEntity(LaptopDto laptopDto) {
-        ProductEntity foundProductEntity = productRepository.findById(laptopDto.getModel()).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
-        return foundProductEntity;
     }
 
     private LaptopEntity toLaptopEntity(LaptopDto laptopDto, ProductEntity foundProductEntity) {

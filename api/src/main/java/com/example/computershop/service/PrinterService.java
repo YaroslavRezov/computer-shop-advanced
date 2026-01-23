@@ -33,13 +33,11 @@ public class PrinterService {
     }
 
     public PrinterDto save(PrinterDto requestPrinterDto) {
-
-        PrinterEntity sourcePrinterEntity = toPrinterEntity(requestPrinterDto, getPrinterEntity(requestPrinterDto));
-
+        ProductEntity foundProductEntity = productRepository.findById(requestPrinterDto.getModel())
+                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+        PrinterEntity sourcePrinterEntity = toPrinterEntity(requestPrinterDto, foundProductEntity);
         PrinterEntity savedPrinterEntity = printerRepository.save(sourcePrinterEntity);
-
-        PrinterDto responsePrinterDto = toPrinterDto(savedPrinterEntity);
-        return responsePrinterDto;
+        return toPrinterDto(savedPrinterEntity);
     }
 
     public PrinterDto updatePrinterPartially(Long code, PrinterDto printerDto) {
@@ -76,10 +74,6 @@ public class PrinterService {
         return printerDto;
     }
 
-    private ProductEntity getPrinterEntity(PrinterDto printerDto) {
-        ProductEntity foundProductEntity = productRepository.findById(printerDto.getModel()).orElseThrow(() -> new RuntimeException("нет такого продукта"));
-        return foundProductEntity;
-    }
 
     private PrinterEntity toPrinterEntity(PrinterDto printerDto, ProductEntity foundProductEntity) {
         PrinterEntity printerEntity = new PrinterEntity();

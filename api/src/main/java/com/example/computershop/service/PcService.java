@@ -31,13 +31,11 @@ public class PcService {
     }
 
     public PcDto save(PcDto requestPcDto) {
-        PcEntity sourcePcEntity = toPcEntity(requestPcDto, getPcEntity(requestPcDto));
-
+        ProductEntity foundProductEntity = productRepository.findById(requestPcDto.getModel())
+                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+        PcEntity sourcePcEntity = toPcEntity(requestPcDto, foundProductEntity);
         PcEntity savedPcEntity = pcRepository.save(sourcePcEntity);
-
-        PcDto responsePcDto = toPcDto(savedPcEntity);
-
-        return responsePcDto;
+        return toPcDto(savedPcEntity);
     }
 
     public PcDto updatePcPartially(Long code, PcDto pcDto) {
@@ -83,10 +81,6 @@ public class PcService {
         return pcDto;
     }
 
-    private ProductEntity getPcEntity(PcDto pcDto) {
-        ProductEntity foundProductEntity = productRepository.findById(pcDto.getModel()).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
-        return foundProductEntity;
-    }
 
     private PcEntity toPcEntity(PcDto pcDto, ProductEntity foundProductEntity) {
         PcEntity pcEntity = new PcEntity();
