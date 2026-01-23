@@ -15,18 +15,18 @@ public class PcController {
 
 
     @GetMapping("/all")
-    List<PcDto> getPcs(){
+    public List<PcDto> getPcs(){
         return pcService.getPcs();
     }
 
     @GetMapping
-    PcDto getPc(@RequestParam Long code){
+    public PcDto getPc(@RequestParam Long code){
         return pcService.getPc(code);
     }
 
 
     @PostMapping()
-    PcDto insertIntoPc(@Valid @RequestBody PcDto pcDto) {
+    public PcDto insertIntoPc(@Valid @RequestBody PcDto pcDto) {
         return pcService.save(pcDto);
     }
 
@@ -36,7 +36,7 @@ public class PcController {
     }
 
     @DeleteMapping("/{code}")
-    void deleteFromPc(@PathVariable("code") Long code) {
+    public void deleteFromPc(@PathVariable("code") Long code) {
         pcService.delete(code);
 
     }

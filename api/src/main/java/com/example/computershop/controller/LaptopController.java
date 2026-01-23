@@ -21,16 +21,16 @@ public class LaptopController {
     private final LaptopService laptopService;
 
     @GetMapping("/all")
-    List<LaptopDto> getLaptops(){
+    public List<LaptopDto> getLaptops(){
         return laptopService.getLaptops();
     }
     @GetMapping
-    LaptopDto getLaptop(@RequestParam Long code){
+    public LaptopDto getLaptop(@RequestParam Long code){
         return laptopService.getLaptop(code);
     }
 
     @PostMapping()
-    LaptopDto insertIntoLaptop(@Valid @RequestBody LaptopDto laptopDto) {
+    public LaptopDto insertIntoLaptop(@Valid @RequestBody LaptopDto laptopDto) {
         return laptopService.save(laptopDto);
     }
 

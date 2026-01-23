@@ -19,11 +19,11 @@ public class DeviceCustomerController {
     private final DeviceService deviceService;
 
     @GetMapping("/all")
-    List<DeviceDto> getCustomerDevices(){
+    public List<DeviceDto> getCustomerDevices(){
         return deviceService.getAllDevices();
     }
     @GetMapping
-    DeviceDto getCustomerDevice(@RequestParam String model){
+    public DeviceDto getCustomerDevice(@RequestParam String model){
         return deviceService.getDevice(model);
     }
 }

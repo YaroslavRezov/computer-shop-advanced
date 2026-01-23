@@ -19,16 +19,16 @@ public class LaptopCustomerController {
     private final CartService cartService;
 
     @GetMapping("/all")
-    List<LaptopDto> getCustomerLaptops(){
+    public List<LaptopDto> getCustomerLaptops(){
         return laptopService.getLaptops();
     }
     @GetMapping
-    LaptopDto getCustomerLaptop(@RequestParam Long code){
+    public LaptopDto getCustomerLaptop(@RequestParam Long code){
         return laptopService.getLaptop(code);
     }
 
     @PostMapping()
-    CartDto insertCustomerIntoCart(@Valid @RequestBody CartDto cartDto) {
+    public CartDto insertCustomerIntoCart(@Valid @RequestBody CartDto cartDto) {
         return cartService.save(cartDto);
     }
 

@@ -1,11 +1,13 @@
 package com.example.computershop.controller;
 
-import com.example.computershop.model.dto.ProductDto;
-import com.example.computershop.model.dto.ProductJoinedDto;
 import com.example.computershop.service.ProductService;
+import com.example.specs.generated.api.ProductControllerApi;
+import com.example.specs.generated.model.ProductDto;
+import com.example.specs.generated.model.ProductJoinedDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -17,39 +19,41 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/admin/products")
-public class ProductController {
+public class ProductController implements ProductControllerApi {
 
     private final ProductService productService;
-
+    @Override
     @GetMapping("/all")
-    List<ProductDto> getProducts() {
-        return productService.getProducts();
+    public ResponseEntity<List<com.example.specs.generated.model.ProductDto>> getProducts() {
+        return ResponseEntity.ok(productService.getProducts());
     }
 
+    @Override
     @GetMapping
-    ProductDto getProduct(@RequestParam String model) {
-        return productService.getProduct(model);
+    public ResponseEntity<ProductDto> getProduct(@RequestParam String model) {
+         return ResponseEntity.ok(productService.getProduct(model));
     }
 
     @GetMapping("/fullproduct")
-    List<ProductJoinedDto> getJoinedProducts() {
-        return productService.getAllProductsJoined();
+    public ResponseEntity<List<ProductJoinedDto>> getJoinedProducts() {
+        return ResponseEntity.ok(productService.getAllProductsJoined());
     }
 
     @PostMapping()
-    ProductDto insertIntoProduct(@Valid @RequestBody ProductDto productDto) {
-        return productService.save(productDto);
+    public ResponseEntity<ProductDto> insertIntoProduct(@Valid @RequestBody ProductDto productDto) {
+        return ResponseEntity.ok(productService.save(productDto));
     }
 
     @PatchMapping("/{model}")
-    public ProductDto patchProductPartially(@PathVariable String model, @Valid @RequestBody ProductDto productDto) {
-        return productService.updateProductPartially(model, productDto);
+    public ResponseEntity<ProductDto> patchProductPartially(@PathVariable String model, @Valid @RequestBody ProductDto productDto) {
+        return ResponseEntity.ok(productService.updateProductPartially(model, productDto));
     }
 
     @DeleteMapping("/{model}")
-    void deleteFromProduct(@PathVariable("model") String model) {
+    public ResponseEntity<Void> deleteFromProduct(@PathVariable("model") String model) {
         productService.delete(model);
 
+        return ResponseEntity.ok(null);
     }
 
 

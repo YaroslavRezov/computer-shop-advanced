@@ -19,16 +19,16 @@ public class PrinterController {
     private final PrinterService printerService;
 
     @GetMapping("/all")
-    List<PrinterDto> getPrinters(){
+    public List<PrinterDto> getPrinters(){
         return printerService.getPrinters();
     }
     @GetMapping
-    PrinterDto getPrinter(@RequestParam Long code){
+    public PrinterDto getPrinter(@RequestParam Long code){
         return printerService.getPrinter(code);
     }
 
     @PostMapping()
-    PrinterDto insertIntoPrinter(@Valid  @RequestBody PrinterDto printerDto) {
+    public PrinterDto insertIntoPrinter(@Valid  @RequestBody PrinterDto printerDto) {
         return printerService.save(printerDto);
     }
     @PatchMapping("/{code}")
@@ -37,7 +37,7 @@ public class PrinterController {
     }
 
     @DeleteMapping("/{code}")
-    void deleteFromPrinter(@PathVariable("code") Long code) {
+    public void deleteFromPrinter(@PathVariable("code") Long code) {
         printerService.delete(code);
 
     }
