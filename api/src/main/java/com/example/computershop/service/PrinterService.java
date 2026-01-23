@@ -1,11 +1,7 @@
 package com.example.computershop.service;
 
 
-import com.example.computershop.model.dto.LaptopDto;
 import com.example.computershop.model.dto.PrinterDto;
-
-import com.example.computershop.model.entity.LaptopEntity;
-import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.PrinterRepository;
@@ -25,11 +21,7 @@ public class PrinterService {
 
     public List<PrinterDto> getPrinters() {
         Iterable<PrinterEntity> printerEntities = printerRepository.findAll();
-        List<PrinterDto> printerDtoList = new ArrayList<>();
-        for(PrinterEntity printerEntity : printerEntities){
-            printerDtoList.add(toPrinterDtoAndGet(printerEntity));
-        }
-
+        List<PrinterDto> printerDtoList = toPrinterDtoList(printerEntities);
         return printerDtoList;
     }
 
@@ -41,13 +33,11 @@ public class PrinterService {
     }
 
     public PrinterDto save(PrinterDto requestPrinterDto) {
-
-        PrinterEntity sourcePrinterEntity = toPrinterEntity(requestPrinterDto);
-
+        ProductEntity foundProductEntity = productRepository.findById(requestPrinterDto.getModel())
+                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+        PrinterEntity sourcePrinterEntity = toPrinterEntity(requestPrinterDto, foundProductEntity);
         PrinterEntity savedPrinterEntity = printerRepository.save(sourcePrinterEntity);
-
-        PrinterDto responsePrinterDto = toPrinterDto(savedPrinterEntity);
-        return responsePrinterDto;
+        return toPrinterDto(savedPrinterEntity);
     }
 
     public PrinterDto updatePrinterPartially(Long code, PrinterDto printerDto) {
@@ -84,8 +74,8 @@ public class PrinterService {
         return printerDto;
     }
 
-    private PrinterEntity toPrinterEntity(PrinterDto printerDto) {
-        ProductEntity foundProductEntity = productRepository.findById(printerDto.getModel()).orElseThrow(() -> new RuntimeException("нет такого продукта"));
+
+    private PrinterEntity toPrinterEntity(PrinterDto printerDto, ProductEntity foundProductEntity) {
         PrinterEntity printerEntity = new PrinterEntity();
 
         printerEntity.setProduct(foundProductEntity);
@@ -109,5 +99,13 @@ public class PrinterService {
     private PrinterDto toPrinterDtoAndGet(PrinterEntity printerEntity) {
         PrinterDto printerDto = new PrinterDto(printerEntity.getCode(), printerEntity.getProduct().getModel(), translateDataBaseColor(printerEntity.getColor()), printerEntity.getType(), printerEntity.getPrice());
         return printerDto;
+    }
+
+    private List<PrinterDto> toPrinterDtoList(Iterable<PrinterEntity> printerEntities) {
+        List<PrinterDto> printerDtoList = new ArrayList<>();
+        for(PrinterEntity printerEntity : printerEntities){
+            printerDtoList.add(toPrinterDtoAndGet(printerEntity));
+        }
+        return printerDtoList;
     }
 }

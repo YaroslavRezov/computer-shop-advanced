@@ -1,17 +1,12 @@
 package com.example.computershop.service;
 
 import com.example.computershop.model.dto.PcDto;
-import com.example.computershop.model.dto.PcDto;
-import com.example.computershop.model.dto.ProductDto;
-import com.example.computershop.model.entity.PcEntity;
-import com.example.computershop.model.entity.PcEntity;
 import com.example.computershop.model.entity.PcEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +19,7 @@ public class PcService {
 
     public List<PcDto> getPcs() {
         Iterable<PcEntity> pcEntities = pcRepository.findAll();
-        List<PcDto> pcDtoList = new ArrayList<>();
-        for(PcEntity pcEntity : pcEntities) {
-            pcDtoList.add(toPcDtoAndGet(pcEntity));
-        }
-
+        List<PcDto> pcDtoList = toPcDtoList(pcEntities);
         return pcDtoList;
     }
 
@@ -40,13 +31,11 @@ public class PcService {
     }
 
     public PcDto save(PcDto requestPcDto) {
-        PcEntity sourcePcEntity = toPcEntity(requestPcDto);
-
+        ProductEntity foundProductEntity = productRepository.findById(requestPcDto.getModel())
+                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+        PcEntity sourcePcEntity = toPcEntity(requestPcDto, foundProductEntity);
         PcEntity savedPcEntity = pcRepository.save(sourcePcEntity);
-
-        PcDto responsePcDto = toPcDto(savedPcEntity);
-
-        return responsePcDto;
+        return toPcDto(savedPcEntity);
     }
 
     public PcDto updatePcPartially(Long code, PcDto pcDto) {
@@ -92,8 +81,8 @@ public class PcService {
         return pcDto;
     }
 
-    private PcEntity toPcEntity(PcDto pcDto) {
-        ProductEntity foundProductEntity = productRepository.findById(pcDto.getModel()).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+
+    private PcEntity toPcEntity(PcDto pcDto, ProductEntity foundProductEntity) {
         PcEntity pcEntity = new PcEntity();
 
         pcEntity.setProduct(foundProductEntity);
@@ -107,6 +96,14 @@ public class PcService {
     private PcDto toPcDtoAndGet(PcEntity pcEntity) {
         PcDto pcDto =new PcDto(pcEntity.getCode(), pcEntity.getProduct().getModel(), pcEntity.getSpeed(), pcEntity.getRam(),pcEntity.getHd(), pcEntity.getCd(), pcEntity.getPrice());
         return pcDto;
+    }
+
+    private List<PcDto> toPcDtoList(Iterable<PcEntity> pcEntities) {
+        List<PcDto> pcDtoList = new ArrayList<>();
+        for(PcEntity pcEntity : pcEntities) {
+            pcDtoList.add(toPcDtoAndGet(pcEntity));
+        }
+        return pcDtoList;
     }
 
 }

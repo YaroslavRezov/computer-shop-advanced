@@ -1,10 +1,8 @@
 package com.example.computershop.service;
 
 import com.example.computershop.model.dto.DeviceDto;
-import com.example.computershop.model.dto.PrinterDto;
-import com.example.computershop.model.entity.PrinterEntity;
-import com.example.computershop.repository.DeviceRepository;
 import com.example.computershop.model.entity.DeviceView;
+import com.example.computershop.repository.DeviceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +16,7 @@ public class DeviceService {
 
     public List<DeviceDto> getAllDevices() {
         Iterable<DeviceView> BaseDevices = pcRepository.findAllDevices();
-        List<DeviceDto> baseDeviceDtoList = new ArrayList<>();
-        for(DeviceView deviceView : BaseDevices){
-            baseDeviceDtoList.add(toDeviceDtoAndGet(deviceView));
-        }
-
+        List<DeviceDto> baseDeviceDtoList = toDeviceDtoList(BaseDevices);
         return baseDeviceDtoList;
     }
 
@@ -35,5 +29,13 @@ public class DeviceService {
     private DeviceDto toDeviceDtoAndGet(DeviceView deviceView) {
         DeviceDto deviceDto = new DeviceDto(deviceView.getModel(), deviceView.getPrice());
         return deviceDto;
+    }
+
+    private List<DeviceDto> toDeviceDtoList(Iterable<DeviceView> BaseDevices) {
+        List<DeviceDto> baseDeviceDtoList = new ArrayList<>();
+        for(DeviceView deviceView : BaseDevices){
+            baseDeviceDtoList.add(toDeviceDtoAndGet(deviceView));
+        }
+        return baseDeviceDtoList;
     }
 }

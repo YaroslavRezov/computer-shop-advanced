@@ -25,14 +25,9 @@ public class ProductService {
     private final LaptopRepository laptopRepository;
     public List<ProductDto> getProducts() {
         Iterable<ProductEntity> productEntities = productRepository.findAll();
-        List<ProductDto> productDtoList = new ArrayList<>();
-        for(ProductEntity productEntity : productEntities){
-            productDtoList.add(toProductDtoAndGet(productEntity));
-        }
-
+        List<ProductDto> productDtoList = toProductDtoList(productEntities);
         return productDtoList;
     }
-
     public ProductDto getProduct(String model) {
         ProductEntity productEntity = productRepository.findById(model).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
 
@@ -40,10 +35,7 @@ public class ProductService {
     }
     public List<ProductJoinedDto> getAllProductsJoined() {
         Iterable<ProductJoinedView> productsJoined = productRepository.findAllProductsJoined();
-        List<ProductJoinedDto> productJoinedDtoList = new ArrayList<>();
-        for(ProductJoinedView productJoinedView : productsJoined){
-            productJoinedDtoList.add(new ProductJoinedDto(productJoinedView.getMaker(), productJoinedView.getModel(), productJoinedView.getType(), translateDataBaseCode(String.valueOf(productJoinedView.getCode()))));
-        }
+        List<ProductJoinedDto> productJoinedDtoList = toProductJoinedDto(productsJoined);
 
         return productJoinedDtoList;
     }
@@ -115,5 +107,21 @@ public class ProductService {
     private ProductDto toProductDtoAndGet(ProductEntity productEntity) {
         ProductDto productDto = new ProductDto(productEntity.getMaker(), productEntity.getModel(), productEntity.getType());
         return productDto;
+    }
+
+    private List<ProductJoinedDto> toProductJoinedDto (Iterable<ProductJoinedView> productsJoined) {
+        List<ProductJoinedDto> productJoinedDtoList = new ArrayList<>();
+        for(ProductJoinedView productJoinedView : productsJoined){
+            productJoinedDtoList.add(new ProductJoinedDto(productJoinedView.getMaker(), productJoinedView.getModel(), productJoinedView.getType(), translateDataBaseCode(String.valueOf(productJoinedView.getCode()))));
+        }
+        return productJoinedDtoList;
+    }
+
+    private List<ProductDto> toProductDtoList(Iterable<ProductEntity> productEntities) {
+        List<ProductDto> productDtoList = new ArrayList<>();
+        for(ProductEntity productEntity : productEntities){
+            productDtoList.add(toProductDtoAndGet(productEntity));
+        }
+        return productDtoList;
     }
 }

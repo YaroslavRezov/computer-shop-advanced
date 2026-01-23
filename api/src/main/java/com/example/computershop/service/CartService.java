@@ -1,12 +1,9 @@
 package com.example.computershop.service;
 
 import com.example.computershop.model.dto.CartDto;
-
-import com.example.computershop.model.dto.CartDto;
-import com.example.computershop.model.dto.PcDto;
-import com.example.computershop.model.dto.PrinterDto;
-import com.example.computershop.model.entity.*;
 import com.example.computershop.model.entity.CartEntity;
+import com.example.computershop.model.entity.ProductEntity;
+import com.example.computershop.model.entity.UsersEntity;
 import com.example.computershop.repository.CartRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.computershop.repository.UsersRepository;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -27,20 +23,14 @@ public class CartService {
 
     public List<CartDto> getAll() {
         Iterable<CartEntity> cartEntities = cartRepository.findAll();
-        List<CartDto> cartDtoList = new ArrayList<>();
-        for(CartEntity cartEntity : cartEntities){
-            cartDtoList.add(toCartDtoAndGet(cartEntity));
-        }
+        List<CartDto> cartDtoList = toCartDtoList(cartEntities);
 
         return cartDtoList;
     }
 
     public List<CartDto> getCartForUser(String username){
         Iterable<CartEntity> cartEntities = cartRepository.findByUser(usersRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Нет такого пользователя" + username)));
-        List<CartDto> cartDtoList = new ArrayList<>();
-        for(CartEntity cartEntity : cartEntities){
-            cartDtoList.add(toCartDtoAndGet(cartEntity));
-        }
+        List<CartDto> cartDtoList = toCartDtoList(cartEntities);
 
         return cartDtoList;
     }
@@ -94,6 +84,14 @@ public class CartService {
     private CartDto toCartDtoAndGet(CartEntity cartEntity) {
         CartDto cartDto = new CartDto(cartEntity.getOrderId(), cartEntity.getProduct().getModel(), cartEntity.getCode(), cartEntity.getProduct().getType() , cartEntity.getUser().getUsername(), cartEntity.getPrice());
         return cartDto;
+    }
+
+    private List<CartDto> toCartDtoList(Iterable<CartEntity> cartEntities) {
+        List<CartDto> cartDtoList = new ArrayList<>();
+        for(CartEntity cartEntity : cartEntities){
+            cartDtoList.add(toCartDtoAndGet(cartEntity));
+        }
+        return cartDtoList;
     }
 }
 
