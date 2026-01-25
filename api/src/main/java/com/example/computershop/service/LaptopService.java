@@ -1,10 +1,10 @@
 package com.example.computershop.service;
 
-import com.example.computershop.model.dto.LaptopDto;
 import com.example.computershop.model.entity.LaptopEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.ProductRepository;
+import com.example.specs.generated.model.LaptopDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -96,7 +96,14 @@ public class LaptopService {
     }
 
     private LaptopDto toLaptopDtoAndGet(LaptopEntity laptopEntity) {
-        LaptopDto laptopDto = new LaptopDto(laptopEntity.getCode(), laptopEntity.getProduct().getModel(), laptopEntity.getSpeed(), laptopEntity.getRam(), laptopEntity.getHd(), laptopEntity.getPrice(), laptopEntity.getScreen());
+        LaptopDto laptopDto = new LaptopDto();
+        laptopDto.setCode(laptopEntity.getCode());
+        laptopDto.setModel(laptopEntity.getProduct().getModel());
+        laptopDto.setSpeed(laptopEntity.getSpeed());
+        laptopDto.setRam(laptopEntity.getRam());
+        laptopDto.setHd(laptopEntity.getHd());
+        laptopDto.setPrice(laptopEntity.getPrice());
+        laptopDto.setScreen(laptopEntity.getScreen());
         return laptopDto;
     }
 

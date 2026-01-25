@@ -1,10 +1,10 @@
 package com.example.computershop.service;
 
-import com.example.computershop.model.dto.PcDto;
 import com.example.computershop.model.entity.PcEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.ProductRepository;
+import com.example.specs.generated.model.PcDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -94,7 +94,14 @@ public class PcService {
         return pcEntity;
     }
     private PcDto toPcDtoAndGet(PcEntity pcEntity) {
-        PcDto pcDto =new PcDto(pcEntity.getCode(), pcEntity.getProduct().getModel(), pcEntity.getSpeed(), pcEntity.getRam(),pcEntity.getHd(), pcEntity.getCd(), pcEntity.getPrice());
+        PcDto pcDto =new PcDto();
+        pcDto.setCode(pcEntity.getCode());
+        pcDto.setModel(pcEntity.getProduct().getModel());
+        pcDto.setSpeed(pcEntity.getSpeed());
+        pcDto.setRam(pcEntity.getRam());
+        pcDto.setHd(pcEntity.getHd());
+        pcDto.setCd(pcEntity.getCd());
+        pcDto.setPrice(pcEntity.getPrice());
         return pcDto;
     }
 

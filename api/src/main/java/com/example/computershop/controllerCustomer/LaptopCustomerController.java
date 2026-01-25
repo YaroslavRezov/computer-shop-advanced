@@ -1,11 +1,13 @@
 package com.example.computershop.controllerCustomer;
 
-import com.example.computershop.model.dto.CartDto;
-import com.example.computershop.model.dto.LaptopDto;
 import com.example.computershop.service.CartService;
 import com.example.computershop.service.LaptopService;
+import com.example.specs.generated.api.LaptopCustomerControllerApi;
+import com.example.specs.generated.model.CartDto;
+import com.example.specs.generated.model.LaptopDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,23 +15,25 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/customer/laptops")
-public class LaptopCustomerController {
+public class LaptopCustomerController implements LaptopCustomerControllerApi {
 
     private final LaptopService laptopService;
     private final CartService cartService;
 
+    @Override
     @GetMapping("/all")
-    public List<LaptopDto> getCustomerLaptops(){
-        return laptopService.getLaptops();
+    public ResponseEntity<List<LaptopDto>> getCustomerLaptops(){
+        return ResponseEntity.ok(laptopService.getLaptops());
     }
+    @Override
     @GetMapping
-    public LaptopDto getCustomerLaptop(@RequestParam Long code){
-        return laptopService.getLaptop(code);
+    public ResponseEntity<LaptopDto> getCustomerLaptop(@RequestParam Long code){
+        return ResponseEntity.ok(laptopService.getLaptop(code));
     }
 
     @PostMapping()
-    public CartDto insertCustomerIntoCart(@Valid @RequestBody CartDto cartDto) {
-        return cartService.save(cartDto);
+    public ResponseEntity<CartDto> insertCustomerIntoCart(@Valid @RequestBody CartDto cartDto) {
+        return ResponseEntity.ok(cartService.save(cartDto));
     }
 
 

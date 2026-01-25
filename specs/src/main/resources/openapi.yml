@@ -10,12 +10,6 @@
       "description": "Generated server url"
     }
   ],
-  "tags": [
-    {
-      "name": "tag_at_class_lvl. Its pc controller",
-      "description": "Pc controller is here"
-    }
-  ],
   "paths": {
     "/customer/products": {
       "get": {
@@ -484,10 +478,8 @@
     "/admin/pcs": {
       "get": {
         "tags": [
-          "find ",
-          "tag_at_class_lvl. Its pc controller"
+          "pc-controller"
         ],
-        "summary": "Get a pc by its id",
         "operationId": "getPc",
         "parameters": [
           {
@@ -502,10 +494,10 @@
         ],
         "responses": {
           "400": {
-            "description": "Invalid id supplied"
+            "description": "Bad Request"
           },
           "200": {
-            "description": "Found the pc",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -513,32 +505,19 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Pc not found"
           }
         }
       },
       "post": {
         "tags": [
-          "common_tag_at_method_level",
-          "create",
-          "createPc",
-          "tag_at_class_lvl. Its pc controller"
+          "pc-controller"
         ],
         "operationId": "insertIntoPc",
         "requestBody": {
-          "description": "Pc to create",
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Pc"
-              },
-              "example": {
-                "code": "код",
-                "model": "модель",
-                "speed": "скорость",
-                "ram": "рам"
               }
             }
           },
@@ -822,8 +801,7 @@
     "/admin/pcs/{code}": {
       "delete": {
         "tags": [
-          "delete",
-          "tag_at_class_lvl. Its pc controller"
+          "pc-controller"
         ],
         "operationId": "deleteFromPc",
         "parameters": [
@@ -845,8 +823,7 @@
       },
       "patch": {
         "tags": [
-          "change",
-          "tag_at_class_lvl. Its pc controller"
+          "pc-controller"
         ],
         "operationId": "patchPcPartially",
         "parameters": [
@@ -1329,7 +1306,7 @@
     "/admin/pcs/all": {
       "get": {
         "tags": [
-          "tag_at_class_lvl. Its pc controller"
+          "pc-controller"
         ],
         "operationId": "getPcs",
         "responses": {

@@ -1,9 +1,9 @@
 package com.example.computershop.controllerCustomer;
 
-import com.example.computershop.model.dto.CartDto;
 import com.example.computershop.service.CartService;
 import com.example.computershop.service.ProductService;
 import com.example.specs.generated.api.ProductCustomerControllerApi;
+import com.example.specs.generated.model.CartDto;
 import com.example.specs.generated.model.ProductDto;
 import com.example.specs.generated.model.ProductJoinedDto;
 import jakarta.validation.Valid;
@@ -28,17 +28,19 @@ public class ProductCustomerController implements ProductCustomerControllerApi{
         return ResponseEntity.ok(productService.getProducts());
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<ProductDto> getCustomerProduct(@RequestParam String model) {
         return ResponseEntity.ok(productService.getProduct(model));
     }
 
+    @Override
     @GetMapping("/fullproduct")
     public ResponseEntity<List<ProductJoinedDto>> getCustomerJoinedProducts() {
         return ResponseEntity.ok(productService.getAllProductsJoined());
     }
     @PostMapping()
-    public CartDto insertCustomerIntoCart(@Valid @RequestBody CartDto cartDto) {
-        return cartService.save(cartDto);
+    public ResponseEntity<CartDto> insertCustomerIntoCart(@Valid @RequestBody CartDto cartDto) {
+        return ResponseEntity.ok(cartService.save(cartDto));
     }
 }
