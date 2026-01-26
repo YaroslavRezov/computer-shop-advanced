@@ -1,7 +1,8 @@
 package com.example.computershop.controllerCustomer;
 
-import com.example.computershop.model.dto.CartDto;
 import com.example.computershop.service.CartService;
+import com.example.specs.generated.api.CartConsumerControllerApi;
+import com.example.specs.generated.model.CartDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,27 +11,28 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/customer/cart")
-public class CartConsumerController {
+public class CartConsumerController implements CartConsumerControllerApi {
     private final CartService cartService;
 
-    @GetMapping("/all")
-    public List<CartDto> getAllCartItems() {
-        return cartService.getAll();
+    @Override
+    public ResponseEntity<List<CartDto>> getCustomerAllCartItems() {
+        return ResponseEntity.ok(cartService.getAll());
     }
-    @GetMapping("/user/{username}")
-    public List<CartDto> getCartForCustomer(@PathVariable String username) {
-        return cartService.getCartForUser(username);
+    @Override
+    public ResponseEntity<List<CartDto>> getCustomerCartForCustomer(String username) {
+        return ResponseEntity.ok(cartService.getCartForUser(username));
     }
-    @DeleteMapping("/user/{username}")
-    public void clearCart(@PathVariable String username) {
+    @Override
+    public ResponseEntity<Void> clearCustomerCart(String username) {
         cartService.delete(username);
+        return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{orderId}")
-    void deleteOneFromCart(@PathVariable("orderId") Long orderId) {
+    @Override
+    public ResponseEntity<Void> deleteCustomerOneFromCart(Long orderId) {
         cartService.delete(orderId);
 
+        return ResponseEntity.noContent().build();
     }
 
 }

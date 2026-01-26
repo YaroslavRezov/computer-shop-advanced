@@ -1,40 +1,40 @@
 package com.example.computershop.controllerCustomer;
 
-import com.example.computershop.model.dto.CartDto;
-import com.example.computershop.model.dto.ProductDto;
-import com.example.computershop.model.dto.ProductJoinedDto;
 import com.example.computershop.service.CartService;
 import com.example.computershop.service.ProductService;
-import jakarta.validation.Valid;
+import com.example.specs.generated.api.ProductCustomerControllerApi;
+import com.example.specs.generated.model.CartDto;
+import com.example.specs.generated.model.ProductDto;
+import com.example.specs.generated.model.ProductJoinedDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/customer/products")
-public class ProductCustomerController {
+public class ProductCustomerController implements ProductCustomerControllerApi{
 
     private final ProductService productService;
     private final CartService cartService;
 
-    @GetMapping("/all")
-    List<ProductDto> getProducts() {
-        return productService.getProducts();
+    @Override
+    public ResponseEntity<List<ProductDto>> getCustomerProducts() {
+        return ResponseEntity.ok(productService.getProducts());
     }
 
-    @GetMapping
-    ProductDto getProduct(@RequestParam String model) {
-        return productService.getProduct(model);
+    @Override
+    public ResponseEntity<ProductDto> getCustomerProduct(String model) {
+        return ResponseEntity.ok(productService.getProduct(model));
     }
 
-    @GetMapping("/fullproduct")
-    List<ProductJoinedDto> getJoinedProducts() {
-        return productService.getAllProductsJoined();
+    @Override
+    public ResponseEntity<List<ProductJoinedDto>> getCustomerJoinedProducts() {
+        return ResponseEntity.ok(productService.getAllProductsJoined());
     }
-    @PostMapping()
-    CartDto insertIntoCart(@Valid @RequestBody CartDto cartDto) {
-        return cartService.save(cartDto);
+    @Override
+    public ResponseEntity<CartDto> insertCustomerProductIntoCart(CartDto cartDto) {
+        return ResponseEntity.ok(cartService.save(cartDto));
     }
 }

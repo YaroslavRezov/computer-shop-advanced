@@ -1,10 +1,11 @@
 package com.example.computershop.controller;
 
-import com.example.computershop.model.dto.LaptopDto;
 import com.example.computershop.service.LaptopService;
-import jakarta.validation.Valid;
+import com.example.specs.generated.api.LaptopControllerApi;
+import com.example.specs.generated.model.LaptopDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -15,32 +16,32 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/laptops")
-public class LaptopController {
+public class LaptopController implements LaptopControllerApi{
     private final LaptopService laptopService;
 
-    @GetMapping("/all")
-    List<LaptopDto> getLaptops(){
-        return laptopService.getLaptops();
+    @Override
+    public ResponseEntity<List<LaptopDto>> getLaptops(){
+        return ResponseEntity.ok(laptopService.getLaptops());
     }
-    @GetMapping
-    LaptopDto getLaptop(@RequestParam Long code){
-        return laptopService.getLaptop(code);
-    }
-
-    @PostMapping()
-    LaptopDto insertIntoLaptop(@Valid @RequestBody LaptopDto laptopDto) {
-        return laptopService.save(laptopDto);
+    @Override
+    public ResponseEntity<LaptopDto> getLaptop(Long code){
+        return ResponseEntity.ok(laptopService.getLaptop(code));
     }
 
-    @PatchMapping("/{code}")
-    public LaptopDto patchLaptopPartially(@PathVariable Long code, @Valid @RequestBody LaptopDto laptopDto) {
-        return laptopService.updateLaptopPartially(code, laptopDto);
+    @Override
+    public ResponseEntity<LaptopDto> insertIntoLaptop(LaptopDto laptopDto) {
+        return ResponseEntity.ok(laptopService.save(laptopDto));
     }
-    @DeleteMapping("/{code}")
-    void deleteFromLaptop(@PathVariable("code") Long code) {
+
+    @Override
+    public ResponseEntity<LaptopDto> patchLaptopPartially( Long code, LaptopDto laptopDto) {
+        return ResponseEntity.ok(laptopService.updateLaptopPartially(code, laptopDto));
+    }
+    @Override
+    public ResponseEntity<Void> deleteFromLaptop(Long code) {
         laptopService.delete(code);
 
+        return ResponseEntity.noContent().build();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

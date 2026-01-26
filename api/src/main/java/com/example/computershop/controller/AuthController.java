@@ -3,9 +3,9 @@ package com.example.computershop.controller;
 import com.example.computershop.model.dto.AuthResponse;
 import com.example.computershop.model.dto.LoginRequest;
 import com.example.computershop.model.dto.RegisterRequest;
-import com.example.computershop.model.entity.UsersEntity;
 import com.example.computershop.service.AuthService;
 
+import com.example.specs.generated.api.AuthControllerApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerApi {
     private final AuthService authService;
 
     @PostMapping("/register")

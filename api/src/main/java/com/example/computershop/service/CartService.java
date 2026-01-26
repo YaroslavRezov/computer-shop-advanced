@@ -1,12 +1,12 @@
 package com.example.computershop.service;
 
-import com.example.computershop.model.dto.CartDto;
 import com.example.computershop.model.entity.CartEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.model.entity.UsersEntity;
 import com.example.computershop.repository.CartRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.computershop.repository.UsersRepository;
+import com.example.specs.generated.model.CartDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -82,7 +82,13 @@ public class CartService {
     }
 
     private CartDto toCartDtoAndGet(CartEntity cartEntity) {
-        CartDto cartDto = new CartDto(cartEntity.getOrderId(), cartEntity.getProduct().getModel(), cartEntity.getCode(), cartEntity.getProduct().getType() , cartEntity.getUser().getUsername(), cartEntity.getPrice());
+        CartDto cartDto = new CartDto();
+        cartDto.setOrderId(cartDto.getOrderId());
+        cartDto.setModel(cartEntity.getProduct().getModel());
+        cartDto.setCode(cartEntity.getCode());
+        cartDto.setType(cartEntity.getProduct().getType());
+        cartDto.setUsername(cartEntity.getUser().getUsername());
+        cartDto.setPrice(cartEntity.getPrice());
         return cartDto;
     }
 

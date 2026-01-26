@@ -1,15 +1,18 @@
 package com.example.computershop.service;
 
-import com.example.computershop.model.dto.ProductDto;
-import com.example.computershop.model.dto.ProductJoinedDto;
+//import com.example.computershop.model.dto.ProductDto;
+//import com.example.computershop.model.dto.ProductJoinedDto;
 import com.example.computershop.model.entity.*;
 import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
+import com.example.specs.generated.model.ProductDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import com.example.specs.generated.model.ProductDto;
+import com.example.specs.generated.model.ProductJoinedDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -105,14 +108,22 @@ public class ProductService {
     }
 
     private ProductDto toProductDtoAndGet(ProductEntity productEntity) {
-        ProductDto productDto = new ProductDto(productEntity.getMaker(), productEntity.getModel(), productEntity.getType());
+        ProductDto productDto = new ProductDto();
+        productDto.setMaker(productEntity.getMaker());
+        productDto.setModel(productEntity.getModel());
+        productDto.setType(productEntity.getType());
         return productDto;
     }
 
     private List<ProductJoinedDto> toProductJoinedDto (Iterable<ProductJoinedView> productsJoined) {
         List<ProductJoinedDto> productJoinedDtoList = new ArrayList<>();
         for(ProductJoinedView productJoinedView : productsJoined){
-            productJoinedDtoList.add(new ProductJoinedDto(productJoinedView.getMaker(), productJoinedView.getModel(), productJoinedView.getType(), translateDataBaseCode(String.valueOf(productJoinedView.getCode()))));
+            ProductJoinedDto productJoinedDto = new ProductJoinedDto();
+            productJoinedDto.setMaker(productJoinedView.getMaker());
+            productJoinedDto.setModel(productJoinedView.getModel());
+            productJoinedDto.setType(productJoinedView.getType());
+            productJoinedDto.setCode(translateDataBaseCode(String.valueOf(productJoinedView.getCode())));
+            productJoinedDtoList.add(productJoinedDto);
         }
         return productJoinedDtoList;
     }

@@ -1,8 +1,6 @@
 plugins {
     id 'java'
     id 'org.openapi.generator' version '7.5.0'
-    id 'org.springframework.boot' version '3.3.4'
-    id 'io.spring.dependency-management' version '1.1.6'
 }
 
 group 'com.example'
@@ -13,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.4.4'
     implementation 'org.springdoc:springdoc-openapi-starter-common:2.5.0'
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.21'
     implementation 'io.swagger.core.v3:swagger-models:2.2.21'

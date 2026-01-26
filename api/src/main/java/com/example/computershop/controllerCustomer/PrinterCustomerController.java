@@ -1,32 +1,31 @@
 package com.example.computershop.controllerCustomer;
-import com.example.computershop.model.dto.CartDto;
-import com.example.computershop.model.dto.PrinterDto;
 import com.example.computershop.service.CartService;
 import com.example.computershop.service.PrinterService;
-import jakarta.validation.Valid;
+import com.example.specs.generated.api.PrinterCustomerControllerApi;
+import com.example.specs.generated.model.CartDto;
+import com.example.specs.generated.model.PrinterDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/customer/printers")
-public class PrinterCustomerController {
+public class PrinterCustomerController implements PrinterCustomerControllerApi {
     private final PrinterService printerService;
     private final CartService cartService;
 
-    @GetMapping("/all")
-    List<PrinterDto> getPrinters(){
-        return printerService.getPrinters();
+    @Override
+    public ResponseEntity<List<PrinterDto>> getCustomerPrinters(){
+        return ResponseEntity.ok(printerService.getPrinters());
     }
-    @GetMapping
-    PrinterDto getPrinter(@RequestParam Long code){
-        return printerService.getPrinter(code);
+    @Override
+    public ResponseEntity<PrinterDto> getCustomerPrinter(Long code){
+        return ResponseEntity.ok(printerService.getPrinter(code));
     }
-
-    @PostMapping()
-    CartDto insertIntoCart(@Valid  @RequestBody CartDto cartDto) {
-        return cartService.save(cartDto);
+    @Override
+    public ResponseEntity<CartDto> insertCustomerPrinterIntoCart(CartDto cartDto) {
+        return ResponseEntity.ok(cartService.save(cartDto));
     }
 }

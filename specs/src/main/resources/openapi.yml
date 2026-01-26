@@ -10,19 +10,13 @@
       "description": "Generated server url"
     }
   ],
-  "tags": [
-    {
-      "name": "tag_at_class_lvl. Its pc controller",
-      "description": "Pc controller is here"
-    }
-  ],
   "paths": {
     "/customer/products": {
       "get": {
         "tags": [
           "product-customer-controller"
         ],
-        "operationId": "getProduct",
+        "operationId": "getCustomerProduct",
         "parameters": [
           {
             "name": "model",
@@ -50,7 +44,7 @@
         "tags": [
           "product-customer-controller"
         ],
-        "operationId": "insertIntoCart",
+        "operationId": "insertCustomerProductIntoCart",
         "requestBody": {
           "content": {
             "application/json": {
@@ -80,7 +74,7 @@
         "tags": [
           "printer-customer-controller"
         ],
-        "operationId": "getPrinter",
+        "operationId": "getCustomerPrinter",
         "parameters": [
           {
             "name": "code",
@@ -109,7 +103,7 @@
         "tags": [
           "printer-customer-controller"
         ],
-        "operationId": "insertIntoCart_1",
+        "operationId": "insertCustomerPrinterIntoCart",
         "requestBody": {
           "content": {
             "application/json": {
@@ -137,9 +131,9 @@
     "/customer/pcs": {
       "get": {
         "tags": [
-          "pc-customer-controllerlol"
+          "pc-customer-controller"
         ],
-        "operationId": "getPc",
+        "operationId": "getCustomerPc",
         "parameters": [
           {
             "name": "code",
@@ -168,7 +162,7 @@
         "tags": [
           "pc-customer-controller"
         ],
-        "operationId": "insertIntoCart_2",
+        "operationId": "insertCustomerPcIntoCart",
         "requestBody": {
           "content": {
             "application/json": {
@@ -198,7 +192,7 @@
         "tags": [
           "laptop-customer-controller"
         ],
-        "operationId": "getLaptop",
+        "operationId": "getCustomerLaptop",
         "parameters": [
           {
             "name": "code",
@@ -227,7 +221,7 @@
         "tags": [
           "laptop-customer-controller"
         ],
-        "operationId": "insertIntoCart_3",
+        "operationId": "insertCustomerLaptopIntoCart",
         "requestBody": {
           "content": {
             "application/json": {
@@ -317,7 +311,7 @@
         "tags": [
           "product-controller"
         ],
-        "operationId": "getProduct_1",
+        "operationId": "getProduct",
         "parameters": [
           {
             "name": "model",
@@ -401,7 +395,7 @@
         "tags": [
           "printer-controller"
         ],
-        "operationId": "getPrinter_1",
+        "operationId": "getPrinter",
         "parameters": [
           {
             "name": "code",
@@ -484,11 +478,9 @@
     "/admin/pcs": {
       "get": {
         "tags": [
-          "find ",
-          "tag_at_class_lvl. Its pc controller"
+          "pc-controller"
         ],
-        "summary": "Get a pc by its id",
-        "operationId": "getPc_1",
+        "operationId": "getPc",
         "parameters": [
           {
             "name": "code",
@@ -502,10 +494,10 @@
         ],
         "responses": {
           "400": {
-            "description": "Invalid id supplied"
+            "description": "Bad Request"
           },
           "200": {
-            "description": "Found the pc",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -513,32 +505,19 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Pc not found"
           }
         }
       },
       "post": {
         "tags": [
-          "common_tag_at_method_level",
-          "create",
-          "createPc",
-          "tag_at_class_lvl. Its pc controller"
+          "pc-controller"
         ],
         "operationId": "insertIntoPc",
         "requestBody": {
-          "description": "Pc to create",
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Pc"
-              },
-              "example": {
-                "code": "код",
-                "model": "модель",
-                "speed": "скорость",
-                "ram": "рам"
               }
             }
           },
@@ -563,7 +542,7 @@
         "tags": [
           "laptop-controller"
         ],
-        "operationId": "getLaptop_1",
+        "operationId": "getLaptop",
         "parameters": [
           {
             "name": "code",
@@ -822,8 +801,7 @@
     "/admin/pcs/{code}": {
       "delete": {
         "tags": [
-          "delete",
-          "tag_at_class_lvl. Its pc controller"
+          "pc-controller"
         ],
         "operationId": "deleteFromPc",
         "parameters": [
@@ -845,8 +823,7 @@
       },
       "patch": {
         "tags": [
-          "change",
-          "tag_at_class_lvl. Its pc controller"
+          "pc-controller"
         ],
         "operationId": "patchPcPartially",
         "parameters": [
@@ -978,7 +955,7 @@
         "tags": [
           "product-customer-controller"
         ],
-        "operationId": "getJoinedProducts",
+        "operationId": "getCustomerJoinedProducts",
         "responses": {
           "200": {
             "description": "OK",
@@ -1001,7 +978,7 @@
         "tags": [
           "product-customer-controller"
         ],
-        "operationId": "getProducts",
+        "operationId": "getCustomerProducts",
         "responses": {
           "200": {
             "description": "OK",
@@ -1024,7 +1001,7 @@
         "tags": [
           "printer-customer-controller"
         ],
-        "operationId": "getPrinters",
+        "operationId": "getCustomerPrinters",
         "responses": {
           "200": {
             "description": "OK",
@@ -1047,7 +1024,7 @@
         "tags": [
           "pc-customer-controller"
         ],
-        "operationId": "getPcs",
+        "operationId": "getCustomerPcs",
         "responses": {
           "200": {
             "description": "OK",
@@ -1070,7 +1047,7 @@
         "tags": [
           "laptop-customer-controller"
         ],
-        "operationId": "getLaptops",
+        "operationId": "getCustomerLaptops",
         "responses": {
           "200": {
             "description": "OK",
@@ -1093,7 +1070,7 @@
         "tags": [
           "device-customer-controller"
         ],
-        "operationId": "getDevice",
+        "operationId": "getCustomerDevice",
         "parameters": [
           {
             "name": "model",
@@ -1123,7 +1100,7 @@
         "tags": [
           "device-customer-controller"
         ],
-        "operationId": "getDevices",
+        "operationId": "getCustomerDevices",
         "responses": {
           "200": {
             "description": "OK",
@@ -1146,7 +1123,7 @@
         "tags": [
           "cart-consumer-controller"
         ],
-        "operationId": "getCartForCustomer",
+        "operationId": "getCustomerCartForCustomer",
         "parameters": [
           {
             "name": "username",
@@ -1177,7 +1154,7 @@
         "tags": [
           "cart-consumer-controller"
         ],
-        "operationId": "clearCart",
+        "operationId": "clearCustomerCart",
         "parameters": [
           {
             "name": "username",
@@ -1200,7 +1177,7 @@
         "tags": [
           "cart-consumer-controller"
         ],
-        "operationId": "getAllCartItems",
+        "operationId": "getCustomerAllCartItems",
         "responses": {
           "200": {
             "description": "OK",
@@ -1223,7 +1200,7 @@
         "tags": [
           "product-controller"
         ],
-        "operationId": "getJoinedProducts_1",
+        "operationId": "getJoinedProducts",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -1259,7 +1236,7 @@
         "tags": [
           "product-controller"
         ],
-        "operationId": "getProducts_1",
+        "operationId": "getProducts",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -1295,7 +1272,7 @@
         "tags": [
           "printer-controller"
         ],
-        "operationId": "getPrinters_1",
+        "operationId": "getPrinters",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -1329,9 +1306,9 @@
     "/admin/pcs/all": {
       "get": {
         "tags": [
-          "tag_at_class_lvl. Its pc controller"
+          "pc-controller"
         ],
-        "operationId": "getPcs_1",
+        "operationId": "getPcs",
         "responses": {
           "200": {
             "description": "OK",
@@ -1354,7 +1331,7 @@
         "tags": [
           "laptop-controller"
         ],
-        "operationId": "getLaptops_1",
+        "operationId": "getLaptops",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -1390,7 +1367,7 @@
         "tags": [
           "device-controller"
         ],
-        "operationId": "getDevice_1",
+        "operationId": "getDevice",
         "parameters": [
           {
             "name": "model",
@@ -1420,7 +1397,7 @@
         "tags": [
           "device-controller"
         ],
-        "operationId": "getDevices_1",
+        "operationId": "getDevices",
         "responses": {
           "200": {
             "description": "OK",
@@ -1443,7 +1420,7 @@
         "tags": [
           "cart-consumer-controller"
         ],
-        "operationId": "deleteOneFromCart",
+        "operationId": "deleteCustomerOneFromCart",
         "parameters": [
           {
             "name": "orderId",

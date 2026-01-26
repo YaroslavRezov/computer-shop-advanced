@@ -1,11 +1,12 @@
 package com.example.computershop.service;
 
 
-import com.example.computershop.model.dto.PrinterDto;
+import com.example.specs.generated.model.PrinterDto;
 import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
+import com.example.specs.generated.model.ProductDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -97,7 +98,12 @@ public class PrinterService {
     }
 
     private PrinterDto toPrinterDtoAndGet(PrinterEntity printerEntity) {
-        PrinterDto printerDto = new PrinterDto(printerEntity.getCode(), printerEntity.getProduct().getModel(), translateDataBaseColor(printerEntity.getColor()), printerEntity.getType(), printerEntity.getPrice());
+        PrinterDto printerDto = new PrinterDto();
+        printerDto.setCode(printerEntity.getCode());
+        printerDto.setModel(printerEntity.getProduct().getModel());
+        printerDto.setType(printerEntity.getType());
+        printerDto.setColor(translateDataBaseColor(printerEntity.getColor()));
+        printerDto.setPrice(printerEntity.getPrice());
         return printerDto;
     }
 

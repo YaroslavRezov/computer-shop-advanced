@@ -1,8 +1,8 @@
 package com.example.computershop.service;
 
-import com.example.computershop.model.dto.DeviceDto;
 import com.example.computershop.model.entity.DeviceView;
 import com.example.computershop.repository.DeviceRepository;
+import com.example.specs.generated.model.DeviceDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,9 @@ public class DeviceService {
     }
 
     private DeviceDto toDeviceDtoAndGet(DeviceView deviceView) {
-        DeviceDto deviceDto = new DeviceDto(deviceView.getModel(), deviceView.getPrice());
+        DeviceDto deviceDto = new DeviceDto();
+        deviceDto.setModel(deviceView.getModel());
+        deviceDto.setPrice(deviceView.getPrice());
         return deviceDto;
     }
 
