@@ -11,13 +11,11 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/customer/cart")
 public class CartConsumerController implements CartConsumerControllerApi {
     private final CartService cartService;
 
     @Override
-    @GetMapping("/all")
-    public ResponseEntity<List<com.example.specs.generated.model.CartDto>> getCustomerAllCartItems() {
+    public ResponseEntity<List<CartDto>> getCustomerAllCartItems() {
         return ResponseEntity.ok(cartService.getAll());
     }
     @GetMapping("/user/{username}")
@@ -30,11 +28,10 @@ public class CartConsumerController implements CartConsumerControllerApi {
     }
 
     @Override
-    @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> deleteCustomerOneFromCart(@PathVariable("orderId") Long orderId) {
         cartService.delete(orderId);
 
-        return null;
+        return ResponseEntity.noContent().build();
     }
 
 }

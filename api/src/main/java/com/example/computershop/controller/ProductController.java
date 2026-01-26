@@ -18,42 +18,38 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/products")
 public class ProductController implements ProductControllerApi {
 
     private final ProductService productService;
     @Override
-    @GetMapping("/all")
-    public ResponseEntity<List<com.example.specs.generated.model.ProductDto>> getProducts() {
+    public ResponseEntity<List<ProductDto>> getProducts() {
         return ResponseEntity.ok(productService.getProducts());
     }
 
     @Override
-    @GetMapping
     public ResponseEntity<ProductDto> getProduct(@RequestParam String model) {
          return ResponseEntity.ok(productService.getProduct(model));
     }
 
-    @GetMapping("/fullproduct")
+    @Override
     public ResponseEntity<List<ProductJoinedDto>> getJoinedProducts() {
         return ResponseEntity.ok(productService.getAllProductsJoined());
     }
 
-    @PostMapping()
+    @Override
     public ResponseEntity<ProductDto> insertIntoProduct(@Valid @RequestBody ProductDto productDto) {
         return ResponseEntity.ok(productService.save(productDto));
     }
 
-    @PatchMapping("/{model}")
+    @Override
     public ResponseEntity<ProductDto> patchProductPartially(@PathVariable String model, @Valid @RequestBody ProductDto productDto) {
         return ResponseEntity.ok(productService.updateProductPartially(model, productDto));
     }
-
-    @DeleteMapping("/{model}")
+    @Override
     public ResponseEntity<Void> deleteFromProduct(@PathVariable("model") String model) {
         productService.delete(model);
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.noContent().build();
     }
 
 

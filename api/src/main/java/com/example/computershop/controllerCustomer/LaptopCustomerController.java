@@ -14,23 +14,20 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/customer/laptops")
 public class LaptopCustomerController implements LaptopCustomerControllerApi {
 
     private final LaptopService laptopService;
     private final CartService cartService;
 
     @Override
-    @GetMapping("/all")
     public ResponseEntity<List<LaptopDto>> getCustomerLaptops(){
         return ResponseEntity.ok(laptopService.getLaptops());
     }
     @Override
-    @GetMapping
+
     public ResponseEntity<LaptopDto> getCustomerLaptop(@RequestParam Long code){
         return ResponseEntity.ok(laptopService.getLaptop(code));
     }
-
     @PostMapping()
     public ResponseEntity<CartDto> insertCustomerIntoCart(@Valid @RequestBody CartDto cartDto) {
         return ResponseEntity.ok(cartService.save(cartDto));

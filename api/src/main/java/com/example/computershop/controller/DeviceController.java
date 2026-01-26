@@ -5,14 +5,12 @@ import com.example.specs.generated.api.DeviceControllerApi;
 import com.example.specs.generated.model.DeviceDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/devices")
 public class DeviceController implements DeviceControllerApi {
 
 
@@ -24,7 +22,7 @@ public class DeviceController implements DeviceControllerApi {
     }
 
     @Override
-    public ResponseEntity<List<com.example.specs.generated.model.DeviceDto>> getDevices() {
+    public ResponseEntity<List<DeviceDto>> getDevices() {
         return ResponseEntity.ok(deviceService.getAllDevices());
     }
 

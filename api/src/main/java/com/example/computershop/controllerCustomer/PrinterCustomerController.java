@@ -13,23 +13,19 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/customer/printers")
 public class PrinterCustomerController implements PrinterCustomerControllerApi {
     private final PrinterService printerService;
     private final CartService cartService;
 
     @Override
-    @GetMapping("/all")
     public ResponseEntity<List<PrinterDto>> getCustomerPrinters(){
         return ResponseEntity.ok(printerService.getPrinters());
     }
     @Override
-    @GetMapping
     public ResponseEntity<PrinterDto> getCustomerPrinter(@RequestParam Long code){
         return ResponseEntity.ok(printerService.getPrinter(code));
     }
     @Override
-    @PostMapping()
     public ResponseEntity<CartDto> insertCustomerIntoCart(@Valid  @RequestBody CartDto cartDto) {
         return ResponseEntity.ok(cartService.save(cartDto));
     }

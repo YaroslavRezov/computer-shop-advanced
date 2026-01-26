@@ -16,18 +16,17 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/printers")
 public class PrinterController implements PrinterControllerApi {
     private final PrinterService printerService;
 
     @Override
     @GetMapping("/all")
-    public ResponseEntity<List<com.example.specs.generated.model.PrinterDto>> getPrinters(){
+    public ResponseEntity<List<PrinterDto>> getPrinters(){
         return ResponseEntity.ok(printerService.getPrinters());
     }
     @Override
     @GetMapping
-    public ResponseEntity<com.example.specs.generated.model.PrinterDto> getPrinter(@RequestParam Long code){
+    public ResponseEntity<PrinterDto> getPrinter(@RequestParam Long code){
         return ResponseEntity.ok(printerService.getPrinter(code));
     }
 
@@ -47,7 +46,7 @@ public class PrinterController implements PrinterControllerApi {
     public ResponseEntity<Void> deleteFromPrinter(@PathVariable("code") Long code) {
         printerService.delete(code);
 
-        return null;
+        return ResponseEntity.noContent().build();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

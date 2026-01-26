@@ -17,38 +17,32 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/laptops")
 public class LaptopController implements LaptopControllerApi{
     private final LaptopService laptopService;
 
     @Override
-    @GetMapping("/all")
-    public ResponseEntity<List<com.example.specs.generated.model.LaptopDto>> getLaptops(){
+    public ResponseEntity<List<LaptopDto>> getLaptops(){
         return ResponseEntity.ok(laptopService.getLaptops());
     }
-   @Override
-    @GetMapping
-    public ResponseEntity<com.example.specs.generated.model.LaptopDto> getLaptop(@RequestParam Long code){
+    @Override
+    public ResponseEntity<LaptopDto> getLaptop(@RequestParam Long code){
         return ResponseEntity.ok(laptopService.getLaptop(code));
     }
 
     @Override
-    @PostMapping()
     public ResponseEntity<LaptopDto> insertIntoLaptop(@Valid @RequestBody LaptopDto laptopDto) {
         return ResponseEntity.ok(laptopService.save(laptopDto));
     }
 
     @Override
-    @PatchMapping("/{code}")
     public ResponseEntity<LaptopDto> patchLaptopPartially(@PathVariable Long code, @Valid @RequestBody LaptopDto laptopDto) {
         return ResponseEntity.ok(laptopService.updateLaptopPartially(code, laptopDto));
     }
     @Override
-    @DeleteMapping("/{code}")
     public ResponseEntity<Void> deleteFromLaptop(@PathVariable("code") Long code) {
         laptopService.delete(code);
 
-        return null;
+        return ResponseEntity.noContent().build();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -11,37 +11,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/pcs")
 public class PcController implements PcControllerApi {
     private final PcService pcService;
 
 
-    @GetMapping("/all")
-    public ResponseEntity<List<com.example.specs.generated.model.PcDto>> getPcs(){
+    public ResponseEntity<List<PcDto>> getPcs(){
         return ResponseEntity.ok(pcService.getPcs());
     }
 
-    @GetMapping
-    public ResponseEntity<com.example.specs.generated.model.PcDto> getPc(@RequestParam Long code){
+    public ResponseEntity<PcDto> getPc(@RequestParam Long code){
         return ResponseEntity.ok(pcService.getPc(code));
     }
 
 
-    @PostMapping()
     public ResponseEntity<PcDto> insertIntoPc(@Valid @RequestBody PcDto pcDto) {
         return ResponseEntity.ok(pcService.save(pcDto));
     }
 
-    @PatchMapping("/{code}")
     public ResponseEntity<PcDto> patchPcPartially(@PathVariable Long code, @Valid @RequestBody PcDto pcDto) {
         return ResponseEntity.ok(pcService.updatePcPartially(code, pcDto));
     }
 
-    @DeleteMapping("/{code}")
     public ResponseEntity<Void> deleteFromPc(@PathVariable("code") Long code) {
         pcService.delete(code);
 
-        return null;
+        return ResponseEntity.noContent().build();
     }
 
 //    @GetMapping("/filter")

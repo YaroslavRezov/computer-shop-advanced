@@ -15,27 +15,23 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/customer/products")
 public class ProductCustomerController implements ProductCustomerControllerApi{
 
     private final ProductService productService;
     private final CartService cartService;
 
     @Override
-    @GetMapping("/all")
 
     public ResponseEntity<List<ProductDto>> getCustomerProducts() {
         return ResponseEntity.ok(productService.getProducts());
     }
 
     @Override
-    @GetMapping
     public ResponseEntity<ProductDto> getCustomerProduct(@RequestParam String model) {
         return ResponseEntity.ok(productService.getProduct(model));
     }
 
     @Override
-    @GetMapping("/fullproduct")
     public ResponseEntity<List<ProductJoinedDto>> getCustomerJoinedProducts() {
         return ResponseEntity.ok(productService.getAllProductsJoined());
     }

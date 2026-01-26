@@ -14,7 +14,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/customer/devices")
 public class DeviceCustomerController implements DeviceCustomerControllerApi {
 
 
