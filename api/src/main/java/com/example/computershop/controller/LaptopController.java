@@ -3,7 +3,6 @@ package com.example.computershop.controller;
 import com.example.computershop.service.LaptopService;
 import com.example.specs.generated.api.LaptopControllerApi;
 import com.example.specs.generated.model.LaptopDto;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,21 +24,21 @@ public class LaptopController implements LaptopControllerApi{
         return ResponseEntity.ok(laptopService.getLaptops());
     }
     @Override
-    public ResponseEntity<LaptopDto> getLaptop(@RequestParam Long code){
+    public ResponseEntity<LaptopDto> getLaptop(Long code){
         return ResponseEntity.ok(laptopService.getLaptop(code));
     }
 
     @Override
-    public ResponseEntity<LaptopDto> insertIntoLaptop(@Valid @RequestBody LaptopDto laptopDto) {
+    public ResponseEntity<LaptopDto> insertIntoLaptop(LaptopDto laptopDto) {
         return ResponseEntity.ok(laptopService.save(laptopDto));
     }
 
     @Override
-    public ResponseEntity<LaptopDto> patchLaptopPartially(@PathVariable Long code, @Valid @RequestBody LaptopDto laptopDto) {
+    public ResponseEntity<LaptopDto> patchLaptopPartially( Long code, LaptopDto laptopDto) {
         return ResponseEntity.ok(laptopService.updateLaptopPartially(code, laptopDto));
     }
     @Override
-    public ResponseEntity<Void> deleteFromLaptop(@PathVariable("code") Long code) {
+    public ResponseEntity<Void> deleteFromLaptop(Long code) {
         laptopService.delete(code);
 
         return ResponseEntity.noContent().build();

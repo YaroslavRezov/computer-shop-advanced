@@ -5,9 +5,6 @@ import com.example.specs.generated.api.DeviceCustomerControllerApi;
 import com.example.specs.generated.model.DeviceDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,12 +16,12 @@ public class DeviceCustomerController implements DeviceCustomerControllerApi {
 
     private final DeviceService deviceService;
 
-    @GetMapping("/all")
+    @Override
     public ResponseEntity<List<DeviceDto>> getCustomerDevices(){
         return ResponseEntity.ok(deviceService.getAllDevices());
     }
-    @GetMapping
-    public ResponseEntity<DeviceDto> getCustomerDevice(@RequestParam String model){
+    @Override
+    public ResponseEntity<DeviceDto> getCustomerDevice(String model){
         return ResponseEntity.ok(deviceService.getDevice(model));
     }
 }

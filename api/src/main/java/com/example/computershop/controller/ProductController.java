@@ -4,7 +4,6 @@ import com.example.computershop.service.ProductService;
 import com.example.specs.generated.api.ProductControllerApi;
 import com.example.specs.generated.model.ProductDto;
 import com.example.specs.generated.model.ProductJoinedDto;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,7 @@ public class ProductController implements ProductControllerApi {
     }
 
     @Override
-    public ResponseEntity<ProductDto> getProduct(@RequestParam String model) {
+    public ResponseEntity<ProductDto> getProduct(String model) {
          return ResponseEntity.ok(productService.getProduct(model));
     }
 
@@ -37,16 +36,16 @@ public class ProductController implements ProductControllerApi {
     }
 
     @Override
-    public ResponseEntity<ProductDto> insertIntoProduct(@Valid @RequestBody ProductDto productDto) {
+    public ResponseEntity<ProductDto> insertIntoProduct(ProductDto productDto) {
         return ResponseEntity.ok(productService.save(productDto));
     }
 
     @Override
-    public ResponseEntity<ProductDto> patchProductPartially(@PathVariable String model, @Valid @RequestBody ProductDto productDto) {
+    public ResponseEntity<ProductDto> patchProductPartially(String model, ProductDto productDto) {
         return ResponseEntity.ok(productService.updateProductPartially(model, productDto));
     }
     @Override
-    public ResponseEntity<Void> deleteFromProduct(@PathVariable("model") String model) {
+    public ResponseEntity<Void> deleteFromProduct(String model) {
         productService.delete(model);
 
         return ResponseEntity.noContent().build();

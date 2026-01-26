@@ -2,7 +2,6 @@ package com.example.computershop.controller;
 import com.example.specs.generated.model.PrinterDto;
 import com.example.computershop.service.PrinterService;
 import com.example.specs.generated.api.PrinterControllerApi;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,30 +19,25 @@ public class PrinterController implements PrinterControllerApi {
     private final PrinterService printerService;
 
     @Override
-    @GetMapping("/all")
     public ResponseEntity<List<PrinterDto>> getPrinters(){
         return ResponseEntity.ok(printerService.getPrinters());
     }
     @Override
-    @GetMapping
-    public ResponseEntity<PrinterDto> getPrinter(@RequestParam Long code){
+    public ResponseEntity<PrinterDto> getPrinter(Long code){
         return ResponseEntity.ok(printerService.getPrinter(code));
     }
 
     @Override
-    @PostMapping()
-    public ResponseEntity<PrinterDto> insertIntoPrinter(@Valid  @RequestBody PrinterDto printerDto) {
+    public ResponseEntity<PrinterDto> insertIntoPrinter(PrinterDto printerDto) {
         return ResponseEntity.ok(printerService.save(printerDto));
     }
     @Override
-    @PatchMapping("/{code}")
-    public ResponseEntity<PrinterDto> patchPrinterPartially(@PathVariable Long code, @Valid @RequestBody PrinterDto printerDto) {
+    public ResponseEntity<PrinterDto> patchPrinterPartially(Long code, PrinterDto printerDto) {
         return ResponseEntity.ok(printerService.updatePrinterPartially(code, printerDto));
     }
 
     @Override
-    @DeleteMapping("/{code}")
-    public ResponseEntity<Void> deleteFromPrinter(@PathVariable("code") Long code) {
+    public ResponseEntity<Void> deleteFromPrinter(Long code) {
         printerService.delete(code);
 
         return ResponseEntity.noContent().build();

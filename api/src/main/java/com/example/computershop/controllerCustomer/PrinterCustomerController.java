@@ -4,7 +4,6 @@ import com.example.computershop.service.PrinterService;
 import com.example.specs.generated.api.PrinterCustomerControllerApi;
 import com.example.specs.generated.model.CartDto;
 import com.example.specs.generated.model.PrinterDto;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +21,11 @@ public class PrinterCustomerController implements PrinterCustomerControllerApi {
         return ResponseEntity.ok(printerService.getPrinters());
     }
     @Override
-    public ResponseEntity<PrinterDto> getCustomerPrinter(@RequestParam Long code){
+    public ResponseEntity<PrinterDto> getCustomerPrinter(Long code){
         return ResponseEntity.ok(printerService.getPrinter(code));
     }
     @Override
-    public ResponseEntity<CartDto> insertCustomerIntoCart(@Valid  @RequestBody CartDto cartDto) {
+    public ResponseEntity<CartDto> insertCustomerPrinterIntoCart(CartDto cartDto) {
         return ResponseEntity.ok(cartService.save(cartDto));
     }
 }

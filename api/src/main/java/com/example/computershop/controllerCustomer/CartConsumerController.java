@@ -18,17 +18,18 @@ public class CartConsumerController implements CartConsumerControllerApi {
     public ResponseEntity<List<CartDto>> getCustomerAllCartItems() {
         return ResponseEntity.ok(cartService.getAll());
     }
-    @GetMapping("/user/{username}")
-    public List<CartDto> getCartForCustomer(@PathVariable String username) {
-        return cartService.getCartForUser(username);
+    @Override
+    public ResponseEntity<List<CartDto>> getCustomerCartForCustomer(String username) {
+        return ResponseEntity.ok(cartService.getCartForUser(username));
     }
-    @DeleteMapping("/user/{username}")
-    public void clearCustomerCart(@PathVariable String username) {
+    @Override
+    public ResponseEntity<Void> clearCustomerCart(String username) {
         cartService.delete(username);
+        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<Void> deleteCustomerOneFromCart(@PathVariable("orderId") Long orderId) {
+    public ResponseEntity<Void> deleteCustomerOneFromCart(Long orderId) {
         cartService.delete(orderId);
 
         return ResponseEntity.noContent().build();

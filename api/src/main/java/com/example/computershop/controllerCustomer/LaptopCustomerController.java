@@ -5,7 +5,6 @@ import com.example.computershop.service.LaptopService;
 import com.example.specs.generated.api.LaptopCustomerControllerApi;
 import com.example.specs.generated.model.CartDto;
 import com.example.specs.generated.model.LaptopDto;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +23,11 @@ public class LaptopCustomerController implements LaptopCustomerControllerApi {
         return ResponseEntity.ok(laptopService.getLaptops());
     }
     @Override
-
-    public ResponseEntity<LaptopDto> getCustomerLaptop(@RequestParam Long code){
+    public ResponseEntity<LaptopDto> getCustomerLaptop(Long code){
         return ResponseEntity.ok(laptopService.getLaptop(code));
     }
-    @PostMapping()
-    public ResponseEntity<CartDto> insertCustomerIntoCart(@Valid @RequestBody CartDto cartDto) {
+    @Override
+    public ResponseEntity<CartDto> insertCustomerLaptopIntoCart(CartDto cartDto) {
         return ResponseEntity.ok(cartService.save(cartDto));
     }
 

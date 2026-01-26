@@ -44,7 +44,7 @@
         "tags": [
           "product-customer-controller"
         ],
-        "operationId": "insertIntoCart",
+        "operationId": "insertCustomerProductIntoCart",
         "requestBody": {
           "content": {
             "application/json": {
@@ -103,7 +103,7 @@
         "tags": [
           "printer-customer-controller"
         ],
-        "operationId": "insertCustomerIntoCart",
+        "operationId": "insertCustomerPrinterIntoCart",
         "requestBody": {
           "content": {
             "application/json": {
@@ -162,7 +162,7 @@
         "tags": [
           "pc-customer-controller"
         ],
-        "operationId": "insertIntoCart_2",
+        "operationId": "insertCustomerPcIntoCart",
         "requestBody": {
           "content": {
             "application/json": {
@@ -221,7 +221,7 @@
         "tags": [
           "laptop-customer-controller"
         ],
-        "operationId": "insertIntoCart_3",
+        "operationId": "insertCustomerLaptopIntoCart",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1154,7 +1154,7 @@
         "tags": [
           "cart-consumer-controller"
         ],
-        "operationId": "clearCart",
+        "operationId": "clearCustomerCart",
         "parameters": [
           {
             "name": "username",
