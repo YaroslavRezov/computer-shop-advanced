@@ -1,7 +1,6 @@
 package com.example.computershop.service;
 
-//import com.example.computershop.model.dto.ProductDto;
-//import com.example.computershop.model.dto.ProductJoinedDto;
+import com.example.computershop.mapper.ProductMapper;
 import com.example.computershop.model.entity.*;
 import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.PcRepository;
@@ -9,13 +8,9 @@ import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.specs.generated.model.ProductDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import com.example.specs.generated.model.ProductDto;
 import com.example.specs.generated.model.ProductJoinedDto;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -26,33 +21,30 @@ public class ProductService {
     private final PcRepository pcRepository;
     private final PrinterRepository printerRepository;
     private final LaptopRepository laptopRepository;
+    private final ProductMapper productMapper;
     public List<ProductDto> getProducts() {
         Iterable<ProductEntity> productEntities = productRepository.findAll();
-        List<ProductDto> productDtoList = toProductDtoList(productEntities);
-        return productDtoList;
+        return productMapper.toProductDtoList(productEntities);
     }
     public ProductDto getProduct(String model) {
         ProductEntity productEntity = productRepository.findById(model).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
 
-        return toProductDtoAndGet(productEntity);
+        return productMapper.toProductDtoAndGet(productEntity);
     }
     public List<ProductJoinedDto> getAllProductsJoined() {
         Iterable<ProductJoinedView> productsJoined = productRepository.findAllProductsJoined();
-        List<ProductJoinedDto> productJoinedDtoList = toProductJoinedDto(productsJoined);
 
-        return productJoinedDtoList;
+        return productMapper.toProductJoinedDto(productsJoined);
     }
     public ProductDto save(ProductDto requestProductDto) {
-        ProductEntity sourceProductEntity = toProductEntity(requestProductDto);
+        ProductEntity sourceProductEntity = productMapper.toProductEntity(requestProductDto);
 
         ProductEntity savedProductEntity = productRepository.save(sourceProductEntity);
 
-        ProductDto responseProductDto = toProductDto(savedProductEntity);
-        return responseProductDto;
+        return productMapper.toProductDto(savedProductEntity);
     }
     public void delete(String model){
         productRepository.deleteById(model);
-
     }
 
     public ProductDto updateProductPartially(String model, ProductDto productDto) {
@@ -66,17 +58,8 @@ public class ProductService {
 
         ProductEntity savedProductEntity = productRepository.save(setProductEntity);
 
-        ProductDto responseProductDto = toProductDto(savedProductEntity);
-
-        return responseProductDto;
+        return productMapper.toProductDto(savedProductEntity);
     }
-
-    private String translateDataBaseCode(String fromGetCode) {
-        if(Objects.equals(fromGetCode, "null")){
-            return "нет отделного дивайса";
-        } else return fromGetCode;
-    }
-
     public Optional<Integer> getPriceByCode(Long code) {
         Optional<PcEntity> pc = pcRepository.findById(code);
         if (pc.isPresent()) return Optional.of(pc.get().getPrice());
@@ -88,51 +71,5 @@ public class ProductService {
         if (printer.isPresent()) return Optional.of(printer.get().getPrice());
 
         return Optional.empty(); // если не нашли
-    }
-
-    private ProductDto toProductDto (ProductEntity productEntity) {
-        ProductDto responseProductDto = new ProductDto();
-        responseProductDto.setMaker(productEntity.getMaker());
-        responseProductDto.setType(productEntity.getType());
-        responseProductDto.setModel(productEntity.getModel());
-        return responseProductDto;
-    }
-
-    private ProductEntity toProductEntity(ProductDto productDto) {
-        ProductEntity productEntity = new ProductEntity();
-        productEntity.setMaker(productDto.getMaker());
-        productEntity.setType(productDto.getType());
-
-
-        return productEntity;
-    }
-
-    private ProductDto toProductDtoAndGet(ProductEntity productEntity) {
-        ProductDto productDto = new ProductDto();
-        productDto.setMaker(productEntity.getMaker());
-        productDto.setModel(productEntity.getModel());
-        productDto.setType(productEntity.getType());
-        return productDto;
-    }
-
-    private List<ProductJoinedDto> toProductJoinedDto (Iterable<ProductJoinedView> productsJoined) {
-        List<ProductJoinedDto> productJoinedDtoList = new ArrayList<>();
-        for(ProductJoinedView productJoinedView : productsJoined){
-            ProductJoinedDto productJoinedDto = new ProductJoinedDto();
-            productJoinedDto.setMaker(productJoinedView.getMaker());
-            productJoinedDto.setModel(productJoinedView.getModel());
-            productJoinedDto.setType(productJoinedView.getType());
-            productJoinedDto.setCode(translateDataBaseCode(String.valueOf(productJoinedView.getCode())));
-            productJoinedDtoList.add(productJoinedDto);
-        }
-        return productJoinedDtoList;
-    }
-
-    private List<ProductDto> toProductDtoList(Iterable<ProductEntity> productEntities) {
-        List<ProductDto> productDtoList = new ArrayList<>();
-        for(ProductEntity productEntity : productEntities){
-            productDtoList.add(toProductDtoAndGet(productEntity));
-        }
-        return productDtoList;
     }
 }
