@@ -40,16 +40,9 @@ public class PrinterService {
 
     public PrinterDto updatePrinterPartially(Long code, PrinterDto printerDto) {
         PrinterEntity setPrinterEntity = printerRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого принтера"));
-        if (printerDto.getColor() != null) {
-            setPrinterEntity.setColor(printerDto.getColor());
-        }
-        if (printerDto.getType() != null) {
-            setPrinterEntity.setType(printerDto.getType());
-        }
-        if (printerDto.getPrice() != 0) {
-            setPrinterEntity.setPrice(printerDto.getPrice());
-        }
-
+        setPrinterEntity.setColor(printerDto.getColor());
+        setPrinterEntity.setType(printerDto.getType());
+        setPrinterEntity.setPrice(printerDto.getPrice());
         PrinterEntity savedPrinterEntity = printerRepository.save(setPrinterEntity);
 
         return printerMapper.toPrinterDto(savedPrinterEntity);

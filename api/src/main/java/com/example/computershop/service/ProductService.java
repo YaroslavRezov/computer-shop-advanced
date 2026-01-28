@@ -49,13 +49,7 @@ public class ProductService {
 
     public ProductDto updateProductPartially(String model, ProductDto productDto) {
         ProductEntity setProductEntity = productRepository.findById(model).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
-
-
-        if (productDto.getMaker() != null) {
-            setProductEntity.setMaker(productDto.getMaker());
-        }
-
-
+        setProductEntity.setMaker(productDto.getMaker());
         ProductEntity savedProductEntity = productRepository.save(setProductEntity);
 
         return productMapper.toProductDto(savedProductEntity);

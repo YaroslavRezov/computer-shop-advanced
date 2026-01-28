@@ -42,23 +42,11 @@ public class LaptopService {
 
     public LaptopDto updateLaptopPartially(Long code, LaptopDto laptopDto) {
         LaptopEntity setLaptopEntity = laptopRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ноута"));
-
-        if (laptopDto.getSpeed() != 0) {
-            setLaptopEntity.setSpeed(laptopDto.getSpeed());
-        }
-        if (laptopDto.getRam() != 0) {
-            setLaptopEntity.setRam(laptopDto.getRam());
-        }
-        if (laptopDto.getHd() != 0) {
-            setLaptopEntity.setHd(laptopDto.getHd());
-        }
-        if (laptopDto.getPrice() != 0) {
-            setLaptopEntity.setPrice(laptopDto.getPrice());
-        }
-        if (laptopDto.getScreen() != 0) {
-            setLaptopEntity.setScreen(laptopDto.getScreen());
-        }
-
+        setLaptopEntity.setSpeed(laptopDto.getSpeed());
+        setLaptopEntity.setRam(laptopDto.getRam());
+        setLaptopEntity.setHd(laptopDto.getHd());
+        setLaptopEntity.setPrice(laptopDto.getPrice());
+        setLaptopEntity.setScreen(laptopDto.getScreen());
         LaptopEntity savedLaptopEntity = laptopRepository.save(setLaptopEntity);
 
         return laptopMapper.toLaptopDto(savedLaptopEntity);

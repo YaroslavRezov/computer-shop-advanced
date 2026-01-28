@@ -41,23 +41,11 @@ public class PcService {
     public PcDto updatePcPartially(Long code, PcDto pcDto) {
         PcEntity setPcEntity = pcRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ПК"));
 //        ProductEntity foundProductEntity = productRepository.findById(pcDto.getModel()).orElse(null);
-
-        if (pcDto.getSpeed() != 0) {
-            setPcEntity.setSpeed(pcDto.getSpeed());
-        }
-        if (pcDto.getRam() != 0) {
-            setPcEntity.setRam(pcDto.getRam());
-        }
-        if (pcDto.getHd() != 0) {
-            setPcEntity.setHd(pcDto.getHd());
-        }
-        if (pcDto.getCd() != null) {
-            setPcEntity.setCd(pcDto.getCd());
-        }
-        if (pcDto.getPrice() != 0) {
-            setPcEntity.setPrice(pcDto.getPrice());
-        }
-
+        setPcEntity.setSpeed(pcDto.getSpeed());
+        setPcEntity.setRam(pcDto.getRam());
+        setPcEntity.setHd(pcDto.getHd());
+        setPcEntity.setCd(pcDto.getCd());
+        setPcEntity.setPrice(pcDto.getPrice());
         PcEntity savedPcEntity = pcRepository.save(setPcEntity);
 
         return pcMapper.toPcDto(savedPcEntity);
