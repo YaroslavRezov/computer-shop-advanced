@@ -13,11 +13,10 @@ import java.util.Objects;
 @Component
 public class ProductMapper {
     public ProductDto toProductDto (ProductEntity productEntity) {
-        ProductDto responseProductDto = new ProductDto();
-        responseProductDto.setMaker(productEntity.getMaker());
-        responseProductDto.setType(productEntity.getType());
-        responseProductDto.setModel(productEntity.getModel());
-        return responseProductDto;
+        return new ProductDto()
+                .maker(productEntity.getMaker())
+                .type(productEntity.getType())
+                .model(productEntity.getModel());
     }
 
     public ProductEntity toProductEntity(ProductDto productDto) {
@@ -30,11 +29,10 @@ public class ProductMapper {
     }
 
     public ProductDto toProductDtoAndGet(ProductEntity productEntity) {
-        ProductDto productDto = new ProductDto();
-        productDto.setMaker(productEntity.getMaker());
-        productDto.setModel(productEntity.getModel());
-        productDto.setType(productEntity.getType());
-        return productDto;
+        return new ProductDto()
+        .maker(productEntity.getMaker())
+        .model(productEntity.getModel())
+        .type(productEntity.getType());
     }
 
     public List<ProductJoinedDto> toProductJoinedDto (Iterable<ProductJoinedView> productsJoined) {

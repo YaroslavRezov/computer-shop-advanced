@@ -11,15 +11,14 @@ import java.util.List;
 @Component
 public class LaptopMapper {
     public LaptopDto toLaptopDto(LaptopEntity laptopEntity) {
-        LaptopDto laptopDto = new LaptopDto();
-        laptopDto.setModel(laptopEntity.getProduct().getModel());
-        laptopDto.setSpeed(laptopEntity.getSpeed());
-        laptopDto.setRam(laptopEntity.getRam());
-        laptopDto.setHd(laptopEntity.getHd());
-        laptopDto.setPrice(laptopEntity.getPrice());
-        laptopDto.setScreen(laptopEntity.getScreen());
-        laptopDto.setCode(laptopEntity.getCode());
-        return laptopDto;
+        return new LaptopDto()
+        .model(laptopEntity.getProduct().getModel())
+        .speed(laptopEntity.getSpeed())
+        .ram(laptopEntity.getRam())
+        .hd(laptopEntity.getHd())
+        .price(laptopEntity.getPrice())
+        .screen(laptopEntity.getScreen())
+        .code(laptopEntity.getCode());
     }
 
     public LaptopEntity toLaptopEntity(LaptopDto laptopDto, ProductEntity foundProductEntity) {
@@ -36,15 +35,14 @@ public class LaptopMapper {
     }
 
     public LaptopDto toLaptopDtoAndGet(LaptopEntity laptopEntity) {
-        LaptopDto laptopDto = new LaptopDto();
-        laptopDto.setCode(laptopEntity.getCode());
-        laptopDto.setModel(laptopEntity.getProduct().getModel());
-        laptopDto.setSpeed(laptopEntity.getSpeed());
-        laptopDto.setRam(laptopEntity.getRam());
-        laptopDto.setHd(laptopEntity.getHd());
-        laptopDto.setPrice(laptopEntity.getPrice());
-        laptopDto.setScreen(laptopEntity.getScreen());
-        return laptopDto;
+        return new LaptopDto()
+                .code(laptopEntity.getCode())
+                .model(laptopEntity.getProduct().getModel())
+                .speed(laptopEntity.getSpeed())
+                .ram(laptopEntity.getRam())
+                .hd(laptopEntity.getHd())
+                .price(laptopEntity.getPrice())
+                .screen(laptopEntity.getScreen());
     }
 
 

@@ -1,10 +1,16 @@
 package com.example.computershop.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Table(name = "laptop")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(toBuilder = true)
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Entity
 public class LaptopEntity extends BaseDeviceEntity {
 

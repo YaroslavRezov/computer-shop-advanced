@@ -11,15 +11,14 @@ import java.util.List;
 @Component
 public class PcMapper {
     public PcDto toPcDto (PcEntity pcEntity) {
-        PcDto pcDto = new PcDto();
-        pcDto.setModel(pcEntity.getProduct().getModel());
-        pcDto.setSpeed(pcEntity.getSpeed());
-        pcDto.setRam(pcEntity.getRam());
-        pcDto.setHd(pcEntity.getHd());
-        pcDto.setCd(pcEntity.getCd());
-        pcDto.setPrice(pcEntity.getPrice());
-        pcDto.setCode(pcEntity.getCode());
-        return pcDto;
+        return new PcDto()
+                .model(pcEntity.getProduct().getModel())
+                .speed(pcEntity.getSpeed())
+                .ram(pcEntity.getRam())
+                .hd(pcEntity.getHd())
+                .cd(pcEntity.getCd())
+                .price(pcEntity.getPrice())
+                .code(pcEntity.getCode());
     }
 
 
@@ -35,15 +34,14 @@ public class PcMapper {
         return pcEntity;
     }
     public PcDto toPcDtoAndGet(PcEntity pcEntity) {
-        PcDto pcDto =new PcDto();
-        pcDto.setCode(pcEntity.getCode());
-        pcDto.setModel(pcEntity.getProduct().getModel());
-        pcDto.setSpeed(pcEntity.getSpeed());
-        pcDto.setRam(pcEntity.getRam());
-        pcDto.setHd(pcEntity.getHd());
-        pcDto.setCd(pcEntity.getCd());
-        pcDto.setPrice(pcEntity.getPrice());
-        return pcDto;
+        return new PcDto()
+                .model(pcEntity.getProduct().getModel())
+                .speed(pcEntity.getSpeed())
+                .ram(pcEntity.getRam())
+                .hd(pcEntity.getHd())
+                .cd(pcEntity.getCd())
+                .price(pcEntity.getPrice())
+                .code(pcEntity.getCode());
     }
 
     public List<PcDto> toPcDtoList(Iterable<PcEntity> pcEntities) {

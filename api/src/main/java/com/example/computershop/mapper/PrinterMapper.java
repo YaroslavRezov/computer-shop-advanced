@@ -12,21 +12,18 @@ import java.util.Objects;
 @Component
 public class PrinterMapper {
     public PrinterDto toPrinterDto (PrinterEntity printerEntity) {
-        PrinterDto printerDto = new PrinterDto();
-        printerDto.setModel(printerEntity.getProduct().getModel());
-        printerDto.setColor(printerEntity.getColor());
-        printerDto.setType(printerEntity.getType());
-        printerDto.setPrice(printerEntity.getPrice());
-        printerDto.setCode(printerEntity.getCode());
-        return printerDto;
+        return new PrinterDto()
+                .model(printerEntity.getProduct().getModel())
+                .color(printerEntity.getColor())
+                .type(printerEntity.getType())
+                .price(printerEntity.getPrice())
+                .code(printerEntity.getCode());
     }
 
 
     public PrinterEntity toPrinterEntity(PrinterDto printerDto, ProductEntity foundProductEntity) {
         PrinterEntity printerEntity = new PrinterEntity();
-
         printerEntity.setProduct(foundProductEntity);
-
         printerEntity.setColor(printerDto.getColor());
         printerEntity.setType(printerDto.getType());
         printerEntity.setPrice(printerDto.getPrice());
@@ -44,13 +41,12 @@ public class PrinterMapper {
     }
 
     public PrinterDto toPrinterDtoAndGet(PrinterEntity printerEntity) {
-        PrinterDto printerDto = new PrinterDto();
-        printerDto.setCode(printerEntity.getCode());
-        printerDto.setModel(printerEntity.getProduct().getModel());
-        printerDto.setType(printerEntity.getType());
-        printerDto.setColor(translateDataBaseColor(printerEntity.getColor()));
-        printerDto.setPrice(printerEntity.getPrice());
-        return printerDto;
+        return new PrinterDto()
+                .model(printerEntity.getProduct().getModel())
+                .color(translateDataBaseColor(printerEntity.getColor()))
+                .type(printerEntity.getType())
+                .price(printerEntity.getPrice())
+                .code(printerEntity.getCode());
     }
 
     public List<PrinterDto> toPrinterDtoList(Iterable<PrinterEntity> printerEntities) {

@@ -10,25 +10,23 @@ import java.util.List;
 @Component
 public class CartMapper {
     public CartDto toCartDto (CartEntity cartEntity) {
-        CartDto cartDto = new CartDto();
-        cartDto.setModel(cartEntity.getProduct().getModel());
-        cartDto.setCode(cartEntity.getCode());
-        cartDto.setPrice(cartEntity.getPrice());
-        cartDto.setUsername(cartEntity.getUser().getUsername());
-        cartDto.setOrderId(cartEntity.getOrderId());
-
-        return cartDto;
+        return new CartDto()
+                .model(cartEntity.getProduct().getModel())
+                .code(cartEntity.getCode())
+                .price(cartEntity.getPrice())
+                .username(cartEntity.getUser().getUsername())
+                .orderId(cartEntity.getOrderId());
     }
 
     public CartDto toCartDtoAndGet(CartEntity cartEntity) {
-        CartDto cartDto = new CartDto();
-        cartDto.setOrderId(cartDto.getOrderId());
-        cartDto.setModel(cartEntity.getProduct().getModel());
-        cartDto.setCode(cartEntity.getCode());
-        cartDto.setType(cartEntity.getProduct().getType());
-        cartDto.setUsername(cartEntity.getUser().getUsername());
-        cartDto.setPrice(cartEntity.getPrice());
-        return cartDto;
+        return new CartDto()
+                .orderId(cartEntity.getOrderId())
+                .model(cartEntity.getProduct().getModel())
+                .code(cartEntity.getCode())
+                .type(cartEntity.getProduct().getType())
+                .username(cartEntity.getUser().getUsername())
+                .price(cartEntity.getPrice());
+
     }
 
     public List<CartDto> toCartDtoList(Iterable<CartEntity> cartEntities) {

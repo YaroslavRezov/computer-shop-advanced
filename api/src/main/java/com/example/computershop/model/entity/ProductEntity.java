@@ -1,12 +1,18 @@
 package com.example.computershop.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
 @Table(name = "product")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(toBuilder = true)
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Entity
 public class ProductEntity {
     @Id

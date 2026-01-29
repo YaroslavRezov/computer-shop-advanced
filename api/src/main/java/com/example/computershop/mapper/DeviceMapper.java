@@ -10,10 +10,9 @@ import java.util.List;
 @Component
 public class DeviceMapper {
     public DeviceDto toDeviceDtoAndGet(DeviceView deviceView) {
-        DeviceDto deviceDto = new DeviceDto();
-        deviceDto.setModel(deviceView.getModel());
-        deviceDto.setPrice(deviceView.getPrice());
-        return deviceDto;
+        return new DeviceDto()
+                .model(deviceView.getModel())
+                .price(deviceView.getPrice());
     }
 
     public List<DeviceDto> toDeviceDtoList(Iterable<DeviceView> BaseDevices) {
