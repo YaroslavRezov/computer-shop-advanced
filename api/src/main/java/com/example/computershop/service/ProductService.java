@@ -23,7 +23,7 @@ public class ProductService {
     private final LaptopRepository laptopRepository;
     private final ProductMapper productMapper;
     public List<ProductDto> getProducts() {
-        Iterable<ProductEntity> productEntities = productRepository.findAll();
+        List<ProductEntity> productEntities = productRepository.findAll();
         return productMapper.toProductDtoList(productEntities);
     }
     public ProductDto getProduct(String model) {

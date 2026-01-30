@@ -5,7 +5,6 @@ import com.example.computershop.model.entity.ProductEntity;
 import com.example.specs.generated.model.PrinterDto;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,11 +48,9 @@ public class PrinterMapper {
                 .code(printerEntity.getCode());
     }
 
-    public List<PrinterDto> toPrinterDtoList(Iterable<PrinterEntity> printerEntities) {
-        List<PrinterDto> printerDtoList = new ArrayList<>();
-        for(PrinterEntity printerEntity : printerEntities){
-            printerDtoList.add(toPrinterDtoAndGet(printerEntity));
-        }
-        return printerDtoList;
+    public List<PrinterDto> toPrinterDtoList(List<PrinterEntity> printerEntities) {
+        return printerEntities.stream()
+                .map(printerEntity -> toPrinterDtoAndGet(printerEntity))
+                .toList();
     }
 }

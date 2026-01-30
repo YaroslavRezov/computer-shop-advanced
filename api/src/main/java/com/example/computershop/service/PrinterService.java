@@ -19,7 +19,7 @@ public class PrinterService {
     private final PrinterMapper printerMapper;
 
     public List<PrinterDto> getPrinters() {
-        Iterable<PrinterEntity> printerEntities = printerRepository.findAll();
+        List<PrinterEntity> printerEntities = printerRepository.findAll();
         return printerMapper.toPrinterDtoList(printerEntities);
     }
 

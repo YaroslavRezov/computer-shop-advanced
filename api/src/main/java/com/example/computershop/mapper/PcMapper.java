@@ -5,7 +5,6 @@ import com.example.computershop.model.entity.ProductEntity;
 import com.example.specs.generated.model.PcDto;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -44,11 +43,10 @@ public class PcMapper {
                 .code(pcEntity.getCode());
     }
 
-    public List<PcDto> toPcDtoList(Iterable<PcEntity> pcEntities) {
-        List<PcDto> pcDtoList = new ArrayList<>();
-        for(PcEntity pcEntity : pcEntities) {
-            pcDtoList.add(toPcDtoAndGet(pcEntity));
-        }
-        return pcDtoList;
+    public List<PcDto> toPcDtoList(List<PcEntity> pcEntities) {
+        return pcEntities.stream()
+                .map(pcEntity -> toPcDtoAndGet(pcEntity))
+                .toList();
+
     }
 }

@@ -4,7 +4,6 @@ import com.example.computershop.model.entity.CartEntity;
 import com.example.specs.generated.model.CartDto;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -29,11 +28,9 @@ public class CartMapper {
 
     }
 
-    public List<CartDto> toCartDtoList(Iterable<CartEntity> cartEntities) {
-        List<CartDto> cartDtoList = new ArrayList<>();
-        for(CartEntity cartEntity : cartEntities){
-            cartDtoList.add(toCartDtoAndGet(cartEntity));
-        }
-        return cartDtoList;
+    public List<CartDto> toCartDtoList(List<CartEntity> cartEntities) {
+        return cartEntities.stream()
+                .map(cartEntity -> toCartDtoAndGet(cartEntity))
+                .toList();
     }
 }

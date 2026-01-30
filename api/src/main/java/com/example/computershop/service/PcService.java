@@ -19,7 +19,7 @@ public class PcService {
     private final PcMapper pcMapper;
 
     public List<PcDto> getPcs() {
-        Iterable<PcEntity> pcEntities = pcRepository.findAll();
+        List<PcEntity> pcEntities = pcRepository.findAll();
         return pcMapper.toPcDtoList(pcEntities);
     }
 

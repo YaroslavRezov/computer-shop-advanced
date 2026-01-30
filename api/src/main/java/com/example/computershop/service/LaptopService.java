@@ -19,7 +19,7 @@ public class LaptopService {
 
 
     public List<LaptopDto> getLaptops() {
-        Iterable<LaptopEntity> laptopEntities = laptopRepository.findAll();
+        List<LaptopEntity> laptopEntities = laptopRepository.findAll();
         List<LaptopDto> laptopDtoList = laptopMapper.toLaptopDtoList(laptopEntities);
 
         return laptopDtoList;

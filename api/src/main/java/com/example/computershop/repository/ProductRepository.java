@@ -1,12 +1,12 @@
 package com.example.computershop.repository;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.model.entity.ProductJoinedView;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends CrudRepository<ProductEntity, String> {
+public interface ProductRepository extends JpaRepository<ProductEntity, String> {
 
     @Query(nativeQuery = true, value = """
             SELECT product.model, maker, type, code

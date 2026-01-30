@@ -48,12 +48,10 @@ public class ProductMapper {
         return productJoinedDtoList;
     }
 
-    public List<ProductDto> toProductDtoList(Iterable<ProductEntity> productEntities) {
-        List<ProductDto> productDtoList = new ArrayList<>();
-        for(ProductEntity productEntity : productEntities){
-            productDtoList.add(toProductDtoAndGet(productEntity));
-        }
-        return productDtoList;
+    public List<ProductDto> toProductDtoList(List<ProductEntity> productEntities) {
+        return productEntities.stream()
+                .map(productEntity -> toProductDtoAndGet(productEntity))
+                .toList();
     }
 
     private String translateDataBaseCode(String fromGetCode) {

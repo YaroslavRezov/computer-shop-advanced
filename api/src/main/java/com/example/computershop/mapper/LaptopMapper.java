@@ -4,8 +4,6 @@ import com.example.computershop.model.entity.LaptopEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.specs.generated.model.LaptopDto;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -46,11 +44,9 @@ public class LaptopMapper {
     }
 
 
-    public List<LaptopDto> toLaptopDtoList(Iterable<LaptopEntity> laptopEntities) {
-        List<LaptopDto> laptopDtoList = new ArrayList<>();
-        for (LaptopEntity laptopEntity : laptopEntities) {
-            laptopDtoList.add(toLaptopDtoAndGet(laptopEntity));
-        }
-        return laptopDtoList;
+    public List<LaptopDto> toLaptopDtoList(List<LaptopEntity> laptopEntities) {
+        return laptopEntities.stream()
+                .map(laptopEntity -> toLaptopDtoAndGet(laptopEntity))
+                .toList();
     }
 }

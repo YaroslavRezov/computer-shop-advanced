@@ -22,13 +22,13 @@ public class CartService {
     private final CartMapper cartMapper;
 
     public List<CartDto> getAll() {
-        Iterable<CartEntity> cartEntities = cartRepository.findAll();
+        List<CartEntity> cartEntities = cartRepository.findAll();
 
         return cartMapper.toCartDtoList(cartEntities);
     }
 
     public List<CartDto> getCartForUser(String username){
-        Iterable<CartEntity> cartEntities = cartRepository.findByUser(usersRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Нет такого пользователя" + username)));
+        List<CartEntity> cartEntities = cartRepository.findByUser(usersRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Нет такого пользователя" + username)));
 
         return cartMapper.toCartDtoList(cartEntities);
     }

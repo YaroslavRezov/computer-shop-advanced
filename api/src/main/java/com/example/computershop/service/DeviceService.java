@@ -11,16 +11,16 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class DeviceService {
-    private final DeviceRepository pcRepository;
+    private final DeviceRepository deviceRepository;
     private final DeviceMapper deviceMapper;
 
     public List<DeviceDto> getAllDevices() {
-        Iterable<DeviceView> BaseDevices = pcRepository.findAllDevices();
-        return deviceMapper.toDeviceDtoList(BaseDevices);
+        List<DeviceView> baseDevices = deviceRepository.findAllDevices();
+        return deviceMapper.toDeviceDtoList(baseDevices);
     }
 
     public DeviceDto getDevice(String model) {
-        DeviceView deviceView = pcRepository.findDeviceByCode(model);
+        DeviceView deviceView = deviceRepository.findDeviceByCode(model);
 
         return deviceMapper.toDeviceDtoAndGet(deviceView);
     }
