@@ -1,1659 +1,1030 @@
-{
-  "openapi": "3.0.1",
-  "info": {
-    "title": "OpenAPI definition",
-    "version": "v0"
-  },
-  "servers": [
-    {
-      "url": "http://localhost:8080",
-      "description": "Generated server url"
-    }
-  ],
-  "paths": {
-    "/customer/products": {
-      "get": {
-        "tags": [
-          "product-customer-controller"
-        ],
-        "operationId": "getCustomerProduct",
-        "parameters": [
-          {
-            "name": "model",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Product"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "product-customer-controller"
-        ],
-        "operationId": "insertCustomerProductIntoCart",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Cart"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Cart"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer/printers": {
-      "get": {
-        "tags": [
-          "printer-customer-controller"
-        ],
-        "operationId": "getCustomerPrinter",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Printer"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "printer-customer-controller"
-        ],
-        "operationId": "insertCustomerPrinterIntoCart",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Cart"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Cart"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer/pcs": {
-      "get": {
-        "tags": [
-          "pc-customer-controller"
-        ],
-        "operationId": "getCustomerPc",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pc"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "pc-customer-controller"
-        ],
-        "operationId": "insertCustomerPcIntoCart",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Cart"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Cart"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer/laptops": {
-      "get": {
-        "tags": [
-          "laptop-customer-controller"
-        ],
-        "operationId": "getCustomerLaptop",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Laptop"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "laptop-customer-controller"
-        ],
-        "operationId": "insertCustomerLaptopIntoCart",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Cart"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Cart"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/auth/register": {
-      "post": {
-        "tags": [
-          "auth-controller"
-        ],
-        "operationId": "register",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/auth/login": {
-      "post": {
-        "tags": [
-          "auth-controller"
-        ],
-        "operationId": "login",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/products": {
-      "get": {
-        "tags": [
-          "product-controller"
-        ],
-        "operationId": "getProduct",
-        "parameters": [
-          {
-            "name": "model",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Product"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "product-controller"
-        ],
-        "operationId": "insertIntoProduct",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Product"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Product"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/printers": {
-      "get": {
-        "tags": [
-          "printer-controller"
-        ],
-        "operationId": "getPrinter",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Printer"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "printer-controller"
-        ],
-        "operationId": "insertIntoPrinter",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Printer"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Printer"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/pcs": {
-      "get": {
-        "tags": [
-          "pc-controller"
-        ],
-        "operationId": "getPc",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pc"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "pc-controller"
-        ],
-        "operationId": "insertIntoPc",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Pc"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pc"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/laptops": {
-      "get": {
-        "tags": [
-          "laptop-controller"
-        ],
-        "operationId": "getLaptop",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Laptop"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "laptop-controller"
-        ],
-        "operationId": "insertIntoLaptop",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Laptop"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Laptop"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/products/{model}": {
-      "delete": {
-        "tags": [
-          "product-controller"
-        ],
-        "operationId": "deleteFromProduct",
-        "parameters": [
-          {
-            "name": "model",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "product-controller"
-        ],
-        "operationId": "patchProductPartially",
-        "parameters": [
-          {
-            "name": "model",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Product"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Product"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/printers/{code}": {
-      "delete": {
-        "tags": [
-          "printer-controller"
-        ],
-        "operationId": "deleteFromPrinter",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "printer-controller"
-        ],
-        "operationId": "patchPrinterPartially",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Printer"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Printer"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/pcs/{code}": {
-      "delete": {
-        "tags": [
-          "pc-controller"
-        ],
-        "operationId": "deleteFromPc",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "pc-controller"
-        ],
-        "operationId": "patchPcPartially",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Pc"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pc"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/laptops/{code}": {
-      "delete": {
-        "tags": [
-          "laptop-controller"
-        ],
-        "operationId": "deleteFromLaptop",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "laptop-controller"
-        ],
-        "operationId": "patchLaptopPartially",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Laptop"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Laptop"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer/products/fullproduct": {
-      "get": {
-        "tags": [
-          "product-customer-controller"
-        ],
-        "operationId": "getCustomerJoinedProducts",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductJoined"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer/products/all": {
-      "get": {
-        "tags": [
-          "product-customer-controller"
-        ],
-        "operationId": "getCustomerProducts",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Product"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer/printers/all": {
-      "get": {
-        "tags": [
-          "printer-customer-controller"
-        ],
-        "operationId": "getCustomerPrinters",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Printer"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer/pcs/all": {
-      "get": {
-        "tags": [
-          "pc-customer-controller"
-        ],
-        "operationId": "getCustomerPcs",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Pc"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer/laptops/all": {
-      "get": {
-        "tags": [
-          "laptop-customer-controller"
-        ],
-        "operationId": "getCustomerLaptops",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Laptop"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer/devices": {
-      "get": {
-        "tags": [
-          "device-customer-controller"
-        ],
-        "operationId": "getCustomerDevice",
-        "parameters": [
-          {
-            "name": "model",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Device"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer/devices/all": {
-      "get": {
-        "tags": [
-          "device-customer-controller"
-        ],
-        "operationId": "getCustomerDevices",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Device"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer/cart/user/{username}": {
-      "get": {
-        "tags": [
-          "cart-consumer-controller"
-        ],
-        "operationId": "getCustomerCartForCustomer",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Cart"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "cart-consumer-controller"
-        ],
-        "operationId": "clearCustomerCart",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/customer/cart/all": {
-      "get": {
-        "tags": [
-          "cart-consumer-controller"
-        ],
-        "operationId": "getCustomerAllCartItems",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Cart"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/products/fullproduct": {
-      "get": {
-        "tags": [
-          "product-controller"
-        ],
-        "operationId": "getJoinedProducts",
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductJoined"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/products/all": {
-      "get": {
-        "tags": [
-          "product-controller"
-        ],
-        "operationId": "getProducts",
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Product"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/printers/all": {
-      "get": {
-        "tags": [
-          "printer-controller"
-        ],
-        "operationId": "getPrinters",
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Printer"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/pcs/all": {
-      "get": {
-        "tags": [
-          "pc-controller"
-        ],
-        "operationId": "getPcs",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Pc"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/laptops/all": {
-      "get": {
-        "tags": [
-          "laptop-controller"
-        ],
-        "operationId": "getLaptops",
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Laptop"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/devices": {
-      "get": {
-        "tags": [
-          "device-controller"
-        ],
-        "operationId": "getDevice",
-        "parameters": [
-          {
-            "name": "model",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Device"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/devices/all": {
-      "get": {
-        "tags": [
-          "device-controller"
-        ],
-        "operationId": "getDevices",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Device"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer/cart/{orderId}": {
-      "delete": {
-        "tags": [
-          "cart-consumer-controller"
-        ],
-        "operationId": "deleteCustomerOneFromCart",
-        "parameters": [
-          {
-            "name": "orderId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Cart": {
-        "required": [
-          "model",
-          "price",
-          "username"
-        ],
-        "type": "object",
-        "properties": {
-          "orderId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "model": {
-            "type": "string"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "type": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
-          },
-          "price": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "RegisterRequest": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        }
-      },
-      "AuthResponse": {
-        "type": "object",
-        "properties": {
-          "token": {
-            "type": "string"
-          }
-        }
-      },
-      "LoginRequest": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        }
-      },
-      "Product": {
-        "required": [
-          "maker"
-        ],
-        "type": "object",
-        "properties": {
-          "maker": {
-            "type": "string"
-          },
-          "model": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          }
-        }
-      },
-      "Printer": {
-        "required": [
-          "color",
-          "price",
-          "type"
-        ],
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "model": {
-            "type": "string"
-          },
-          "color": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "price": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "Pc": {
-        "required": [
-          "cd",
-          "hd",
-          "price",
-          "ram",
-          "speed"
-        ],
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "model": {
-            "type": "string"
-          },
-          "speed": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ram": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "hd": {
-            "type": "number",
-            "format": "double"
-          },
-          "cd": {
-            "type": "string"
-          },
-          "price": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "Laptop": {
-        "required": [
-          "hd",
-          "model",
-          "price",
-          "ram",
-          "screen",
-          "speed"
-        ],
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "model": {
-            "type": "string"
-          },
-          "speed": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ram": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "hd": {
-            "type": "number",
-            "format": "double"
-          },
-          "price": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "screen": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "ProductJoined": {
-        "type": "object",
-        "properties": {
-          "maker": {
-            "type": "string"
-          },
-          "model": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "code": {
-            "type": "string"
-          }
-        }
-      },
-      "Device": {
-        "type": "object",
-        "properties": {
-          "model": {
-            "type": "string"
-          },
-          "price": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      }
-    }
-  }
-}
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /customer/products:
+    get:
+      tags:
+        - product-customer-controller
+      operationId: getCustomerProduct
+      parameters:
+        - name: model
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    post:
+      tags:
+        - product-customer-controller
+      operationId: insertCustomerProductIntoCart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+  /customer/printers:
+    get:
+      tags:
+        - printer-customer-controller
+      operationId: getCustomerPrinter
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Printer'
+    post:
+      tags:
+        - printer-customer-controller
+      operationId: insertCustomerPrinterIntoCart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+  /customer/pcs:
+    get:
+      tags:
+        - pc-customer-controller
+      operationId: getCustomerPc
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pc'
+    post:
+      tags:
+        - pc-customer-controller
+      operationId: insertCustomerPcIntoCart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+  /customer/laptops:
+    get:
+      tags:
+        - laptop-customer-controller
+      operationId: getCustomerLaptop
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Laptop'
+    post:
+      tags:
+        - laptop-customer-controller
+      operationId: insertCustomerLaptopIntoCart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+  /api/auth/register:
+    post:
+      tags:
+        - auth-controller
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/auth/login:
+    post:
+      tags:
+        - auth-controller
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /admin/products:
+    get:
+      tags:
+        - product-controller
+      operationId: getProduct
+      parameters:
+        - name: model
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    post:
+      tags:
+        - product-controller
+      operationId: insertIntoProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /admin/printers:
+    get:
+      tags:
+        - printer-controller
+      operationId: getPrinter
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Printer'
+    post:
+      tags:
+        - printer-controller
+      operationId: insertIntoPrinter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Printer'
+        required: true
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Printer'
+  /admin/pcs:
+    get:
+      tags:
+        - pc-controller
+      operationId: getPc
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Bad Request
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pc'
+    post:
+      tags:
+        - pc-controller
+      operationId: insertIntoPc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pc'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pc'
+  /admin/laptops:
+    get:
+      tags:
+        - laptop-controller
+      operationId: getLaptop
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Laptop'
+    post:
+      tags:
+        - laptop-controller
+      operationId: insertIntoLaptop
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Laptop'
+        required: true
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Laptop'
+  /admin/products/{model}:
+    delete:
+      tags:
+        - product-controller
+      operationId: deleteFromProduct
+      parameters:
+        - name: model
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+    patch:
+      tags:
+        - product-controller
+      operationId: patchProductPartially
+      parameters:
+        - name: model
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /admin/printers/{code}:
+    delete:
+      tags:
+        - printer-controller
+      operationId: deleteFromPrinter
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+    patch:
+      tags:
+        - printer-controller
+      operationId: patchPrinterPartially
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Printer'
+        required: true
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Printer'
+  /admin/pcs/{code}:
+    delete:
+      tags:
+        - pc-controller
+      operationId: deleteFromPc
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+    patch:
+      tags:
+        - pc-controller
+      operationId: patchPcPartially
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pc'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pc'
+  /admin/laptops/{code}:
+    delete:
+      tags:
+        - laptop-controller
+      operationId: deleteFromLaptop
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+    patch:
+      tags:
+        - laptop-controller
+      operationId: patchLaptopPartially
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Laptop'
+        required: true
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Laptop'
+  /customer/products/fullproduct:
+    get:
+      tags:
+        - product-customer-controller
+      operationId: getCustomerJoinedProducts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductJoined'
+  /customer/products/all:
+    get:
+      tags:
+        - product-customer-controller
+      operationId: getCustomerProducts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /customer/printers/all:
+    get:
+      tags:
+        - printer-customer-controller
+      operationId: getCustomerPrinters
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Printer'
+  /customer/pcs/all:
+    get:
+      tags:
+        - pc-customer-controller
+      operationId: getCustomerPcs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pc'
+  /customer/laptops/all:
+    get:
+      tags:
+        - laptop-customer-controller
+      operationId: getCustomerLaptops
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Laptop'
+  /customer/devices:
+    get:
+      tags:
+        - device-customer-controller
+      operationId: getCustomerDevice
+      parameters:
+        - name: model
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+  /customer/devices/all:
+    get:
+      tags:
+        - device-customer-controller
+      operationId: getCustomerDevices
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+  /customer/cart/user/{username}:
+    get:
+      tags:
+        - cart-consumer-controller
+      operationId: getCustomerCartForCustomer
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+    delete:
+      tags:
+        - cart-consumer-controller
+      operationId: clearCustomerCart
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /customer/cart/all:
+    get:
+      tags:
+        - cart-consumer-controller
+      operationId: getCustomerAllCartItems
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+  /admin/products/fullproduct:
+    get:
+      tags:
+        - product-controller
+      operationId: getJoinedProducts
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductJoined'
+  /admin/products/all:
+    get:
+      tags:
+        - product-controller
+      operationId: getProducts
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /admin/printers/all:
+    get:
+      tags:
+        - printer-controller
+      operationId: getPrinters
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Printer'
+  /admin/pcs/all:
+    get:
+      tags:
+        - pc-controller
+      operationId: getPcs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pc'
+  /admin/laptops/all:
+    get:
+      tags:
+        - laptop-controller
+      operationId: getLaptops
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Laptop'
+  /admin/devices:
+    get:
+      tags:
+        - device-controller
+      operationId: getDevice
+      parameters:
+        - name: model
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+  /admin/devices/all:
+    get:
+      tags:
+        - device-controller
+      operationId: getDevices
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+  /customer/cart/{orderId}:
+    delete:
+      tags:
+        - cart-consumer-controller
+      operationId: deleteCustomerOneFromCart
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Cart:
+      required:
+        - model
+        - price
+        - username
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int64
+        model:
+          type: string
+        code:
+          type: integer
+          format: int64
+        type:
+          type: string
+        username:
+          type: string
+        price:
+          type: integer
+          format: int32
+    RegisterRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Product:
+      required:
+        - maker
+      type: object
+      properties:
+        maker:
+          type: string
+        model:
+          type: string
+        type:
+          type: string
+    Printer:
+      required:
+        - color
+        - price
+        - type
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+        model:
+          type: string
+        color:
+          type: string
+        type:
+          type: string
+        price:
+          type: integer
+          format: int32
+    Pc:
+      required:
+        - cd
+        - hd
+        - price
+        - ram
+        - speed
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+        model:
+          type: string
+        speed:
+          type: integer
+          format: int32
+        ram:
+          type: integer
+          format: int32
+        hd:
+          type: number
+          format: double
+        cd:
+          type: string
+        price:
+          type: integer
+          format: int32
+    Laptop:
+      required:
+        - hd
+        - model
+        - price
+        - ram
+        - screen
+        - speed
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+        model:
+          type: string
+        speed:
+          type: integer
+          format: int32
+        ram:
+          type: integer
+          format: int32
+        hd:
+          type: number
+          format: double
+        price:
+          type: integer
+          format: int32
+        screen:
+          type: integer
+          format: int32
+    ProductJoined:
+      type: object
+      properties:
+        maker:
+          type: string
+        model:
+          type: string
+        type:
+          type: string
+        code:
+          type: string
+    Device:
+      type: object
+      properties:
+        model:
+          type: string
+        price:
+          type: integer
+          format: int32
