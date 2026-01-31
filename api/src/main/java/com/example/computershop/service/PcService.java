@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class PcService {
+
     private final PcRepository pcRepository;
     private final ProductRepository productRepository;
     private final PcMapper pcMapper;
@@ -24,10 +25,9 @@ public class PcService {
     }
 
     public PcDto getPc(Long code) {
-        PcEntity pcEntity = pcRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ПК"));
-
-
-        return pcMapper.toPcDtoAndGet(pcEntity);
+        PcEntity pcEntity = pcRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("Нет такого ПК"));
+        return pcMapper.toPcDto(pcEntity);
     }
 
     public PcDto save(PcDto requestPcDto) {
@@ -39,15 +39,14 @@ public class PcService {
     }
 
     public PcDto updatePcPartially(Long code, PcDto pcDto) {
-        PcEntity setPcEntity = pcRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ПК"));
-//        ProductEntity foundProductEntity = productRepository.findById(pcDto.getModel()).orElse(null);
+        PcEntity setPcEntity = pcRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("Нет такого ПК"));
         setPcEntity.setSpeed(pcDto.getSpeed());
         setPcEntity.setRam(pcDto.getRam());
         setPcEntity.setHd(pcDto.getHd());
         setPcEntity.setCd(pcDto.getCd());
         setPcEntity.setPrice(pcDto.getPrice());
         PcEntity savedPcEntity = pcRepository.save(setPcEntity);
-
         return pcMapper.toPcDto(savedPcEntity);
     }
 

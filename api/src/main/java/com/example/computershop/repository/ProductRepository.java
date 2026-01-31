@@ -4,6 +4,7 @@ import com.example.computershop.model.entity.ProductJoinedView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, String> {
@@ -21,7 +22,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
                  FROM pc
                  ORDER BY code)as bruh
                     RIGHT OUTER JOIN product ON bruh.model=product.model;""")
-    Iterable<ProductJoinedView> findAllProductsJoined();
+    List<ProductJoinedView> findAllProductsJoined();
 
 
 //    @SQLInsert(sql = """

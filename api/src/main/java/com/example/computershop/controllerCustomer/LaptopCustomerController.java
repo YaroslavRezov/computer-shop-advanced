@@ -22,15 +22,15 @@ public class LaptopCustomerController implements LaptopCustomerControllerApi {
     public ResponseEntity<List<LaptopDto>> getCustomerLaptops(){
         return ResponseEntity.ok(laptopService.getLaptops());
     }
+
     @Override
     public ResponseEntity<LaptopDto> getCustomerLaptop(Long code){
         return ResponseEntity.ok(laptopService.getLaptop(code));
     }
+
     @Override
     public ResponseEntity<CartDto> insertCustomerLaptopIntoCart(CartDto cartDto) {
         return ResponseEntity.ok(cartService.save(cartDto));
     }
-
-
 }
 

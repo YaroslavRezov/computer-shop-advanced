@@ -27,20 +27,17 @@ public class ProductService {
         return productMapper.toProductDtoList(productEntities);
     }
     public ProductDto getProduct(String model) {
-        ProductEntity productEntity = productRepository.findById(model).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
-
-        return productMapper.toProductDtoAndGet(productEntity);
+        ProductEntity productEntity = productRepository.findById(model)
+                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+        return productMapper.toProductDto(productEntity);
     }
     public List<ProductJoinedDto> getAllProductsJoined() {
-        Iterable<ProductJoinedView> productsJoined = productRepository.findAllProductsJoined();
-
-        return productMapper.toProductJoinedDto(productsJoined);
+        List<ProductJoinedView> productsJoined = productRepository.findAllProductsJoined();
+        return productMapper.toProductJoinedDtoList(productsJoined);
     }
     public ProductDto save(ProductDto requestProductDto) {
         ProductEntity sourceProductEntity = productMapper.toProductEntity(requestProductDto);
-
         ProductEntity savedProductEntity = productRepository.save(sourceProductEntity);
-
         return productMapper.toProductDto(savedProductEntity);
     }
     public void delete(String model){
@@ -48,10 +45,10 @@ public class ProductService {
     }
 
     public ProductDto updateProductPartially(String model, ProductDto productDto) {
-        ProductEntity setProductEntity = productRepository.findById(model).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+        ProductEntity setProductEntity = productRepository.findById(model)
+                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
         setProductEntity.setMaker(productDto.getMaker());
         ProductEntity savedProductEntity = productRepository.save(setProductEntity);
-
         return productMapper.toProductDto(savedProductEntity);
     }
     public Optional<Integer> getPriceByCode(Long code) {

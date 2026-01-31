@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class PrinterService {
+
     private final PrinterRepository printerRepository;
     private final ProductRepository productRepository;
     private final PrinterMapper printerMapper;
@@ -24,10 +25,9 @@ public class PrinterService {
     }
 
     public PrinterDto getPrinter(Long code) {
-        PrinterEntity printerEntity = printerRepository.findById(code).orElseThrow(() -> new RuntimeException("нет такаого принтера"));
-
-
-        return printerMapper.toPrinterDtoAndGet(printerEntity);
+        PrinterEntity printerEntity = printerRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("нет такаого принтера"));
+        return printerMapper.toPrinterDto(printerEntity);
     }
 
     public PrinterDto save(PrinterDto requestPrinterDto) {
@@ -39,12 +39,12 @@ public class PrinterService {
     }
 
     public PrinterDto updatePrinterPartially(Long code, PrinterDto printerDto) {
-        PrinterEntity setPrinterEntity = printerRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого принтера"));
+        PrinterEntity setPrinterEntity = printerRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("Нет такого принтера"));
         setPrinterEntity.setColor(printerDto.getColor());
         setPrinterEntity.setType(printerDto.getType());
         setPrinterEntity.setPrice(printerDto.getPrice());
         PrinterEntity savedPrinterEntity = printerRepository.save(setPrinterEntity);
-
         return printerMapper.toPrinterDto(savedPrinterEntity);
     }
 

@@ -11,6 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class DeviceService {
+
     private final DeviceRepository deviceRepository;
     private final DeviceMapper deviceMapper;
 
@@ -21,8 +22,7 @@ public class DeviceService {
 
     public DeviceDto getDevice(String model) {
         DeviceView deviceView = deviceRepository.findDeviceByCode(model);
-
-        return deviceMapper.toDeviceDtoAndGet(deviceView);
+        return deviceMapper.toDeviceDto(deviceView);
     }
 
 }

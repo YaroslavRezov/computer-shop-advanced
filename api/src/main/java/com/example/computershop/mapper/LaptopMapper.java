@@ -8,45 +8,32 @@ import java.util.List;
 
 @Component
 public class LaptopMapper {
-    public LaptopDto toLaptopDto(LaptopEntity laptopEntity) {
-        return new LaptopDto()
-        .model(laptopEntity.getProduct().getModel())
-        .speed(laptopEntity.getSpeed())
-        .ram(laptopEntity.getRam())
-        .hd(laptopEntity.getHd())
-        .price(laptopEntity.getPrice())
-        .screen(laptopEntity.getScreen())
-        .code(laptopEntity.getCode());
-    }
 
     public LaptopEntity toLaptopEntity(LaptopDto laptopDto, ProductEntity foundProductEntity) {
         LaptopEntity laptopEntity = new LaptopEntity();
         laptopEntity.setProduct(foundProductEntity);
-
         laptopEntity.setSpeed(laptopDto.getSpeed());
         laptopEntity.setRam(laptopDto.getRam());
         laptopEntity.setHd(laptopDto.getHd());
         laptopEntity.setPrice(laptopDto.getPrice());
         laptopEntity.setScreen(laptopDto.getScreen());
-
         return laptopEntity;
     }
 
-    public LaptopDto toLaptopDtoAndGet(LaptopEntity laptopEntity) {
+    public List<LaptopDto> toLaptopDtoList(List<LaptopEntity> laptopEntities) {
+        return laptopEntities.stream()
+                .map(laptopEntity -> toLaptopDto(laptopEntity))
+                .toList();
+    }
+
+    public LaptopDto toLaptopDto(LaptopEntity laptopEntity) {
         return new LaptopDto()
-                .code(laptopEntity.getCode())
                 .model(laptopEntity.getProduct().getModel())
                 .speed(laptopEntity.getSpeed())
                 .ram(laptopEntity.getRam())
                 .hd(laptopEntity.getHd())
                 .price(laptopEntity.getPrice())
-                .screen(laptopEntity.getScreen());
-    }
-
-
-    public List<LaptopDto> toLaptopDtoList(List<LaptopEntity> laptopEntities) {
-        return laptopEntities.stream()
-                .map(laptopEntity -> toLaptopDtoAndGet(laptopEntity))
-                .toList();
+                .screen(laptopEntity.getScreen())
+                .code(laptopEntity.getCode());
     }
 }

@@ -15,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class CartService {
+
     private final CartRepository cartRepository;
     private final ProductService productService;
     private final ProductRepository productRepository;
@@ -23,27 +24,25 @@ public class CartService {
 
     public List<CartDto> getAll() {
         List<CartEntity> cartEntities = cartRepository.findAll();
-
         return cartMapper.toCartDtoList(cartEntities);
     }
 
     public List<CartDto> getCartForUser(String username){
-        List<CartEntity> cartEntities = cartRepository.findByUser(usersRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Нет такого пользователя" + username)));
-
+        UsersEntity usersEntity = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Нет такого пользователя" + username));
+        List<CartEntity> cartEntities = cartRepository.findByUser(usersEntity);
         return cartMapper.toCartDtoList(cartEntities);
     }
 
     public CartDto save(CartDto requestCartDto) {
-
         CartEntity cartEntity = getCartEntity(requestCartDto);
-
         CartEntity savedCartEntity = cartRepository.save(cartEntity);
-
         return cartMapper.toCartDto(savedCartEntity);
     }
 
     public void delete(String username){
-        UsersEntity foundUsersEntity = usersRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Нет такого пользователя"));
+        UsersEntity foundUsersEntity = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Нет такого пользователя"));
         cartRepository.deleteByUser(foundUsersEntity);
     }
 
@@ -52,11 +51,13 @@ public class CartService {
     }
 
     private CartEntity getCartEntity(CartDto cartDto) {
-        CartEntity cartEntity = new CartEntity();
         int price = productService.getPriceByCode(cartDto.getCode())
                 .orElseThrow(() -> new IllegalArgumentException("Price not found for code " + cartDto.getCode()));
-        ProductEntity foundProductEntity = productRepository.findById(cartDto.getModel()).orElseThrow(() -> new RuntimeException("Нет такого продукта"));
-        UsersEntity foundUsersEntity = usersRepository.findByUsername(cartDto.getUsername()).orElseThrow(() -> new RuntimeException("Нет такого пользователя"));
+        ProductEntity foundProductEntity = productRepository.findById(cartDto.getModel())
+                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+        UsersEntity foundUsersEntity = usersRepository.findByUsername(cartDto.getUsername())
+                .orElseThrow(() -> new RuntimeException("Нет такого пользователя"));
+        CartEntity cartEntity = new CartEntity();
         cartEntity.setProduct(foundProductEntity);
         cartEntity.setUser(foundUsersEntity);
         cartEntity.setCode(cartDto.getCode());

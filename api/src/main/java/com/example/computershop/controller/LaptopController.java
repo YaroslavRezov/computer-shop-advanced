@@ -17,6 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 public class LaptopController implements LaptopControllerApi{
+
     private final LaptopService laptopService;
 
     @Override
@@ -37,10 +38,10 @@ public class LaptopController implements LaptopControllerApi{
     public ResponseEntity<LaptopDto> patchLaptopPartially( Long code, LaptopDto laptopDto) {
         return ResponseEntity.ok(laptopService.updateLaptopPartially(code, laptopDto));
     }
+
     @Override
     public ResponseEntity<Void> deleteFromLaptop(Long code) {
         laptopService.delete(code);
-
         return ResponseEntity.noContent().build();
     }
 

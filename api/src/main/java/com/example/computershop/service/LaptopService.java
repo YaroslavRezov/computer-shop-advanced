@@ -13,23 +13,20 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class LaptopService {
+
     private final LaptopRepository laptopRepository;
     private final ProductRepository productRepository;
     private final LaptopMapper laptopMapper;
 
-
     public List<LaptopDto> getLaptops() {
         List<LaptopEntity> laptopEntities = laptopRepository.findAll();
-        List<LaptopDto> laptopDtoList = laptopMapper.toLaptopDtoList(laptopEntities);
-
-        return laptopDtoList;
+        return laptopMapper.toLaptopDtoList(laptopEntities);
     }
 
     public LaptopDto getLaptop(Long code) {
-        LaptopEntity laptopEntity = laptopRepository.findById(code).orElse(null);
-
-
-        return laptopMapper.toLaptopDtoAndGet(laptopEntity);
+        LaptopEntity laptopEntity = laptopRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("Нет такого ноута"));
+        return laptopMapper.toLaptopDto(laptopEntity);
     }
 
     public LaptopDto save(LaptopDto requestLaptopDto) {
@@ -41,22 +38,18 @@ public class LaptopService {
     }
 
     public LaptopDto updateLaptopPartially(Long code, LaptopDto laptopDto) {
-        LaptopEntity setLaptopEntity = laptopRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ноута"));
+        LaptopEntity setLaptopEntity = laptopRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("Нет такого ноута"));
         setLaptopEntity.setSpeed(laptopDto.getSpeed());
         setLaptopEntity.setRam(laptopDto.getRam());
         setLaptopEntity.setHd(laptopDto.getHd());
         setLaptopEntity.setPrice(laptopDto.getPrice());
         setLaptopEntity.setScreen(laptopDto.getScreen());
         LaptopEntity savedLaptopEntity = laptopRepository.save(setLaptopEntity);
-
         return laptopMapper.toLaptopDto(savedLaptopEntity);
     }
 
     public void delete(Long code) {
         laptopRepository.deleteById(code);
     }
-
-
-
-
 }

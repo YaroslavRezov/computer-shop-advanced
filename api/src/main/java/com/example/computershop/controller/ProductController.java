@@ -20,6 +20,7 @@ import java.util.Map;
 public class ProductController implements ProductControllerApi {
 
     private final ProductService productService;
+
     @Override
     public ResponseEntity<List<ProductDto>> getProducts() {
         return ResponseEntity.ok(productService.getProducts());
@@ -50,7 +51,6 @@ public class ProductController implements ProductControllerApi {
 
         return ResponseEntity.noContent().build();
     }
-
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

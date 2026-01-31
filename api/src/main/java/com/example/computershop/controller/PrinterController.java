@@ -16,12 +16,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 public class PrinterController implements PrinterControllerApi {
+
     private final PrinterService printerService;
 
     @Override
     public ResponseEntity<List<PrinterDto>> getPrinters(){
         return ResponseEntity.ok(printerService.getPrinters());
     }
+
     @Override
     public ResponseEntity<PrinterDto> getPrinter(Long code){
         return ResponseEntity.ok(printerService.getPrinter(code));
@@ -31,6 +33,7 @@ public class PrinterController implements PrinterControllerApi {
     public ResponseEntity<PrinterDto> insertIntoPrinter(PrinterDto printerDto) {
         return ResponseEntity.ok(printerService.save(printerDto));
     }
+
     @Override
     public ResponseEntity<PrinterDto> patchPrinterPartially(Long code, PrinterDto printerDto) {
         return ResponseEntity.ok(printerService.updatePrinterPartially(code, printerDto));
@@ -39,7 +42,6 @@ public class PrinterController implements PrinterControllerApi {
     @Override
     public ResponseEntity<Void> deleteFromPrinter(Long code) {
         printerService.delete(code);
-
         return ResponseEntity.noContent().build();
     }
 

@@ -5,13 +5,25 @@ import com.example.computershop.model.entity.ProductJoinedView;
 import com.example.specs.generated.model.ProductDto;
 import com.example.specs.generated.model.ProductJoinedDto;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Component
 public class ProductMapper {
+
+    public ProductEntity toProductEntity(ProductDto productDto) {
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setMaker(productDto.getMaker());
+        productEntity.setType(productDto.getType());
+        return productEntity;
+    }
+
+    public List<ProductDto> toProductDtoList(List<ProductEntity> productEntities) {
+        return productEntities.stream()
+                .map(this::toProductDto)
+                .toList();
+    }
+
     public ProductDto toProductDto (ProductEntity productEntity) {
         return new ProductDto()
                 .maker(productEntity.getMaker())
@@ -19,39 +31,18 @@ public class ProductMapper {
                 .model(productEntity.getModel());
     }
 
-    public ProductEntity toProductEntity(ProductDto productDto) {
-        ProductEntity productEntity = new ProductEntity();
-        productEntity.setMaker(productDto.getMaker());
-        productEntity.setType(productDto.getType());
-
-
-        return productEntity;
-    }
-
-    public ProductDto toProductDtoAndGet(ProductEntity productEntity) {
-        return new ProductDto()
-        .maker(productEntity.getMaker())
-        .model(productEntity.getModel())
-        .type(productEntity.getType());
-    }
-
-    public List<ProductJoinedDto> toProductJoinedDto (Iterable<ProductJoinedView> productsJoined) {
-        List<ProductJoinedDto> productJoinedDtoList = new ArrayList<>();
-        for(ProductJoinedView productJoinedView : productsJoined){
-            ProductJoinedDto productJoinedDto = new ProductJoinedDto();
-            productJoinedDto.setMaker(productJoinedView.getMaker());
-            productJoinedDto.setModel(productJoinedView.getModel());
-            productJoinedDto.setType(productJoinedView.getType());
-            productJoinedDto.setCode(translateDataBaseCode(String.valueOf(productJoinedView.getCode())));
-            productJoinedDtoList.add(productJoinedDto);
-        }
-        return productJoinedDtoList;
-    }
-
-    public List<ProductDto> toProductDtoList(List<ProductEntity> productEntities) {
-        return productEntities.stream()
-                .map(productEntity -> toProductDtoAndGet(productEntity))
+    public List<ProductJoinedDto> toProductJoinedDtoList (List<ProductJoinedView> productsJoined) {
+        return productsJoined.stream()
+                .map(this::toProductJoinedDto)
                 .toList();
+    }
+
+    private ProductJoinedDto toProductJoinedDto(ProductJoinedView productJoinedView) {
+        return new ProductJoinedDto()
+                .maker(productJoinedView.getMaker())
+                .model(productJoinedView.getModel())
+                .type(productJoinedView.getType())
+                .code(translateDataBaseCode(String.valueOf(productJoinedView.getCode())));
     }
 
     private String translateDataBaseCode(String fromGetCode) {
