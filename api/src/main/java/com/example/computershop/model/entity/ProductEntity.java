@@ -6,13 +6,7 @@ import lombok.*;
 import java.util.List;
 
 @Table(name = "product")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(toBuilder = true)
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = false)
+@Data
 @Entity
 public class ProductEntity {
     @Id

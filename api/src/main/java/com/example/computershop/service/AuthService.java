@@ -21,11 +21,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse register(RegisterRequest request) {
-        var user = UsersEntity.builder()
-                .username(request.username())
-                .password(passwordEncoder.encode(request.password()))
-                .build();
-
+        var user = new UsersEntity();
+        user.setUsername(request.username());
+        user.setPassword(passwordEncoder.encode(request.password()));
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         return new AuthResponse(jwtToken);

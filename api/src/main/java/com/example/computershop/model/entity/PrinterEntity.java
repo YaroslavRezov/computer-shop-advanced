@@ -4,13 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Table(name = "printer")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(toBuilder = true)
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = false)
+@Data
 @Entity
 public class PrinterEntity extends BaseDeviceEntity {
 
