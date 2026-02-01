@@ -5,13 +5,7 @@ import lombok.*;
 
 
 @Table(name = "cart")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(toBuilder = true)
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = false)
+@Data
 @Entity
 public class CartEntity {
     @Id

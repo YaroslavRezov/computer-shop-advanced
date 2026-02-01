@@ -4,16 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Table(name = "laptop")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(toBuilder = true)
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = false)
+@Data
 @Entity
 public class LaptopEntity extends BaseDeviceEntity {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "laptop_code_seq")
