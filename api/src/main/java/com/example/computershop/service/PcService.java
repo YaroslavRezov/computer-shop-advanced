@@ -1,5 +1,6 @@
 package com.example.computershop.service;
 
+import com.example.computershop.mapper.PcMapper;
 import com.example.computershop.model.entity.PcEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.PcRepository;
@@ -8,109 +9,49 @@ import com.example.specs.generated.model.PcDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
 @Service
 public class PcService {
+
     private final PcRepository pcRepository;
     private final ProductRepository productRepository;
+    private final PcMapper pcMapper;
 
     public List<PcDto> getPcs() {
-        Iterable<PcEntity> pcEntities = pcRepository.findAll();
-        List<PcDto> pcDtoList = toPcDtoList(pcEntities);
-        return pcDtoList;
+        List<PcEntity> pcEntities = pcRepository.findAll();
+        return pcMapper.toPcDtoList(pcEntities);
     }
 
     public PcDto getPc(Long code) {
-        PcEntity pcEntity = pcRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ПК"));
-
-
-        return toPcDtoAndGet(pcEntity);
+        PcEntity pcEntity = pcRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("Нет такого ПК"));
+        return pcMapper.toPcDto(pcEntity);
     }
 
     public PcDto save(PcDto requestPcDto) {
         ProductEntity foundProductEntity = productRepository.findById(requestPcDto.getModel())
                 .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
-        PcEntity sourcePcEntity = toPcEntity(requestPcDto, foundProductEntity);
+        PcEntity sourcePcEntity = pcMapper.toPcEntity(requestPcDto, foundProductEntity);
         PcEntity savedPcEntity = pcRepository.save(sourcePcEntity);
-        return toPcDto(savedPcEntity);
+        return pcMapper.toPcDto(savedPcEntity);
     }
 
     public PcDto updatePcPartially(Long code, PcDto pcDto) {
-        PcEntity setPcEntity = pcRepository.findById(code).orElseThrow(() -> new RuntimeException("Нет такого ПК"));
-//        ProductEntity foundProductEntity = productRepository.findById(pcDto.getModel()).orElse(null);
-
-        if (pcDto.getSpeed() != 0) {
-            setPcEntity.setSpeed(pcDto.getSpeed());
-        }
-        if (pcDto.getRam() != 0) {
-            setPcEntity.setRam(pcDto.getRam());
-        }
-        if (pcDto.getHd() != 0) {
-            setPcEntity.setHd(pcDto.getHd());
-        }
-        if (pcDto.getCd() != null) {
-            setPcEntity.setCd(pcDto.getCd());
-        }
-        if (pcDto.getPrice() != 0) {
-            setPcEntity.setPrice(pcDto.getPrice());
-        }
-
+        PcEntity setPcEntity = pcRepository.findById(code)
+                .orElseThrow(() -> new RuntimeException("Нет такого ПК"));
+        setPcEntity.setSpeed(pcDto.getSpeed());
+        setPcEntity.setRam(pcDto.getRam());
+        setPcEntity.setHd(pcDto.getHd());
+        setPcEntity.setCd(pcDto.getCd());
+        setPcEntity.setPrice(pcDto.getPrice());
         PcEntity savedPcEntity = pcRepository.save(setPcEntity);
-
-        PcDto responsePcDto = toPcDto(savedPcEntity);
-        return responsePcDto;
+        return pcMapper.toPcDto(savedPcEntity);
     }
 
     public void delete(Long code) {
         pcRepository.deleteById(code);
-
-    }
-
-    private PcDto toPcDto (PcEntity pcEntity) {
-        PcDto pcDto = new PcDto();
-        pcDto.setModel(pcEntity.getProduct().getModel());
-        pcDto.setSpeed(pcEntity.getSpeed());
-        pcDto.setRam(pcEntity.getRam());
-        pcDto.setHd(pcEntity.getHd());
-        pcDto.setCd(pcEntity.getCd());
-        pcDto.setPrice(pcEntity.getPrice());
-        pcDto.setCode(pcEntity.getCode());
-        return pcDto;
-    }
-
-
-    private PcEntity toPcEntity(PcDto pcDto, ProductEntity foundProductEntity) {
-        PcEntity pcEntity = new PcEntity();
-
-        pcEntity.setProduct(foundProductEntity);
-        pcEntity.setSpeed(pcDto.getSpeed());
-        pcEntity.setRam(pcDto.getRam());
-        pcEntity.setHd(pcDto.getHd());
-        pcEntity.setCd(pcDto.getCd());
-        pcEntity.setPrice(pcDto.getPrice());
-        return pcEntity;
-    }
-    private PcDto toPcDtoAndGet(PcEntity pcEntity) {
-        PcDto pcDto =new PcDto();
-        pcDto.setCode(pcEntity.getCode());
-        pcDto.setModel(pcEntity.getProduct().getModel());
-        pcDto.setSpeed(pcEntity.getSpeed());
-        pcDto.setRam(pcEntity.getRam());
-        pcDto.setHd(pcEntity.getHd());
-        pcDto.setCd(pcEntity.getCd());
-        pcDto.setPrice(pcEntity.getPrice());
-        return pcDto;
-    }
-
-    private List<PcDto> toPcDtoList(Iterable<PcEntity> pcEntities) {
-        List<PcDto> pcDtoList = new ArrayList<>();
-        for(PcEntity pcEntity : pcEntities) {
-            pcDtoList.add(toPcDtoAndGet(pcEntity));
-        }
-        return pcDtoList;
     }
 
 }

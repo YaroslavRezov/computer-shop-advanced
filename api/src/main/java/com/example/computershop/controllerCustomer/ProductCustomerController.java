@@ -33,6 +33,7 @@ public class ProductCustomerController implements ProductCustomerControllerApi{
     public ResponseEntity<List<ProductJoinedDto>> getCustomerJoinedProducts() {
         return ResponseEntity.ok(productService.getAllProductsJoined());
     }
+
     @Override
     public ResponseEntity<CartDto> insertCustomerProductIntoCart(CartDto cartDto) {
         return ResponseEntity.ok(cartService.save(cartDto));

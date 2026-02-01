@@ -2,11 +2,12 @@ package com.example.computershop.repository;
 
 import com.example.computershop.model.entity.DeviceView;
 import com.example.computershop.model.entity.ProductEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
 
-public interface DeviceRepository extends CrudRepository<ProductEntity, String>{
+public interface DeviceRepository extends JpaRepository<ProductEntity, String> {
     @Query(nativeQuery = true, value = """
             SELECT model, price
             FROM pc
@@ -17,7 +18,7 @@ public interface DeviceRepository extends CrudRepository<ProductEntity, String>{
             SELECT model, price
             FROM printer
             ORDER BY 1;""")
-    Iterable<DeviceView> findAllDevices();
+    List<DeviceView> findAllDevices();
 
     @Query(nativeQuery = true, value = """
             SELECT DISTINCT ON (s.model) s.model, s.price FROM

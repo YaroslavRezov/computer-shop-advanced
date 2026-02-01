@@ -13,13 +13,13 @@ import java.util.List;
 @RestController
 public class DeviceCustomerController implements DeviceCustomerControllerApi {
 
-
     private final DeviceService deviceService;
 
     @Override
     public ResponseEntity<List<DeviceDto>> getCustomerDevices(){
         return ResponseEntity.ok(deviceService.getAllDevices());
     }
+
     @Override
     public ResponseEntity<DeviceDto> getCustomerDevice(String model){
         return ResponseEntity.ok(deviceService.getDevice(model));

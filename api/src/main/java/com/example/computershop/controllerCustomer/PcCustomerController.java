@@ -21,10 +21,12 @@ public class PcCustomerController implements PcCustomerControllerApi {
     public ResponseEntity<List<PcDto>> getCustomerPcs(){
         return ResponseEntity.ok(pcService.getPcs());
     }
+
     @Override
     public ResponseEntity<PcDto> getCustomerPc(Long code){
         return ResponseEntity.ok(pcService.getPc(code));
     }
+
     @Override
     public ResponseEntity<CartDto> insertCustomerPcIntoCart(CartDto cartDto) {
         return ResponseEntity.ok(cartService.save(cartDto));

@@ -6,13 +6,12 @@ import com.example.specs.generated.model.PcDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 @RequiredArgsConstructor
 @RestController
 public class PcController implements PcControllerApi {
-    private final PcService pcService;
 
+    private final PcService pcService;
 
     @Override
     public ResponseEntity<List<PcDto>> getPcs(){
@@ -37,7 +36,6 @@ public class PcController implements PcControllerApi {
     @Override
     public ResponseEntity<Void> deleteFromPc(Long code) {
         pcService.delete(code);
-
         return ResponseEntity.noContent().build();
     }
 

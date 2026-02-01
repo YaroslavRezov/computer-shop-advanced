@@ -2,10 +2,9 @@ package com.example.computershop.repository;
 
 import com.example.computershop.model.entity.DeviceView;
 import com.example.computershop.model.entity.PcEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-
-public interface PcRepository extends CrudRepository<PcEntity, Long> {
+public interface PcRepository extends JpaRepository<PcEntity, Long> {
     @Query(nativeQuery = true, value = """
             SELECT model, price
             FROM pc

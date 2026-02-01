@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 public class DeviceController implements DeviceControllerApi {
 
-
     private final DeviceService deviceService;
 
     @Override
