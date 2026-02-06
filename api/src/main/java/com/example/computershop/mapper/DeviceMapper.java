@@ -10,7 +10,7 @@ public class DeviceMapper {
 
     public List<DeviceDto> toDeviceDtoList(List<DeviceView> BaseDevices) {
         return BaseDevices.stream()
-                .map(deviceView -> toDeviceDto(deviceView))
+                .map(this::toDeviceDto)
                 .toList();
     }
 
