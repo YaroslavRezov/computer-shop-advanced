@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @Entity
 public class ProductEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
@@ -17,7 +18,6 @@ public class ProductEntity {
     private String maker;
     @Column
     private String type;
-
 
 }
 
