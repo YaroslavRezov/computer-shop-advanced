@@ -45,6 +45,25 @@ public class CartEntityData {
         cartEntity.setCode(31L);
         cartEntity.setPrice(111111);
         return cartEntity;
+    }
 
+    public static CartEntity createCartEntity1(ProductEntity productEntity, UsersEntity usersEntity) {
+        CartEntity cartEntity = new CartEntity();
+        cartEntity.setProduct(productEntity);
+        cartEntity.setUser(usersEntity);
+        cartEntity.setOrderId(103L);
+        cartEntity.setCode(1L);
+        cartEntity.setPrice(600);
+        return cartEntity;
+    }
+
+    public static CartEntity createCartEntity2(ProductEntity productEntity, UsersEntity usersEntity) {
+        CartEntity cartEntity = new CartEntity();
+        cartEntity.setProduct(productEntity);
+        cartEntity.setUser(usersEntity);
+        cartEntity.setOrderId(104L);
+        cartEntity.setCode(31L);
+        cartEntity.setPrice(111111);
+        return cartEntity;
     }
 }
