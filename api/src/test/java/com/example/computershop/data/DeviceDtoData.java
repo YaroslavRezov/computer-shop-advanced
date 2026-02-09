@@ -12,8 +12,8 @@ public class DeviceDtoData {
 
     public static DeviceDto createDeviceDto2() {
         return new DeviceDto()
-                .model("1260")
-                .price(350);
+                .model("b276a11d-c526-4f74-b3c7-95ff94bf7147")
+                .price(11111111);
     }
 
 }

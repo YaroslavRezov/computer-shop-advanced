@@ -16,12 +16,30 @@ public class ProductJoinedViewData {
         return product;
     }
 
+    public static ProductJoinedView createProductJoinedViewMock1(String model, Long code) {
+        ProductJoinedView product = mock(ProductJoinedView.class);
+        when(product.getModel()).thenReturn(model);
+        when(product.getMaker()).thenReturn("A");
+        when(product.getType()).thenReturn("PC");
+        when(product.getCode()).thenReturn(code);
+        return product;
+    }
+
     public static ProductJoinedView createProductJoinedViewMock2() {
         ProductJoinedView product = mock(ProductJoinedView.class);
         when(product.getModel()).thenReturn("b276a11d-c526-4f74-b3c7-95ff94bf7147");
         when(product.getMaker()).thenReturn("bbbruu");
         when(product.getType()).thenReturn("PC");
         when(product.getCode()).thenReturn(29L);
+        return product;
+    }
+
+    public static ProductJoinedView createProductJoinedViewMock2(String model, Long code) {
+        ProductJoinedView product = mock(ProductJoinedView.class);
+        when(product.getModel()).thenReturn(model);
+        when(product.getMaker()).thenReturn("bbbruu");
+        when(product.getType()).thenReturn("PC");
+        when(product.getCode()).thenReturn(code);
         return product;
     }
 }
