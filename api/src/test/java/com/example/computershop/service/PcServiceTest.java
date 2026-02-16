@@ -102,9 +102,9 @@ public class PcServiceTest {
         when(pcRepository.save(any(PcEntity.class))).thenReturn(updatedEntity);
         when(pcMapper.toPcDto(updatedEntity)).thenReturn(expected);
 
-        PcDto result = pcService.updatePcPartially(preUpdatedPcEntity.getCode(), updateDto);
+        PcDto actual = pcService.updatePcPartially(preUpdatedPcEntity.getCode(), updateDto);
 
-        assertThat(result).isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
         verify(pcRepository).findById(preUpdatedPcEntity.getCode());
         verify(pcRepository).save(preUpdatedPcEntity);
         verify(pcMapper).toPcDto(updatedEntity);
@@ -125,5 +125,4 @@ public class PcServiceTest {
 
         verify(pcRepository).deleteById(pcEntity.getCode());
     }
-
 }
