@@ -80,6 +80,7 @@ public class LaptopServiceTest {
         verify(laptopRepository).save(laptopEntity);
         verify(laptopMapper).toLaptopDto(laptopEntity);
     }
+
     @Test
     public void updateLaptopPartially() {
         LaptopDto updateDto = new LaptopDto();
@@ -105,9 +106,9 @@ public class LaptopServiceTest {
         when(laptopRepository.save(any(LaptopEntity.class))).thenReturn(updatedEntity);
         when(laptopMapper.toLaptopDto(updatedEntity)).thenReturn(expected);
 
-        LaptopDto result = laptopService.updateLaptopPartially(preUpdatedLaptopEntity.getCode(), updateDto);
+        LaptopDto actual = laptopService.updateLaptopPartially(preUpdatedLaptopEntity.getCode(), updateDto);
 
-        assertThat(result).isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
         verify(laptopRepository).findById(preUpdatedLaptopEntity.getCode());
         verify(laptopRepository).save(preUpdatedLaptopEntity);
         verify(laptopMapper).toLaptopDto(updatedEntity);

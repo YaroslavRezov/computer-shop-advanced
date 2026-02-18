@@ -80,6 +80,7 @@ public class PrinterServiceTest {
         verify(printerRepository).save(printerEntity);
         verify(printerMapper).toPrinterDto(printerEntity);
     }
+
     @Test
     public void updatePrinterPartially() {
         PrinterDto updateDto = new PrinterDto();

@@ -6,6 +6,7 @@ import com.example.computershop.model.entity.ProductJoinedView;
 import com.example.computershop.repository.ProductRepository;
 import com.example.specs.generated.model.ProductDto;
 import com.example.specs.generated.model.ProductJoinedDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 @SpringJUnitConfig(classes = {ProductService.class})
 public class ProductServiceTest {
+
     @Autowired
     private ProductService productService;
 
@@ -36,11 +38,14 @@ public class ProductServiceTest {
     private ProductJoinedView productJoinedView;
     private ProductJoinedDto productJoinedDto;
 
+    @BeforeEach
+    void setUp() {
+        productEntity = new ProductEntity();
+        productDto = new ProductDto();
+    }
 
     @Test
     public void getProducts() {
-        ProductEntity productEntity = new ProductEntity();
-        ProductDto productDto = new ProductDto();
         when(productRepository.findAll()).thenReturn(List.of(productEntity));
         when(productMapper.toProductDtoList(List.of(productEntity))).thenReturn(List.of(productDto));
 
@@ -84,9 +89,9 @@ public class ProductServiceTest {
         when(productRepository.save(productEntity)).thenReturn(productEntity);
         when(productMapper.toProductDto(productEntity)).thenReturn(productDto);
 
-        ProductDto result = productService.save(productDto);
+        ProductDto actual = productService.save(productDto);
 
-        assertThat(result).isEqualTo(productDto);
+        assertThat(actual).isEqualTo(productDto);
         verify(productMapper).toProductEntity(productDto);
         verify(productRepository).save(productEntity);
         verify(productMapper).toProductDto(productEntity);

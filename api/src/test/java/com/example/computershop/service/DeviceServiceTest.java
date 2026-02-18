@@ -4,6 +4,7 @@ import com.example.computershop.mapper.DeviceMapper;
 import com.example.computershop.model.entity.DeviceView;
 import com.example.computershop.repository.DeviceRepository;
 import com.example.specs.generated.model.DeviceDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,6 +32,12 @@ public class DeviceServiceTest {
     private DeviceView deviceView;
     private DeviceDto deviceDto;
 
+    @BeforeEach
+    void setUp() {
+        deviceView = createDeviceViewMock1();
+        deviceDto = createDeviceDto1();
+    }
+
     @Test
     void getAllDevices() {
         List<DeviceView> deviceViews = Arrays.asList(deviceView);
@@ -53,8 +60,6 @@ public class DeviceServiceTest {
 
     @Test
     void getDevice() {
-        DeviceView deviceView = createDeviceViewMock1();
-        DeviceDto deviceDto = createDeviceDto1();
         when(deviceRepository.findDeviceByCode("1232")).thenReturn(deviceView);
         when(deviceMapper.toDeviceDto(deviceView)).thenReturn(deviceDto);
 
