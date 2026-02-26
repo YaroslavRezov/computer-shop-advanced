@@ -44,12 +44,13 @@ class CartServiceTest {
         CartEntity cartEntity = new CartEntity();
         CartDto cartDto = new CartDto();
         when(cartRepository.findAll()).thenReturn(List.of(cartEntity));
-        when(cartMapper.toCartDtoList(List.of(cartEntity))).thenReturn(List.of(cartDto));
+        when(cartMapper.toCartDtoList(any())).thenReturn(List.of(cartDto));
 
         List<CartDto> actual = cartService.getAll();
 
+        verify(cartRepository).findAll();
+        verify(cartMapper).toCartDtoList(List.of(cartEntity));
         assertEquals(1, actual.size());
-        verify(cartRepository, times(1)).findAll();
     }
 
     @Test
@@ -58,24 +59,45 @@ class CartServiceTest {
         UsersEntity user = new UsersEntity();
         CartEntity cartEntity = new CartEntity();
         CartDto cartDto = new CartDto();
-        when(usersRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(cartRepository.findByUser(user)).thenReturn(List.of(cartEntity));
-        when(cartMapper.toCartDtoList(List.of(cartEntity))).thenReturn(List.of(cartDto));
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.of(user));
+        when(cartRepository.findByUser(any())).thenReturn(List.of(cartEntity));
+        when(cartMapper.toCartDtoList(any())).thenReturn(List.of(cartDto));
 
         List<CartDto> actual = cartService.getCartForUser(username);
 
+        verify(usersRepository).findByUsername(username);
+        verify(cartRepository).findByUser(user);
+        verify(cartMapper).toCartDtoList(List.of(cartEntity));
         assertEquals(1, actual.size());
-        verify(usersRepository, times(1)).findByUsername(username);
     }
 
     @Test
     void getCartForUser_whenInvalidUser_shouldThrowException() {
         String username = "unknown";
-        when(usersRepository.findByUsername(username)).thenReturn(Optional.empty());
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.empty());
 
         RuntimeException actual = assertThrows(RuntimeException.class, () -> cartService.getCartForUser(username));
-        
-        assertTrue(actual.getMessage().contains(username));
+
+        verify(usersRepository).findByUsername(username);
+        verify(cartRepository, never()).findByUser(any());
+        verify(cartMapper, never()).toCartDtoList(any());
+        assertEquals("Нет такого пользователя" + username, actual.getMessage());
+    }
+
+    @Test
+    void getCartForUser_whenEmptyCart_shouldReturnEmptyList() {
+        String username = "Omen";
+        UsersEntity user = new UsersEntity();
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.of(user));
+        when(cartRepository.findByUser(any())).thenReturn(Collections.emptyList());
+        when(cartMapper.toCartDtoList(Collections.emptyList())).thenReturn(Collections.emptyList());
+
+        List<CartDto> actual = cartService.getCartForUser(username);
+
+        verify(usersRepository).findByUsername(username);
+        verify(cartRepository).findByUser(user);
+        verify(cartMapper).toCartDtoList(Collections.emptyList());
+        assertTrue(actual.isEmpty());
     }
 
     @Test
@@ -84,39 +106,49 @@ class CartServiceTest {
         UsersEntity user = new UsersEntity();
         CartEntity savedEntity = new CartEntity();
         CartDto responseDto = new CartDto();
-        when(productService.getPriceByCode(1L)).thenReturn(Optional.of(600));
-        when(productRepository.findById("1276")).thenReturn(Optional.of(product));
-        when(usersRepository.findByUsername("Omen")).thenReturn(Optional.of(user));
+        when(productService.getPriceByCode(any())).thenReturn(Optional.of(600));
+        when(productRepository.findById(any())).thenReturn(Optional.of(product));
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.of(user));
         when(cartRepository.save(any())).thenReturn(savedEntity);
-        when(cartMapper.toCartDto(savedEntity)).thenReturn(responseDto);
+        when(cartMapper.toCartDto(any())).thenReturn(responseDto);
 
         CartDto actual = cartService.save(createCartDto1());
 
+        verify(productService).getPriceByCode(1L);
+        verify(productRepository).findById("1276");
+        verify(usersRepository).findByUsername("Omen");
+        verify(cartRepository).save(any());
+        verify(cartMapper).toCartDto(savedEntity);
         assertNotNull(actual);
-        verify(cartRepository, times(1)).save(any());
     }
 
     @Test
     void save_whenProductNotFound_shouldThrowException() {
-        CartDto requestDto = new CartDto().model("invalid").code(999L);
-        when(productService.getPriceByCode(999L)).thenReturn(Optional.of(100));
-        when(productRepository.findById("invalid")).thenReturn(Optional.empty());
+        CartDto requestDto = new CartDto();
+        when(productRepository.findById(any())).thenReturn(Optional.empty());
+        when(productService.getPriceByCode(any())).thenReturn(Optional.of(600));
 
         RuntimeException actual = assertThrows(RuntimeException.class, () -> cartService.save(requestDto));
 
-        assertTrue(actual.getMessage().contains("продукта"));
+        verify(productService).getPriceByCode(any());
+        verify(productRepository).findById(any());
+        verify(usersRepository, never()).findByUsername(any());
+        verify(cartRepository, never()).save(any());
+        verify(cartMapper, never()).toCartDto(any());
+        assertEquals("Нет такого продукта", actual.getMessage());
     }
 
     @Test
     void delete_whenUsername() {
         String username = "Omen";
         UsersEntity user = new UsersEntity();
-        when(usersRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        doNothing().when(cartRepository).deleteByUser(user);
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.of(user));
+        doNothing().when(cartRepository).deleteByUser(any());
 
         cartService.delete(username);
 
-        verify(cartRepository, times(1)).deleteByUser(user);
+        verify(cartRepository).deleteByUser(user);
+        verify(usersRepository).findByUsername(username);
     }
 
     @Test
@@ -126,19 +158,6 @@ class CartServiceTest {
 
         cartService.delete(orderId);
 
-        verify(cartRepository, times(1)).deleteById(orderId);
-    }
-
-    @Test
-    void getCartForUser_whenEmptyCart_shouldReturnEmptyList() {
-        String username = "Omen";
-        UsersEntity user = new UsersEntity();
-        when(usersRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(cartRepository.findByUser(user)).thenReturn(Collections.emptyList());
-        when(cartMapper.toCartDtoList(Collections.emptyList())).thenReturn(Collections.emptyList());
-
-        List<CartDto> actual = cartService.getCartForUser(username);
-
-        assertTrue(actual.isEmpty());
+        verify(cartRepository).deleteById(orderId);
     }
 }
