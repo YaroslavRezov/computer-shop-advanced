@@ -102,36 +102,40 @@ class CartServiceTest {
 
     @Test
     void save() {
+        CartDto cartDto1 = createCartDto1();
         ProductEntity product = new ProductEntity();
         UsersEntity user = new UsersEntity();
-        CartEntity savedEntity = new CartEntity();
-        CartDto responseDto = new CartDto();
+        CartEntity cart = new CartEntity();
+        cart.setCode(cartDto1.getCode());
+        cart.setProduct(product);
+        cart.setUser(user);
+        cart.setPrice(600);
         when(productService.getPriceByCode(any())).thenReturn(Optional.of(600));
         when(productRepository.findById(any())).thenReturn(Optional.of(product));
         when(usersRepository.findByUsername(any())).thenReturn(Optional.of(user));
-        when(cartRepository.save(any())).thenReturn(savedEntity);
-        when(cartMapper.toCartDto(any())).thenReturn(responseDto);
+        when(cartRepository.save(any())).thenReturn(cart);
+        when(cartMapper.toCartDto(any())).thenReturn(new CartDto());
 
-        CartDto actual = cartService.save(createCartDto1());
+        CartDto actual = cartService.save(cartDto1);
 
-        verify(productService).getPriceByCode(1L);
-        verify(productRepository).findById("1276");
-        verify(usersRepository).findByUsername("Omen");
-        verify(cartRepository).save(any());
-        verify(cartMapper).toCartDto(savedEntity);
+        verify(productService).getPriceByCode(cartDto1.getCode());
+        verify(productRepository).findById(cartDto1.getModel());
+        verify(usersRepository).findByUsername(cartDto1.getUsername());
+        verify(cartRepository).save(cart);
+        verify(cartMapper).toCartDto(cart);
         assertNotNull(actual);
     }
 
     @Test
     void save_whenProductNotFound_shouldThrowException() {
-        CartDto requestDto = new CartDto();
+        CartDto cartDto = new CartDto().model("invalid").code(999L);
+        when(productService.getPriceByCode(any())).thenReturn(Optional.of(100));
         when(productRepository.findById(any())).thenReturn(Optional.empty());
-        when(productService.getPriceByCode(any())).thenReturn(Optional.of(600));
 
-        RuntimeException actual = assertThrows(RuntimeException.class, () -> cartService.save(requestDto));
+        RuntimeException actual = assertThrows(RuntimeException.class, () -> cartService.save(cartDto));
 
-        verify(productService).getPriceByCode(any());
-        verify(productRepository).findById(any());
+        verify(productService).getPriceByCode(cartDto.getCode());
+        verify(productRepository).findById(cartDto.getModel());
         verify(usersRepository, never()).findByUsername(any());
         verify(cartRepository, never()).save(any());
         verify(cartMapper, never()).toCartDto(any());
@@ -147,17 +151,30 @@ class CartServiceTest {
 
         cartService.delete(username);
 
-        verify(cartRepository).deleteByUser(user);
         verify(usersRepository).findByUsername(username);
+        verify(cartRepository).deleteByUser(user);
+    }
+
+    @Test
+    void delete_whenUserNotFound_shouldThrowException() {
+        String username = "Omen";
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.empty());
+
+        RuntimeException actual = assertThrows(RuntimeException.class, () -> cartService.delete(username));
+
+        verify(usersRepository).findByUsername(username);
+        verify(cartRepository, never()).deleteByUser(any());
+        assertEquals("Нет такого пользователя", actual.getMessage());
     }
 
     @Test
     void delete_whenOrderId() {
         Long orderId = 103L;
-        doNothing().when(cartRepository).deleteById(orderId);
+        doNothing().when(cartRepository).deleteById(any());
 
         cartService.delete(orderId);
 
         verify(cartRepository).deleteById(orderId);
     }
+
 }
