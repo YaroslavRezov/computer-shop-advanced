@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import static com.example.computershop.data.PrinterDtoData.createPrinterDto1;
 import static com.example.computershop.data.PrinterEntityData.createPrinterEntity1;
-import static com.example.computershop.data.ProductEntityData.createProductEntity1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,23 +36,24 @@ public class PrinterServiceTest {
 
     @Test
     public void getPrinters() {
-        PrinterEntity printerEntity = new PrinterEntity();
+        PrinterEntity printerEntity = createPrinterEntity1();
         PrinterDto printerDto = new PrinterDto();
         when(printerRepository.findAll()).thenReturn(List.of(printerEntity));
-        when(printerMapper.toPrinterDtoList(List.of(printerEntity))).thenReturn(List.of(printerDto));
+        when(printerMapper.toPrinterDtoList(any())).thenReturn(List.of(printerDto));
 
-        List<PrinterEntity> actual = printerRepository.findAll();
+        List<PrinterDto> actual = printerService.getPrinters();
 
+        verify(printerRepository).findAll();
+        verify(printerMapper).toPrinterDtoList(List.of(printerEntity));
         assertEquals(1, actual.size());
-        verify(printerRepository, times(1)).findAll();
     }
 
     @Test
     public void getPrinter() {
         PrinterEntity printerEntity = createPrinterEntity1();
-        when(printerRepository.findById(printerEntity.getCode())).thenReturn(Optional.of(printerEntity));
+        when(printerRepository.findById(any())).thenReturn(Optional.of(printerEntity));
         PrinterDto expected = createPrinterDto1();
-        when(printerMapper.toPrinterDto(printerEntity)).thenReturn(expected);
+        when(printerMapper.toPrinterDto(any())).thenReturn(expected);
 
         PrinterDto actual = printerService.getPrinter(printerEntity.getCode());
 
@@ -64,21 +64,21 @@ public class PrinterServiceTest {
 
     @Test
     public void save() {
-        ProductEntity productEntity = createProductEntity1();
-        PrinterEntity printerEntity = createPrinterEntity1();
-        when(productRepository.findById(productEntity.getModel())).thenReturn(Optional.of(productEntity));
-        PrinterDto printerDto = createPrinterDto1();
-        when(printerMapper.toPrinterEntity(printerDto, productEntity)).thenReturn(printerEntity);
-        when(printerRepository.save(printerEntity)).thenReturn(printerEntity);
-        when(printerMapper.toPrinterDto(printerEntity)).thenReturn(printerDto);
+        ProductEntity productEntity = new ProductEntity();
+        PrinterEntity printerEntity = new PrinterEntity();
+        when(productRepository.findById(any())).thenReturn(Optional.of(productEntity));
+        PrinterDto printerDto = new PrinterDto();
+        when(printerMapper.toPrinterEntity(any(), any())).thenReturn(printerEntity);
+        when(printerRepository.save(any())).thenReturn(printerEntity);
+        when(printerMapper.toPrinterDto(any())).thenReturn(printerDto);
 
         PrinterDto actual = printerService.save(printerDto);
 
-        assertThat(actual).isEqualTo(printerDto);
         verify(productRepository).findById(productEntity.getModel());
         verify(printerMapper).toPrinterEntity(printerDto, productEntity);
         verify(printerRepository).save(printerEntity);
         verify(printerMapper).toPrinterDto(printerEntity);
+        assertThat(actual).isEqualTo(printerDto);
     }
 
     @Test
@@ -98,17 +98,17 @@ public class PrinterServiceTest {
 
         PrinterDto expected = createPrinterDto1();
 
-        when(printerRepository.findById(preUpdatedPrinterEntity.getCode())).thenReturn(Optional.of(preUpdatedPrinterEntity));
-        when(printerRepository.save(any(PrinterEntity.class))).thenReturn(updatedEntity);
-        when(printerMapper.toPrinterDto(updatedEntity)).thenReturn(expected);
+        when(printerRepository.findById(any())).thenReturn(Optional.of(preUpdatedPrinterEntity));
+        when(printerRepository.save(any())).thenReturn(updatedEntity);
+        when(printerMapper.toPrinterDto(any())).thenReturn(expected);
 
         PrinterDto actual = printerService.updatePrinterPartially(preUpdatedPrinterEntity.getCode(), updateDto);
 
-        assertThat(actual).isEqualTo(expected);
         verify(printerRepository).findById(preUpdatedPrinterEntity.getCode());
         verify(printerRepository).save(preUpdatedPrinterEntity);
         verify(printerMapper).toPrinterDto(updatedEntity);
 
+        assertThat(actual).isEqualTo(expected);
         assertThat(preUpdatedPrinterEntity.getType()).isEqualTo("lol");
         assertThat(preUpdatedPrinterEntity.getColor()).isEqualTo("y");
         assertThat(preUpdatedPrinterEntity.getPrice()).isEqualTo(1111);
@@ -117,7 +117,7 @@ public class PrinterServiceTest {
     @Test
     void delete() {
         PrinterEntity printerEntity = createPrinterEntity1();
-        doNothing().when(printerRepository).deleteById(printerEntity.getCode());
+        doNothing().when(printerRepository).deleteById(any());
 
         printerService.delete(printerEntity.getCode());
 

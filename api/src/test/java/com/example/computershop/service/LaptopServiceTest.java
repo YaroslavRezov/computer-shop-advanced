@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import static com.example.computershop.data.LaptopDtoData.createLaptopDto1;
 import static com.example.computershop.data.LaptopEntityData.createLaptopEntity1;
-import static com.example.computershop.data.ProductEntityData.createProductEntity1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,37 +39,38 @@ public class LaptopServiceTest {
         LaptopEntity laptopEntity = new LaptopEntity();
         LaptopDto laptopDto = new LaptopDto();
         when(laptopRepository.findAll()).thenReturn(List.of(laptopEntity));
-        when(laptopMapper.toLaptopDtoList(List.of(laptopEntity))).thenReturn(List.of(laptopDto));
+        when(laptopMapper.toLaptopDtoList(any())).thenReturn(List.of(laptopDto));
 
-        List<LaptopEntity> actual = laptopRepository.findAll();
+        List<LaptopDto> actual = laptopService.getLaptops();
 
         assertEquals(1, actual.size());
-        verify(laptopRepository, times(1)).findAll();
+        verify(laptopRepository).findAll();
+        verify(laptopMapper).toLaptopDtoList(List.of(laptopEntity));
     }
 
     @Test
     public void getLaptop() {
         LaptopEntity laptopEntity = createLaptopEntity1();
-        when(laptopRepository.findById(laptopEntity.getCode())).thenReturn(Optional.of(laptopEntity));
+        when(laptopRepository.findById(any())).thenReturn(Optional.of(laptopEntity));
         LaptopDto expected = createLaptopDto1();
-        when(laptopMapper.toLaptopDto(laptopEntity)).thenReturn(expected);
+        when(laptopMapper.toLaptopDto(any())).thenReturn(expected);
 
         LaptopDto actual = laptopService.getLaptop(laptopEntity.getCode());
 
-        assertThat(actual).isEqualTo(expected);
         verify(laptopRepository).findById(laptopEntity.getCode());
         verify(laptopMapper).toLaptopDto(laptopEntity);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void save() {
-        ProductEntity productEntity = createProductEntity1();
-        LaptopEntity laptopEntity = createLaptopEntity1();
-        when(productRepository.findById(productEntity.getModel())).thenReturn(Optional.of(productEntity));
-        LaptopDto laptopDto = createLaptopDto1();
-        when(laptopMapper.toLaptopEntity(laptopDto, productEntity)).thenReturn(laptopEntity);
-        when(laptopRepository.save(laptopEntity)).thenReturn(laptopEntity);
-        when(laptopMapper.toLaptopDto(laptopEntity)).thenReturn(laptopDto);
+        ProductEntity productEntity = new ProductEntity();
+        LaptopEntity laptopEntity = new LaptopEntity();
+        when(productRepository.findById(any())).thenReturn(Optional.of(productEntity));
+        LaptopDto laptopDto = new LaptopDto();
+        when(laptopMapper.toLaptopEntity(any(), any())).thenReturn(laptopEntity);
+        when(laptopRepository.save(any())).thenReturn(laptopEntity);
+        when(laptopMapper.toLaptopDto(any())).thenReturn(laptopDto);
 
         LaptopDto actual = laptopService.save(laptopDto);
 
@@ -102,9 +102,9 @@ public class LaptopServiceTest {
 
         LaptopDto expected = createLaptopDto1();
 
-        when(laptopRepository.findById(preUpdatedLaptopEntity.getCode())).thenReturn(Optional.of(preUpdatedLaptopEntity));
-        when(laptopRepository.save(any(LaptopEntity.class))).thenReturn(updatedEntity);
-        when(laptopMapper.toLaptopDto(updatedEntity)).thenReturn(expected);
+        when(laptopRepository.findById(any())).thenReturn(Optional.of(preUpdatedLaptopEntity));
+        when(laptopRepository.save(any())).thenReturn(updatedEntity);
+        when(laptopMapper.toLaptopDto(any())).thenReturn(expected);
 
         LaptopDto actual = laptopService.updateLaptopPartially(preUpdatedLaptopEntity.getCode(), updateDto);
 

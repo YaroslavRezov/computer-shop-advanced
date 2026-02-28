@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import static com.example.computershop.data.PcDtoData.createPcDto1;
 import static com.example.computershop.data.PcEntityData.createPcEntity1;
-import static com.example.computershop.data.ProductEntityData.createProductEntity1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -37,45 +36,46 @@ public class PcServiceTest {
         PcEntity pcEntity = new PcEntity();
         PcDto pcDto = new PcDto();
         when(pcRepository.findAll()).thenReturn(List.of(pcEntity));
-        when(pcMapper.toPcDtoList(List.of(pcEntity))).thenReturn(List.of(pcDto));
+        when(pcMapper.toPcDtoList(any())).thenReturn(List.of(pcDto));
 
-        List<PcEntity> actual = pcRepository.findAll();
+        List<PcDto> actual = pcService.getPcs();
 
+        verify(pcRepository).findAll();
+        verify(pcMapper).toPcDtoList(List.of(pcEntity));
         assertEquals(1, actual.size());
-        verify(pcRepository, times(1)).findAll();
     }
 
     @Test
     public void getPc() {
         PcEntity pcEntity = createPcEntity1();
-        when(pcRepository.findById(pcEntity.getCode())).thenReturn(Optional.of(pcEntity));
+        when(pcRepository.findById(any())).thenReturn(Optional.of(pcEntity));
         PcDto expected = createPcDto1();
-        when(pcMapper.toPcDto(pcEntity)).thenReturn(expected);
+        when(pcMapper.toPcDto(any())).thenReturn(expected);
 
         PcDto actual = pcService.getPc(pcEntity.getCode());
 
-        assertThat(actual).isEqualTo(expected);
         verify(pcRepository).findById(pcEntity.getCode());
         verify(pcMapper).toPcDto(pcEntity);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void save() {
-        ProductEntity productEntity = createProductEntity1();
-        PcEntity pcEntity = createPcEntity1();
-        when(productRepository.findById(productEntity.getModel())).thenReturn(Optional.of(productEntity));
-        PcDto pcDto = createPcDto1();
-        when(pcMapper.toPcEntity(pcDto, productEntity)).thenReturn(pcEntity);
-        when(pcRepository.save(pcEntity)).thenReturn(pcEntity);
-        when(pcMapper.toPcDto(pcEntity)).thenReturn(pcDto);
+        ProductEntity productEntity = new ProductEntity();
+        PcEntity pcEntity = new PcEntity();
+        when(productRepository.findById(any())).thenReturn(Optional.of(productEntity));
+        PcDto pcDto = new PcDto();
+        when(pcMapper.toPcEntity(any(), any())).thenReturn(pcEntity);
+        when(pcRepository.save(any())).thenReturn(pcEntity);
+        when(pcMapper.toPcDto(any())).thenReturn(pcDto);
 
         PcDto actual = pcService.save(pcDto);
 
-        assertThat(actual).isEqualTo(pcDto);
         verify(productRepository).findById(productEntity.getModel());
         verify(pcMapper).toPcEntity(pcDto, productEntity);
         verify(pcRepository).save(pcEntity);
         verify(pcMapper).toPcDto(pcEntity);
+        assertThat(actual).isEqualTo(pcDto);
     }
     @Test
     public void updatePcPartially() {
@@ -98,17 +98,17 @@ public class PcServiceTest {
 
         PcDto expected = createPcDto1();
 
-        when(pcRepository.findById(preUpdatedPcEntity.getCode())).thenReturn(Optional.of(preUpdatedPcEntity));
-        when(pcRepository.save(any(PcEntity.class))).thenReturn(updatedEntity);
-        when(pcMapper.toPcDto(updatedEntity)).thenReturn(expected);
+        when(pcRepository.findById(any())).thenReturn(Optional.of(preUpdatedPcEntity));
+        when(pcRepository.save(any())).thenReturn(updatedEntity);
+        when(pcMapper.toPcDto(any())).thenReturn(expected);
 
         PcDto actual = pcService.updatePcPartially(preUpdatedPcEntity.getCode(), updateDto);
 
-        assertThat(actual).isEqualTo(expected);
         verify(pcRepository).findById(preUpdatedPcEntity.getCode());
         verify(pcRepository).save(preUpdatedPcEntity);
         verify(pcMapper).toPcDto(updatedEntity);
 
+        assertThat(actual).isEqualTo(expected);
         assertThat(preUpdatedPcEntity.getSpeed()).isEqualTo(11);
         assertThat(preUpdatedPcEntity.getRam()).isEqualTo(111);
         assertThat(preUpdatedPcEntity.getHd()).isEqualTo(1111.0);
@@ -119,7 +119,7 @@ public class PcServiceTest {
     @Test
     void delete() {
         PcEntity pcEntity = createPcEntity1();
-        doNothing().when(pcRepository).deleteById(pcEntity.getCode());
+        doNothing().when(pcRepository).deleteById(any());
 
         pcService.delete(pcEntity.getCode());
 

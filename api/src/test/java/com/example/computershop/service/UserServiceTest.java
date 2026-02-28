@@ -28,34 +28,32 @@ public class UserServiceTest {
     @Test
     void loadUserByUsername() {
         userEntity = createUser1();
-        when(usersRepository.findByUsername("Omen")).thenReturn(Optional.of(userEntity));
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.of(userEntity));
 
         UserDetails actual = userService.loadUserByUsername("Omen");
 
+        verify(usersRepository).findByUsername("Omen");
+        verifyNoMoreInteractions(usersRepository);
         assertThat(actual).isNotNull();
         assertThat(actual.getUsername()).isEqualTo("Omen");
         assertThat(actual.isEnabled()).isTrue();
         assertThat(actual.isAccountNonExpired()).isTrue();
         assertThat(actual.isAccountNonLocked()).isTrue();
         assertThat(actual.isCredentialsNonExpired()).isTrue();
-
-        verify(usersRepository).findByUsername("Omen");
-        verifyNoMoreInteractions(usersRepository);
     }
 
     @Test
     void save() {
         userEntity = createUser1();
-        when(usersRepository.save(userEntity)).thenReturn(userEntity);
+        when(usersRepository.save(any())).thenReturn(userEntity);
 
         UsersEntity savedUser = userService.save(userEntity);
 
+        verify(usersRepository).save(userEntity);
         assertThat(savedUser).isNotNull();
         assertThat(savedUser.getId()).isEqualTo(userEntity.getId());
         assertThat(savedUser.getUsername()).isEqualTo(userEntity.getUsername());
         assertThat(savedUser.isEnabled()).isTrue();
-
-        verify(usersRepository).save(userEntity);
     }
 
 }

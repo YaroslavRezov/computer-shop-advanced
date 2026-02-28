@@ -44,36 +44,33 @@ public class DeviceServiceTest {
         List<DeviceDto> expected = Arrays.asList(deviceDto);
 
         when(deviceRepository.findAllDevices()).thenReturn(deviceViews);
-        when(deviceMapper.toDeviceDtoList(deviceViews)).thenReturn(expected);
+        when(deviceMapper.toDeviceDtoList(any())).thenReturn(expected);
 
         List<DeviceDto> actual = deviceService.getAllDevices();
-
-        assertThat(actual)
-                .isNotNull()
-                .isEqualTo(expected)
-                .hasSize(1);
 
         verify(deviceRepository).findAllDevices();
         verify(deviceMapper).toDeviceDtoList(deviceViews);
         verifyNoMoreInteractions(deviceRepository, deviceMapper);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected)
+                .hasSize(1);
     }
 
     @Test
     void getDevice() {
-        when(deviceRepository.findDeviceByCode("1232")).thenReturn(deviceView);
-        when(deviceMapper.toDeviceDto(deviceView)).thenReturn(deviceDto);
+        when(deviceRepository.findDeviceByCode(any())).thenReturn(deviceView);
+        when(deviceMapper.toDeviceDto(any())).thenReturn(deviceDto);
 
         DeviceDto actual = deviceService.getDevice("1232");
-
-        assertThat(actual)
-                .isNotNull()
-                .isEqualTo(deviceDto);
-
-        assertThat(actual.getModel()).isEqualTo("1232");
-        assertThat(actual.getPrice()).isEqualTo(600);
 
         verify(deviceRepository).findDeviceByCode("1232");
         verify(deviceMapper).toDeviceDto(deviceView);
         verifyNoMoreInteractions(deviceRepository, deviceMapper);
+        assertThat(actual.getModel()).isEqualTo("1232");
+        assertThat(actual.getPrice()).isEqualTo(600);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(deviceDto);
     }
 }
