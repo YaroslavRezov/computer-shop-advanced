@@ -47,26 +47,27 @@ public class ProductServiceTest {
     @Test
     public void getProducts() {
         when(productRepository.findAll()).thenReturn(List.of(productEntity));
-        when(productMapper.toProductDtoList(List.of(productEntity))).thenReturn(List.of(productDto));
+        when(productMapper.toProductDtoList(any())).thenReturn(List.of(productDto));
 
-        List<ProductEntity> actual = productRepository.findAll();
+        List<ProductDto> actual = productService.getProducts();
 
-        assertEquals(1, actual.size());
         verify(productRepository, times(1)).findAll();
+        verify(productMapper).toProductDtoList(List.of(productEntity));
+        assertEquals(1, actual.size());
     }
 
     @Test
     public void getProduct() {
         ProductEntity productEntity = createProductEntity1();
-        when(productRepository.findById(productEntity.getModel())).thenReturn(Optional.of(productEntity));
+        when(productRepository.findById(any())).thenReturn(Optional.of(productEntity));
         ProductDto expected = createProductDto1();
-        when(productMapper.toProductDto(productEntity)).thenReturn(expected);
+        when(productMapper.toProductDto(any())).thenReturn(expected);
 
         ProductDto actual = productService.getProduct(productEntity.getModel());
 
-        assertThat(actual).isEqualTo(expected);
         verify(productRepository).findById(productEntity.getModel());
         verify(productMapper).toProductDto(productEntity);
+        assertThat(actual).isEqualTo(expected);
     }
     @Test
     public void getAllProductsJoined() {
@@ -74,27 +75,27 @@ public class ProductServiceTest {
         List<ProductJoinedDto> expected = Arrays.asList(productJoinedDto);
 
         when(productRepository.findAllProductsJoined()).thenReturn(productJoinedViews);
-        when(productMapper.toProductJoinedDtoList(productJoinedViews)).thenReturn(expected);
+        when(productMapper.toProductJoinedDtoList(any())).thenReturn(expected);
 
         List<ProductJoinedDto> actual = productService.getAllProductsJoined();
 
-        assertThat(actual).isEqualTo(expected);
         verify(productRepository).findAllProductsJoined();
         verify(productMapper).toProductJoinedDtoList(productJoinedViews);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     void save() {
-        when(productMapper.toProductEntity(productDto)).thenReturn(productEntity);
-        when(productRepository.save(productEntity)).thenReturn(productEntity);
-        when(productMapper.toProductDto(productEntity)).thenReturn(productDto);
+        when(productMapper.toProductEntity(any())).thenReturn(productEntity);
+        when(productRepository.save(any())).thenReturn(productEntity);
+        when(productMapper.toProductDto(any())).thenReturn(productDto);
 
         ProductDto actual = productService.save(productDto);
 
-        assertThat(actual).isEqualTo(productDto);
         verify(productMapper).toProductEntity(productDto);
         verify(productRepository).save(productEntity);
         verify(productMapper).toProductDto(productEntity);
+        assertThat(actual).isEqualTo(productDto);
     }
 
     @Test
@@ -112,18 +113,18 @@ public class ProductServiceTest {
         expectedDto.setModel(existingEntity.getModel());
         expectedDto.setMaker("B");
 
-        when(productRepository.findById(existingEntity.getModel())).thenReturn(Optional.of(existingEntity));
-        when(productRepository.save(any(ProductEntity.class))).thenReturn(updatedEntity);
-        when(productMapper.toProductDto(updatedEntity)).thenReturn(expectedDto);
+        when(productRepository.findById(any())).thenReturn(Optional.of(existingEntity));
+        when(productRepository.save(any())).thenReturn(updatedEntity);
+        when(productMapper.toProductDto(any())).thenReturn(expectedDto);
 
         ProductDto actual = productService.updateProductPartially(existingEntity.getModel(), updateDto);
 
-        assertThat(actual).isEqualTo(expectedDto);
-        assertThat(actual.getMaker()).isEqualTo("B");
         verify(productRepository).findById(existingEntity.getModel());
         verify(productRepository).save(existingEntity);
         verify(productMapper).toProductDto(updatedEntity);
 
+        assertThat(actual).isEqualTo(expectedDto);
+        assertThat(actual.getMaker()).isEqualTo("B");
         assertThat(existingEntity.getMaker()).isEqualTo("B");
     }
 
