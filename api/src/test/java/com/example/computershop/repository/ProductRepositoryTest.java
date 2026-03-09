@@ -15,11 +15,13 @@ import static com.example.computershop.data.ProductEntityData.createProductEntit
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ProductRepositoryTest extends BaseIT{
+public class ProductRepositoryTest extends RepositoryIT {
+
     @Autowired
     private ProductRepository productRepository;
     @Autowired
     private PcRepository pcRepository;
+
     @Test
     void findAllProductsJoined() {
         ProductEntity product1 = productRepository.save(createProductEntity1());
