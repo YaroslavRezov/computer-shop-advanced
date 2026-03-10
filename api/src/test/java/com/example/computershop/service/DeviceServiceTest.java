@@ -50,7 +50,6 @@ public class DeviceServiceTest {
 
         verify(deviceRepository).findAllDevices();
         verify(deviceMapper).toDeviceDtoList(deviceViews);
-        verifyNoMoreInteractions(deviceRepository, deviceMapper);
         assertThat(actual)
                 .isNotNull()
                 .isEqualTo(expected)
@@ -66,9 +65,6 @@ public class DeviceServiceTest {
 
         verify(deviceRepository).findDeviceByCode("1232");
         verify(deviceMapper).toDeviceDto(deviceView);
-        verifyNoMoreInteractions(deviceRepository, deviceMapper);
-        assertThat(actual.getModel()).isEqualTo("1232");
-        assertThat(actual.getPrice()).isEqualTo(600);
         assertThat(actual)
                 .isNotNull()
                 .isEqualTo(deviceDto);

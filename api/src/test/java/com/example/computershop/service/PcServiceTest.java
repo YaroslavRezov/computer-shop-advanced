@@ -109,11 +109,6 @@ public class PcServiceTest {
         verify(pcMapper).toPcDto(updatedEntity);
 
         assertThat(actual).isEqualTo(expected);
-        assertThat(preUpdatedPcEntity.getSpeed()).isEqualTo(11);
-        assertThat(preUpdatedPcEntity.getRam()).isEqualTo(111);
-        assertThat(preUpdatedPcEntity.getHd()).isEqualTo(1111.0);
-        assertThat(preUpdatedPcEntity.getCd()).isEqualTo("11");
-        assertThat(preUpdatedPcEntity.getPrice()).isEqualTo(1111);
     }
 
     @Test

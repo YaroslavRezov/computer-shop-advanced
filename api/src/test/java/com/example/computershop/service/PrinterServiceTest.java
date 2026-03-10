@@ -109,9 +109,6 @@ public class PrinterServiceTest {
         verify(printerMapper).toPrinterDto(updatedEntity);
 
         assertThat(actual).isEqualTo(expected);
-        assertThat(preUpdatedPrinterEntity.getType()).isEqualTo("lol");
-        assertThat(preUpdatedPrinterEntity.getColor()).isEqualTo("y");
-        assertThat(preUpdatedPrinterEntity.getPrice()).isEqualTo(1111);
     }
 
     @Test

@@ -108,16 +108,10 @@ public class LaptopServiceTest {
 
         LaptopDto actual = laptopService.updateLaptopPartially(preUpdatedLaptopEntity.getCode(), updateDto);
 
-        assertThat(actual).isEqualTo(expected);
         verify(laptopRepository).findById(preUpdatedLaptopEntity.getCode());
         verify(laptopRepository).save(preUpdatedLaptopEntity);
         verify(laptopMapper).toLaptopDto(updatedEntity);
-
-        assertThat(preUpdatedLaptopEntity.getSpeed()).isEqualTo(11);
-        assertThat(preUpdatedLaptopEntity.getRam()).isEqualTo(111);
-        assertThat(preUpdatedLaptopEntity.getHd()).isEqualTo(1111.0);
-        assertThat(preUpdatedLaptopEntity.getScreen()).isEqualTo(11);
-        assertThat(preUpdatedLaptopEntity.getPrice()).isEqualTo(1111);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test

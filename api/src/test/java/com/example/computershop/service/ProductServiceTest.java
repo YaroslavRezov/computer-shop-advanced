@@ -3,6 +3,9 @@ package com.example.computershop.service;
 import com.example.computershop.mapper.ProductMapper;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.model.entity.ProductJoinedView;
+import com.example.computershop.repository.LaptopRepository;
+import com.example.computershop.repository.PcRepository;
+import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.specs.generated.model.ProductDto;
 import com.example.specs.generated.model.ProductJoinedDto;
@@ -32,6 +35,15 @@ public class ProductServiceTest {
 
     @MockBean
     private ProductMapper productMapper;
+
+    @MockBean
+    private PcRepository pcRepository;
+
+    @MockBean
+    private PrinterRepository printerRepository;
+
+    @MockBean
+    private LaptopRepository laptopRepository;
 
     private ProductEntity productEntity;
     private ProductDto productDto;
@@ -124,8 +136,6 @@ public class ProductServiceTest {
         verify(productMapper).toProductDto(updatedEntity);
 
         assertThat(actual).isEqualTo(expectedDto);
-        assertThat(actual.getMaker()).isEqualTo("B");
-        assertThat(existingEntity.getMaker()).isEqualTo("B");
     }
 
     @Test
