@@ -6,6 +6,7 @@ import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.specs.generated.model.LaptopDto;
+import com.example.specs.generated.model.PrinterDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -92,6 +93,22 @@ public class LaptopServiceTest {
         verify(laptopMapper).toLaptopEntity(laptopDto, productEntity);
         verify(laptopRepository).save(laptopEntity);
         verify(laptopMapper).toLaptopDto(laptopEntity);
+    }
+
+
+    @Test
+    void save_whenProductNotFound_shouldThrowException() {
+        LaptopDto laptopDto = new LaptopDto();
+        laptopDto.setModel("sosal?");
+        when(productRepository.findById(any())).thenReturn(Optional.empty());
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> laptopService.save(laptopDto));
+
+        verify(productRepository).findById("sosal?");
+        verify(laptopMapper, never()).toLaptopEntity(any(), any());
+        verify(laptopRepository, never()).save(any());
+        verify(laptopMapper, never()).toLaptopDto(any());
+        assertEquals("Нет такого продукта", exception.getMessage());
     }
 
     @Test

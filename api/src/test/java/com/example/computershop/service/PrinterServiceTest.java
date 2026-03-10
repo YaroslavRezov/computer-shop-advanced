@@ -5,6 +5,7 @@ import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
+import com.example.specs.generated.model.PcDto;
 import com.example.specs.generated.model.PrinterDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +93,21 @@ public class PrinterServiceTest {
         verify(printerRepository).save(printerEntity);
         verify(printerMapper).toPrinterDto(printerEntity);
         assertThat(actual).isEqualTo(printerDto);
+    }
+
+    @Test
+    void save_whenProductNotFound_shouldThrowException() {
+        PrinterDto printerDto = new PrinterDto();
+        printerDto.setModel("sosal?");
+        when(productRepository.findById(any())).thenReturn(Optional.empty());
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> printerService.save(printerDto));
+
+        verify(productRepository).findById("sosal?");
+        verify(printerMapper, never()).toPrinterEntity(any(), any());
+        verify(printerRepository, never()).save(any());
+        verify(printerMapper, never()).toPrinterDto(any());
+        assertEquals("Нет такого продукта", exception.getMessage());
     }
 
     @Test

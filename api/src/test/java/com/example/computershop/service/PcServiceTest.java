@@ -6,6 +6,7 @@ import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.specs.generated.model.PcDto;
+import com.example.specs.generated.model.ProductDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -89,6 +90,21 @@ public class PcServiceTest {
         verify(pcRepository).save(pcEntity);
         verify(pcMapper).toPcDto(pcEntity);
         assertThat(actual).isEqualTo(pcDto);
+    }
+
+    @Test
+    void save_whenProductNotFound_shouldThrowException() {
+        PcDto pcDto = new PcDto();
+        pcDto.setModel("sosal?");
+        when(productRepository.findById(any())).thenReturn(Optional.empty());
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> pcService.save(pcDto));
+
+        verify(productRepository).findById("sosal?");
+        verify(pcMapper, never()).toPcEntity(any(), any());
+        verify(pcRepository, never()).save(any());
+        verify(pcMapper, never()).toPcDto(any());
+        assertEquals("Нет такого продукта", exception.getMessage());
     }
     @Test
     public void updatePcPartially() {

@@ -7,6 +7,7 @@ import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
+import com.example.specs.generated.model.CartDto;
 import com.example.specs.generated.model.ProductDto;
 import com.example.specs.generated.model.ProductJoinedDto;
 import org.junit.jupiter.api.BeforeEach;
