@@ -12,10 +12,13 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.computershop.data.DeviceDtoData.createDeviceDto1;
 import static com.example.computershop.data.DeviceViewData.createDeviceViewMock1;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 @SpringJUnitConfig(classes = {DeviceService.class})
 public class DeviceServiceTest {

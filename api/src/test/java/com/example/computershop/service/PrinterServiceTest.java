@@ -18,6 +18,7 @@ import static com.example.computershop.data.PrinterDtoData.createPrinterDto1;
 import static com.example.computershop.data.PrinterEntityData.createPrinterEntity1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -60,6 +61,18 @@ public class PrinterServiceTest {
         assertThat(actual).isEqualTo(expected);
         verify(printerRepository).findById(printerEntity.getCode());
         verify(printerMapper).toPrinterDto(printerEntity);
+    }
+
+    @Test
+    public void getPc_whenPcNotFound_shouldThrowException() {
+        Long code = 80082L;
+        when(printerRepository.findById(any())).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> printerService.getPrinter(code));
+
+        verify(printerRepository).findById(code);
+        verify(printerMapper, never()).toPrinterDto(any());
+        assertEquals("нет такаого принтера", exception.getMessage());
     }
 
     @Test

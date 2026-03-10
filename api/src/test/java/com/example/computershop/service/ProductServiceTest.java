@@ -23,6 +23,7 @@ import static com.example.computershop.data.ProductDtoData.createProductDto1;
 import static com.example.computershop.data.ProductEntityData.createProductEntity1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 @SpringJUnitConfig(classes = {ProductService.class})
 public class ProductServiceTest {
@@ -81,6 +82,19 @@ public class ProductServiceTest {
         verify(productMapper).toProductDto(productEntity);
         assertThat(actual).isEqualTo(expected);
     }
+
+    @Test
+    public void getProduct_whenProductNotFound_shouldThrowException() {
+        String model = "sosal?";
+        when(productRepository.findById(any())).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> productService.getProduct(model));
+
+        verify(productRepository).findById(model);
+        verify(productMapper, never()).toProductDto(any());
+        assertEquals("Нет такого продукта", exception.getMessage());
+    }
+
     @Test
     public void getAllProductsJoined() {
         List<ProductJoinedView> productJoinedViews = Arrays.asList(productJoinedView);

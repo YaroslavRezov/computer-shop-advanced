@@ -18,6 +18,7 @@ import static com.example.computershop.data.PcDtoData.createPcDto1;
 import static com.example.computershop.data.PcEntityData.createPcEntity1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 @SpringJUnitConfig(classes = {PcService.class})
 public class PcServiceTest {
@@ -57,6 +58,18 @@ public class PcServiceTest {
         verify(pcRepository).findById(pcEntity.getCode());
         verify(pcMapper).toPcDto(pcEntity);
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void getPc_whenPcNotFound_shouldThrowException() {
+        Long code = 80082L;
+        when(pcRepository.findById(any())).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> pcService.getPc(code));
+
+        verify(pcRepository).findById(code);
+        verify(pcMapper, never()).toPcDto(any());
+        assertEquals("Нет такого ПК", exception.getMessage());
     }
 
     @Test

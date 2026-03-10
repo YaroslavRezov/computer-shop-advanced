@@ -18,6 +18,7 @@ import static com.example.computershop.data.LaptopDtoData.createLaptopDto1;
 import static com.example.computershop.data.LaptopEntityData.createLaptopEntity1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -60,6 +61,18 @@ public class LaptopServiceTest {
         verify(laptopRepository).findById(laptopEntity.getCode());
         verify(laptopMapper).toLaptopDto(laptopEntity);
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void getLaptop_whenLaptopNotFound_shouldThrowException() {
+        Long code = 80082L;
+        when(laptopRepository.findById(any())).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> laptopService.getLaptop(code));
+
+        verify(laptopRepository).findById(code);
+        verify(laptopMapper, never()).toLaptopDto(any());
+        assertEquals("Нет такого ноута", exception.getMessage());
     }
 
     @Test
