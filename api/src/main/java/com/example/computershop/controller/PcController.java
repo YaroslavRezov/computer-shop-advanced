@@ -44,6 +44,4 @@ public class PcController implements PcControllerApi {
 //        return (Page<PcDto>) pcService.getPcs();
 //    }
 
-
-
 }
