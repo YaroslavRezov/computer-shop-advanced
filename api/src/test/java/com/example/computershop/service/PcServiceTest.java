@@ -141,6 +141,27 @@ public class PcServiceTest {
     }
 
     @Test
+    void updatePcPartially_whenPcNotFound_shouldThrowException() {
+        PcDto updateDto = new PcDto();
+        updateDto.setSpeed(11);
+        updateDto.setRam(111);
+        updateDto.setHd(1111.0);
+        updateDto.setCd("11");
+        updateDto.setPrice(1111);
+
+        when(pcRepository.findById(any())).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> pcService.updatePcPartially(1000L, updateDto));
+
+        assertEquals("Нет такого ПК", exception.getMessage());
+
+        verify(pcRepository).findById(1000L);
+        verify(pcRepository, never()).save(any());
+        verify(pcMapper, never()).toPcDto(any());
+    }
+
+    @Test
     void delete() {
         PcEntity pcEntity = createPcEntity1();
         doNothing().when(pcRepository).deleteById(any());

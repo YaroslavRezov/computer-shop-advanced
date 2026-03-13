@@ -5,7 +5,6 @@ import com.example.computershop.model.entity.PrinterEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
-import com.example.specs.generated.model.PcDto;
 import com.example.specs.generated.model.PrinterDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +64,7 @@ public class PrinterServiceTest {
     }
 
     @Test
-    public void getPc_whenPcNotFound_shouldThrowException() {
+    public void getPrinter_whenPrinterNotFound_shouldThrowException() {
         Long code = 80082L;
         when(printerRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -138,6 +137,25 @@ public class PrinterServiceTest {
         verify(printerMapper).toPrinterDto(updatedEntity);
 
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void updatePrinterPartially_whenPrinterNotFound_shouldThrowException() {
+        PrinterDto updateDto = new PrinterDto();
+        updateDto.setColor("y");
+        updateDto.setType("jet");
+        updateDto.setPrice(1111);
+
+        when(printerRepository.findById(any())).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> printerService.updatePrinterPartially(1000L, updateDto));
+
+        assertEquals("Нет такого принтера", exception.getMessage());
+
+        verify(printerRepository).findById(1000L);
+        verify(printerRepository, never()).save(any());
+        verify(printerMapper, never()).toPrinterDto(any());
     }
 
     @Test

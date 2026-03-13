@@ -22,6 +22,8 @@ import java.util.Optional;
 
 import static com.example.computershop.data.ProductDtoData.createProductDto1;
 import static com.example.computershop.data.ProductEntityData.createProductEntity1;
+import static com.example.computershop.data.ProductJoinedDtoData.createProductJoinedDto1;
+import static com.example.computershop.data.ProductJoinedViewData.createProductJoinedViewMock1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -98,8 +100,11 @@ public class ProductServiceTest {
 
     @Test
     public void getAllProductsJoined() {
+        productJoinedDto = createProductJoinedDto1();
+        productJoinedView = createProductJoinedViewMock1();
         List<ProductJoinedView> productJoinedViews = Arrays.asList(productJoinedView);
         List<ProductJoinedDto> expected = Arrays.asList(productJoinedDto);
+
 
         when(productRepository.findAllProductsJoined()).thenReturn(productJoinedViews);
         when(productMapper.toProductJoinedDtoList(any())).thenReturn(expected);
@@ -151,6 +156,22 @@ public class ProductServiceTest {
         verify(productMapper).toProductDto(updatedEntity);
 
         assertThat(actual).isEqualTo(expectedDto);
+    }
+
+    @Test
+    void updateProductPartially_whenProductNotFound_shouldThrowException() {
+        ProductDto updateDto = new ProductDto();
+        updateDto.setMaker("B");
+        when(productRepository.findById(any())).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> productService.updateProductPartially("sosal?", updateDto));
+
+        assertEquals("Нет такого продукта", exception.getMessage());
+
+        verify(productRepository).findById("sosal?");
+        verify(productRepository, never()).save(any());
+        verify(productMapper, never()).toProductDto(any());
     }
 
     @Test

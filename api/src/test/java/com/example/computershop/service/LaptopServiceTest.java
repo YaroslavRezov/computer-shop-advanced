@@ -6,7 +6,7 @@ import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.specs.generated.model.LaptopDto;
-import com.example.specs.generated.model.PrinterDto;
+import com.example.specs.generated.model.LaptopDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -142,6 +142,27 @@ public class LaptopServiceTest {
         verify(laptopRepository).save(preUpdatedLaptopEntity);
         verify(laptopMapper).toLaptopDto(updatedEntity);
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void updateLaptopPartially_whenLaptopNotFound_shouldThrowException() {
+        LaptopDto updateDto = new LaptopDto();
+        updateDto.setSpeed(11);
+        updateDto.setRam(111);
+        updateDto.setHd(1111.0);
+        updateDto.setScreen(12);
+        updateDto.setPrice(1111);
+
+        when(laptopRepository.findById(any())).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> laptopService.updateLaptopPartially(1000L, updateDto));
+
+        assertEquals("Нет такого ноута", exception.getMessage());
+
+        verify(laptopRepository).findById(1000L);
+        verify(laptopRepository, never()).save(any());
+        verify(laptopMapper, never()).toLaptopDto(any());
     }
 
     @Test
