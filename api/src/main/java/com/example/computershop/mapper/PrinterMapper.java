@@ -34,7 +34,7 @@ public class PrinterMapper {
                 .code(printerEntity.getCode());
     }
 
-    private String translateDataBaseColor(String fromGetColor) {
+    public String translateDataBaseColor(String fromGetColor) {
         if(Objects.equals(fromGetColor, "y")){
             return "Цветной";
         } else if (Objects.equals(fromGetColor, "n")) {

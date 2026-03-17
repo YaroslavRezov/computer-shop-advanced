@@ -34,4 +34,13 @@ public class PrinterEntityData {
         printerEntity.setCode(13L);
         return printerEntity;
     }
+
+    public static PrinterEntity createPrinterEntity(ProductEntity product, String color, String type, int price) {
+        PrinterEntity printer = new PrinterEntity();
+        printer.setProduct(product);
+        printer.setColor(color);
+        printer.setType(type);
+        printer.setPrice(price);
+        return printer;
+    }
 }
