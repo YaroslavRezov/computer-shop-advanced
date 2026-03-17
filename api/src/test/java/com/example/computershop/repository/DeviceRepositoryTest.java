@@ -17,9 +17,8 @@ import static com.example.computershop.data.PcEntityData.createPcEntity2;
 import static com.example.computershop.data.ProductEntityData.createProductEntity1;
 import static com.example.computershop.data.ProductEntityData.createProductEntity2;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DeviceRepositoryTest extends BaseIT {
+public class DeviceRepositoryTest extends RepositoryIT {
 
     @Autowired
     private DeviceRepository deviceRepository;

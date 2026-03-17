@@ -16,7 +16,7 @@ import static com.example.computershop.data.UsersEntityData.createUser1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CartRepositoryTest extends BaseIT {
+public class CartRepositoryTest extends RepositoryIT {
 
     @Autowired
     private CartRepository cartRepository;

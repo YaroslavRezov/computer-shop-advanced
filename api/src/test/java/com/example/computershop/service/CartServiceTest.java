@@ -13,18 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static com.example.computershop.data.CartDtoData.createCartDto1;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringJUnitConfig(classes = {CartService.class})
 class CartServiceTest {
@@ -48,12 +44,13 @@ class CartServiceTest {
         CartEntity cartEntity = new CartEntity();
         CartDto cartDto = new CartDto();
         when(cartRepository.findAll()).thenReturn(List.of(cartEntity));
-        when(cartMapper.toCartDtoList(List.of(cartEntity))).thenReturn(List.of(cartDto));
+        when(cartMapper.toCartDtoList(any())).thenReturn(List.of(cartDto));
 
         List<CartDto> actual = cartService.getAll();
 
+        verify(cartRepository).findAll();
+        verify(cartMapper).toCartDtoList(List.of(cartEntity));
         assertEquals(1, actual.size());
-        verify(cartRepository, times(1)).findAll();
     }
 
     @Test
@@ -62,87 +59,122 @@ class CartServiceTest {
         UsersEntity user = new UsersEntity();
         CartEntity cartEntity = new CartEntity();
         CartDto cartDto = new CartDto();
-        when(usersRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(cartRepository.findByUser(user)).thenReturn(List.of(cartEntity));
-        when(cartMapper.toCartDtoList(List.of(cartEntity))).thenReturn(List.of(cartDto));
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.of(user));
+        when(cartRepository.findByUser(any())).thenReturn(List.of(cartEntity));
+        when(cartMapper.toCartDtoList(any())).thenReturn(List.of(cartDto));
 
         List<CartDto> actual = cartService.getCartForUser(username);
 
+        verify(usersRepository).findByUsername(username);
+        verify(cartRepository).findByUser(user);
+        verify(cartMapper).toCartDtoList(List.of(cartEntity));
         assertEquals(1, actual.size());
-        verify(usersRepository, times(1)).findByUsername(username);
     }
 
     @Test
     void getCartForUser_whenInvalidUser_shouldThrowException() {
         String username = "unknown";
-        when(usersRepository.findByUsername(username)).thenReturn(Optional.empty());
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.empty());
 
         RuntimeException actual = assertThrows(RuntimeException.class, () -> cartService.getCartForUser(username));
-        
-        assertTrue(actual.getMessage().contains(username));
-    }
 
-    @Test
-    void save() {
-        ProductEntity product = new ProductEntity();
-        UsersEntity user = new UsersEntity();
-        CartEntity savedEntity = new CartEntity();
-        CartDto responseDto = new CartDto();
-        when(productService.getPriceByCode(1L)).thenReturn(Optional.of(600));
-        when(productRepository.findById("1276")).thenReturn(Optional.of(product));
-        when(usersRepository.findByUsername("Omen")).thenReturn(Optional.of(user));
-        when(cartRepository.save(any())).thenReturn(savedEntity);
-        when(cartMapper.toCartDto(savedEntity)).thenReturn(responseDto);
-
-        CartDto actual = cartService.save(createCartDto1());
-
-        assertNotNull(actual);
-        verify(cartRepository, times(1)).save(any());
-    }
-
-    @Test
-    void save_whenProductNotFound_shouldThrowException() {
-        CartDto requestDto = new CartDto().model("invalid").code(999L);
-        when(productService.getPriceByCode(999L)).thenReturn(Optional.of(100));
-        when(productRepository.findById("invalid")).thenReturn(Optional.empty());
-
-        RuntimeException actual = assertThrows(RuntimeException.class, () -> cartService.save(requestDto));
-
-        assertTrue(actual.getMessage().contains("продукта"));
-    }
-
-    @Test
-    void delete_whenUsername() {
-        String username = "Omen";
-        UsersEntity user = new UsersEntity();
-        when(usersRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        doNothing().when(cartRepository).deleteByUser(user);
-
-        cartService.delete(username);
-
-        verify(cartRepository, times(1)).deleteByUser(user);
-    }
-
-    @Test
-    void delete_whenOrderId() {
-        Long orderId = 103L;
-        doNothing().when(cartRepository).deleteById(orderId);
-
-        cartService.delete(orderId);
-
-        verify(cartRepository, times(1)).deleteById(orderId);
+        verify(usersRepository).findByUsername(username);
+        verify(cartRepository, never()).findByUser(any());
+        verify(cartMapper, never()).toCartDtoList(any());
+        assertEquals("Нет такого пользователя" + username, actual.getMessage());
     }
 
     @Test
     void getCartForUser_whenEmptyCart_shouldReturnEmptyList() {
         String username = "Omen";
         UsersEntity user = new UsersEntity();
-        when(usersRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(cartRepository.findByUser(user)).thenReturn(Collections.emptyList());
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.of(user));
+        when(cartRepository.findByUser(any())).thenReturn(Collections.emptyList());
         when(cartMapper.toCartDtoList(Collections.emptyList())).thenReturn(Collections.emptyList());
 
         List<CartDto> actual = cartService.getCartForUser(username);
 
+        verify(usersRepository).findByUsername(username);
+        verify(cartRepository).findByUser(user);
+        verify(cartMapper).toCartDtoList(Collections.emptyList());
         assertTrue(actual.isEmpty());
     }
+
+    @Test
+    void save() {
+        CartDto cartDto1 = createCartDto1();
+        ProductEntity product = new ProductEntity();
+        UsersEntity user = new UsersEntity();
+        CartEntity cart = new CartEntity();
+        cart.setCode(cartDto1.getCode());
+        cart.setProduct(product);
+        cart.setUser(user);
+        cart.setPrice(600);
+        when(productService.getPriceByCode(any())).thenReturn(Optional.of(600));
+        when(productRepository.findById(any())).thenReturn(Optional.of(product));
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.of(user));
+        when(cartRepository.save(any())).thenReturn(cart);
+        when(cartMapper.toCartDto(any())).thenReturn(new CartDto());
+
+        CartDto actual = cartService.save(cartDto1);
+
+        verify(productService).getPriceByCode(cartDto1.getCode());
+        verify(productRepository).findById(cartDto1.getModel());
+        verify(usersRepository).findByUsername(cartDto1.getUsername());
+        verify(cartRepository).save(cart);
+        verify(cartMapper).toCartDto(cart);
+        assertNotNull(actual);
+    }
+
+    @Test
+    void save_whenProductNotFound_shouldThrowException() {
+        CartDto cartDto = new CartDto().model("invalid").code(999L);
+        when(productService.getPriceByCode(any())).thenReturn(Optional.of(100));
+        when(productRepository.findById(any())).thenReturn(Optional.empty());
+
+        RuntimeException actual = assertThrows(RuntimeException.class, () -> cartService.save(cartDto));
+
+        verify(productService).getPriceByCode(cartDto.getCode());
+        verify(productRepository).findById(cartDto.getModel());
+        verify(usersRepository, never()).findByUsername(any());
+        verify(cartRepository, never()).save(any());
+        verify(cartMapper, never()).toCartDto(any());
+        assertEquals("Нет такого продукта", actual.getMessage());
+    }
+
+    @Test
+    void delete_whenUsername() {
+        String username = "Omen";
+        UsersEntity user = new UsersEntity();
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.of(user));
+        doNothing().when(cartRepository).deleteByUser(any());
+
+        cartService.delete(username);
+
+        verify(usersRepository).findByUsername(username);
+        verify(cartRepository).deleteByUser(user);
+    }
+
+    @Test
+    void delete_whenUserNotFound_shouldThrowException() {
+        String username = "Omen";
+        when(usersRepository.findByUsername(any())).thenReturn(Optional.empty());
+
+        RuntimeException actual = assertThrows(RuntimeException.class, () -> cartService.delete(username));
+
+        verify(usersRepository).findByUsername(username);
+        verify(cartRepository, never()).deleteByUser(any());
+        assertEquals("Нет такого пользователя", actual.getMessage());
+    }
+
+    @Test
+    void delete_whenOrderId() {
+        Long orderId = 103L;
+        doNothing().when(cartRepository).deleteById(any());
+
+        cartService.delete(orderId);
+
+        verify(cartRepository).deleteById(orderId);
+    }
+
 }
