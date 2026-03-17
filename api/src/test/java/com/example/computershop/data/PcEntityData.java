@@ -37,4 +37,15 @@ public class PcEntityData {
         pcEntity.setCode(29L);
         return pcEntity;
     }
+
+    public static PcEntity createPcEntity(ProductEntity product, int speed, int ram, double hd, String cd, int price) {
+        PcEntity pc = new PcEntity();
+        pc.setProduct(product);
+        pc.setSpeed(speed);
+        pc.setRam(ram);
+        pc.setHd(hd);
+        pc.setCd(cd);
+        pc.setPrice(price);
+        return pc;
+    }
 }

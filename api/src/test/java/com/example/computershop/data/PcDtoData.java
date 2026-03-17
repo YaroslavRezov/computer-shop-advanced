@@ -25,4 +25,14 @@ public class PcDtoData {
                 .price(11111111)
                 .code(29L);
     }
+
+    public static PcDto createPcDto(String model, int speed, int ram, double hd, String cd, int price) {
+        return new PcDto()
+                .model(model)
+                .speed(speed)
+                .ram(ram)
+                .hd(hd)
+                .cd(cd)
+                .price(price);
+    }
 }
