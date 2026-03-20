@@ -1,6 +1,7 @@
 package com.example.computershop.data;
 
 import com.example.specs.generated.model.LaptopDto;
+import com.example.specs.generated.model.LaptopDto;
 
 public class LaptopDtoData {
 
@@ -24,5 +25,15 @@ public class LaptopDtoData {
                 .price(112211)
                 .screen(11)
                 .code(8L);
+    }
+
+    public static LaptopDto createLaptopDto(String model, int speed, int ram, double hd, int price, int screen) {
+        return new LaptopDto()
+                .model(model)
+                .speed(speed)
+                .ram(ram)
+                .hd(hd)
+                .price(price)
+                .screen(screen);
     }
 }
