@@ -1,6 +1,7 @@
 package com.example.computershop.data;
 
 import com.example.computershop.model.entity.LaptopEntity;
+import com.example.computershop.model.entity.LaptopEntity;
 import com.example.computershop.model.entity.ProductEntity;
 
 public class LaptopEntityData {
@@ -37,5 +38,16 @@ public class LaptopEntityData {
         laptopEntity.setScreen(11);
         laptopEntity.setCode(8L);
         return laptopEntity;
+    }
+
+    public static LaptopEntity createLaptopEntity(ProductEntity product, int speed, int ram, double hd, int price, int screen) {
+        LaptopEntity laptop = new LaptopEntity();
+        laptop.setProduct(product);
+        laptop.setSpeed(speed);
+        laptop.setRam(ram);
+        laptop.setHd(hd);
+        laptop.setPrice(price);
+        laptop.setScreen(screen);
+        return laptop;
     }
 }
