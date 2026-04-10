@@ -1,7 +1,6 @@
 package com.example.computershop.data;
 
 import com.example.computershop.model.entity.ProductEntity;
-import com.example.computershop.model.entity.ProductEntity;
 public class ProductEntityData {
 
     public static ProductEntity createProductEntity1() {

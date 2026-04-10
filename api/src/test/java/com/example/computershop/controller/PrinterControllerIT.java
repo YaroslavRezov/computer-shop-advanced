@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.example.computershop.data.PrinterDtoData.createPrinterDto;
 import static com.example.computershop.data.PrinterEntityData.createPrinterEntity;
+import static com.example.computershop.data.ProductEntityData.createProductEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -35,9 +36,7 @@ public class PrinterControllerIT extends ControllerIT {
         printerRepository.deleteAll();
         productRepository.deleteAll();
 
-        productEntity = new ProductEntity();
-        productEntity.setMaker("TestMaker");
-        productEntity.setType("Printer");
+        productEntity = createProductEntity("TestMaker", "Printer");
         productEntity = productRepository.save(productEntity);
     }
 

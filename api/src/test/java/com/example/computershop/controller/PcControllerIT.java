@@ -16,6 +16,7 @@ import java.util.*;
 
 import static com.example.computershop.data.PcDtoData.createPcDto;
 import static com.example.computershop.data.PcEntityData.createPcEntity;
+import static com.example.computershop.data.ProductEntityData.createProductEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,9 +39,7 @@ public class PcControllerIT extends ControllerIT {
         pcRepository.deleteAll();
         productRepository.deleteAll();
 
-        productEntity = new ProductEntity();
-        productEntity.setMaker("TestMaker");
-        productEntity.setType("PC");
+        productEntity = createProductEntity("TestMaker", "PC");
         productEntity = productRepository.save(productEntity);
     }
 

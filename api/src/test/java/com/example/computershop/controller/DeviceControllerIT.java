@@ -21,6 +21,7 @@ import java.util.List;
 import static com.example.computershop.data.LaptopEntityData.createLaptopEntity1;
 import static com.example.computershop.data.PcEntityData.createPcEntity1;
 import static com.example.computershop.data.PrinterEntityData.createPrinterEntity1;
+import static com.example.computershop.data.ProductEntityData.createProductEntity;
 import static com.example.computershop.utils.TestUtils.asList;
 import static com.example.computershop.utils.TestUtils.asObject;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,29 +54,19 @@ public class DeviceControllerIT extends ControllerIT {
         pcRepository.deleteAll();
         productRepository.deleteAll();
 
-        pcProduct = new ProductEntity();
-        pcProduct.setMaker("A");
-        pcProduct.setType("PC");
+        pcProduct = createProductEntity("A", "PC");
         pcProduct = productRepository.save(pcProduct);
-
-        laptopProduct = new ProductEntity();
-        laptopProduct.setMaker("A");
-        laptopProduct.setType("Laptop");
+        laptopProduct = createProductEntity("A", "Laptop");
         laptopProduct = productRepository.save(laptopProduct);
-
-        printerProduct = new ProductEntity();
-        printerProduct.setMaker("A");
-        printerProduct.setType("Printer");
+        printerProduct = createProductEntity("A", "Printer");
         printerProduct = productRepository.save(printerProduct);
 
         pcEntity = createPcEntity1();
         pcEntity.setProduct(pcProduct);
         pcEntity = pcRepository.save(pcEntity);
-
         laptopEntity = createLaptopEntity1();
         laptopEntity.setProduct(laptopProduct);
         laptopEntity = laptopRepository.save(laptopEntity);
-
         printerEntity = createPrinterEntity1();
         printerEntity.setProduct(printerProduct);
         printerEntity = printerRepository.save(printerEntity);

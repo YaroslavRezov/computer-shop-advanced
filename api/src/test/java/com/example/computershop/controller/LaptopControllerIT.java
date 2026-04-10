@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.example.computershop.data.LaptopDtoData.createLaptopDto;
 import static com.example.computershop.data.LaptopEntityData.createLaptopEntity;
+import static com.example.computershop.data.ProductEntityData.createProductEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -35,9 +36,7 @@ public class LaptopControllerIT extends ControllerIT {
         laptopRepository.deleteAll();
         productRepository.deleteAll();
 
-        productEntity = new ProductEntity();
-        productEntity.setMaker("TestMaker");
-        productEntity.setType("Laptop");
+        productEntity = createProductEntity("TestMaker", "Laptop");
         productEntity = productRepository.save(productEntity);
     }
 
