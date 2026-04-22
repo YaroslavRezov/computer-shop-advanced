@@ -6,14 +6,12 @@ import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.specs.generated.model.LaptopDto;
-import com.example.specs.generated.model.LaptopDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.example.computershop.data.LaptopDtoData.createLaptopDto1;
 import static com.example.computershop.data.LaptopEntityData.createLaptopEntity1;
@@ -21,16 +19,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringJUnitConfig(classes = {LaptopService.class})
 public class LaptopServiceTest {
 
-    @MockBean
+    @MockitoBean
     private LaptopRepository laptopRepository;
-    @MockBean
+    @MockitoBean
     private ProductRepository productRepository;
-    @MockBean
+    @MockitoBean
     private LaptopMapper laptopMapper;
 
     @Autowired

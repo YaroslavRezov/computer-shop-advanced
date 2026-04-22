@@ -8,7 +8,7 @@ import com.example.computershop.repository.ProductRepository;
 import com.example.specs.generated.model.PrinterDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.List;
@@ -25,11 +25,11 @@ import static org.mockito.Mockito.*;
 @SpringJUnitConfig(classes = {PrinterService.class})
 public class PrinterServiceTest {
 
-    @MockBean
+    @MockitoBean
     private PrinterRepository printerRepository;
-    @MockBean
+    @MockitoBean
     private ProductRepository productRepository;
-    @MockBean
+    @MockitoBean
     private PrinterMapper printerMapper;
 
     @Autowired

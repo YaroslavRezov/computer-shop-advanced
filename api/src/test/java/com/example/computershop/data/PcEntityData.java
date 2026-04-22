@@ -5,9 +5,17 @@ import com.example.computershop.model.entity.ProductEntity;
 public class PcEntityData {
 
     public static PcEntity createPcEntity1() {
+        return createPcEntity1("1232", 1L);
+    }
+
+    public static PcEntity createPcEntity1WithoutId() {
+        return createPcEntity1(null, null);
+    }
+
+    public static PcEntity createPcEntity1(String model, Long code) {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setMaker("A");
-        productEntity.setModel("1232");
+        productEntity.setModel(model);
         productEntity.setType("PC");
 
         PcEntity pcEntity = new PcEntity();
@@ -17,14 +25,22 @@ public class PcEntityData {
         pcEntity.setHd(5.0);
         pcEntity.setCd("12x");
         pcEntity.setPrice(600);
-        pcEntity.setCode(1L);
+        pcEntity.setCode(code);
         return pcEntity;
     }
 
     public static PcEntity createPcEntity2() {
+        return createPcEntity2("b276a11d-c526-4f74-b3c7-95ff94bf7147", 29L);
+    }
+
+    public static PcEntity createPcEntity2WithoutId() {
+        return createPcEntity2(null, null);
+    }
+
+    public static PcEntity createPcEntity2(String model, Long code) {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setMaker("bbbruu");
-        productEntity.setModel("b276a11d-c526-4f74-b3c7-95ff94bf7147");
+        productEntity.setModel(model);
         productEntity.setType("PC");
 
         PcEntity pcEntity = new PcEntity();
@@ -34,7 +50,7 @@ public class PcEntityData {
         pcEntity.setHd(111.0);
         pcEntity.setCd("12");
         pcEntity.setPrice(11111111);
-        pcEntity.setCode(29L);
+        pcEntity.setCode(code);
         return pcEntity;
     }
 

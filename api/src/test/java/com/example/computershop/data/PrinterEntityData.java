@@ -5,10 +5,18 @@ import com.example.computershop.model.entity.ProductEntity;
 
 public class PrinterEntityData {
 
+    public static PrinterEntity createPrinterEntity1WithoutId() {
+        return createPrinterEntity1(null, null);
+    }
+
     public static PrinterEntity createPrinterEntity1() {
+        return createPrinterEntity1("1276", 1L);
+    }
+
+    public static PrinterEntity createPrinterEntity1(String model, Long code) {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setMaker("A");
-        productEntity.setModel("1276");
+        productEntity.setModel(model);
         productEntity.setType("Printer");
 
         PrinterEntity printerEntity = new PrinterEntity();
@@ -16,7 +24,7 @@ public class PrinterEntityData {
         printerEntity.setColor("n");
         printerEntity.setType("Laser");
         printerEntity.setPrice(400);
-        printerEntity.setCode(1L);
+        printerEntity.setCode(code);
         return printerEntity;
     }
 

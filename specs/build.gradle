@@ -6,21 +6,28 @@ plugins {
 group 'com.example'
 version '0.0.1-SNAPSHOT'
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web:3.4.4'
-    implementation 'org.springdoc:springdoc-openapi-starter-common:2.5.0'
-    implementation 'io.swagger.core.v3:swagger-annotations:2.2.21'
-    implementation 'io.swagger.core.v3:swagger-models:2.2.21'
+    implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.12')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springdoc:springdoc-openapi-starter-common:2.8.17'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.48'
+    implementation 'io.swagger.core.v3:swagger-models:2.2.48'
     implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
-    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
-    implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+    implementation 'jakarta.validation:jakarta.validation-api'
+    implementation 'jakarta.annotation:jakarta.annotation-api'
 
-    compileOnly 'org.projectlombok:lombok:1.18.32'
-    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
 }
 
 openApiGenerate {

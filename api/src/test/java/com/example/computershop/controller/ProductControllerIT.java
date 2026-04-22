@@ -5,6 +5,7 @@ import com.example.computershop.repository.ProductRepository;
 import com.example.computershop.utils.TestUtils;
 import com.example.specs.generated.model.ProductDto;
 import com.example.specs.generated.model.ProductJoinedDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,15 @@ public class ProductControllerIT extends ControllerIT {
 
     @BeforeEach
     void setUp() {
-        productRepository.deleteAll();
-
         productEntity1 = createProductEntity("A", "PC");
         productEntity2 = createProductEntity("A", "Laptop");
         productEntity1 = productRepository.save(productEntity1);
         productEntity2 = productRepository.save(productEntity2);
+    }
+
+    @AfterEach
+    void cleanUp() {
+        productRepository.deleteAllInBatch();
     }
 
     @Test
@@ -103,7 +107,7 @@ public class ProductControllerIT extends ControllerIT {
 
     @Test
     void getJoinedProducts_whenNoProducts_shouldReturnEmptyList() throws Exception {
-        productRepository.deleteAll();
+        productRepository.deleteAllInBatch();
 
         MvcResult result = mockMvc.perform(get("/admin/products/fullproduct"))
                 .andExpect(status().isOk())
@@ -173,7 +177,7 @@ public class ProductControllerIT extends ControllerIT {
 
     @Test
     void deleteFromProduct() throws Exception {
-        ProductEntity productEntity = createProductEntity1();
+        ProductEntity productEntity = createProductEntity1WithoutId();
         productEntity = productRepository.save(productEntity);
 
         MvcResult result = mockMvc.perform(delete("/admin/products/{code}", productEntity.getModel()))

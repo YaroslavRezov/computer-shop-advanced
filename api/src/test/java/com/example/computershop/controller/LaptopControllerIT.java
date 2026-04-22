@@ -6,6 +6,7 @@ import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.computershop.utils.TestUtils;
 import com.example.specs.generated.model.LaptopDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,14 @@ public class LaptopControllerIT extends ControllerIT {
 
     @BeforeEach
     void setUp() {
-        laptopRepository.deleteAll();
-        productRepository.deleteAll();
-
         productEntity = createProductEntity("TestMaker", "Laptop");
         productEntity = productRepository.save(productEntity);
+    }
+
+    @AfterEach
+    void cleanUp() {
+        laptopRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
     }
 
     @Test

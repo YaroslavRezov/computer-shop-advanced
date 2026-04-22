@@ -3,15 +3,16 @@ package com.example.computershop.repository;
 import com.example.computershop.model.entity.PcEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.model.entity.ProductJoinedView;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import java.util.*;
 
-import static com.example.computershop.data.PcEntityData.createPcEntity1;
-import static com.example.computershop.data.PcEntityData.createPcEntity2;
-import static com.example.computershop.data.ProductEntityData.createProductEntity1;
-import static com.example.computershop.data.ProductEntityData.createProductEntity2;
+import static com.example.computershop.data.PcEntityData.createPcEntity1WithoutId;
+import static com.example.computershop.data.PcEntityData.createPcEntity2WithoutId;
+import static com.example.computershop.data.ProductEntityData.createProductEntity1WithoutId;
+import static com.example.computershop.data.ProductEntityData.createProductEntity2WithoutId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,15 +23,21 @@ public class ProductRepositoryTest extends RepositoryIT {
     @Autowired
     private PcRepository pcRepository;
 
+    @AfterEach
+    void cleanUp() {
+        pcRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
+    }
+
     @Test
     void findAllProductsJoined() {
-        ProductEntity product1 = productRepository.save(createProductEntity1());
-        PcEntity pc1 = createPcEntity1();
+        ProductEntity product1 = productRepository.save(createProductEntity1WithoutId());
+        PcEntity pc1 = createPcEntity1WithoutId();
         pc1.setProduct(product1);
         PcEntity expected1 = pcRepository.save(pc1);
 
-        ProductEntity product2 = productRepository.save(createProductEntity2());
-        PcEntity pc2 = createPcEntity2();
+        ProductEntity product2 = productRepository.save(createProductEntity2WithoutId());
+        PcEntity pc2 = createPcEntity2WithoutId();
         pc2.setProduct(product2);
         PcEntity expected2 = pcRepository.save(pc2);
 

@@ -6,6 +6,7 @@ import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.computershop.utils.TestUtils;
 import com.example.specs.generated.model.PrinterDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,14 @@ public class PrinterControllerIT extends ControllerIT {
 
     @BeforeEach
     void setUp() {
-        printerRepository.deleteAll();
-        productRepository.deleteAll();
-
         productEntity = createProductEntity("TestMaker", "Printer");
         productEntity = productRepository.save(productEntity);
+    }
+
+    @AfterEach
+    void cleanUp() {
+        printerRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
     }
 
     @Test

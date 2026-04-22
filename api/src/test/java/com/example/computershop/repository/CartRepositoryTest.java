@@ -3,6 +3,7 @@ package com.example.computershop.repository;
 import com.example.computershop.model.entity.CartEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.model.entity.UsersEntity;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.*;
 
 import static com.example.computershop.data.CartEntityData.createCartEntity1;
 import static com.example.computershop.data.CartEntityData.createCartEntity2;
-import static com.example.computershop.data.ProductEntityData.createProductEntity1;
+import static com.example.computershop.data.ProductEntityData.createProductEntity1WithoutId;
 import static com.example.computershop.data.UsersEntityData.createUser1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,7 +34,14 @@ public class CartRepositoryTest extends RepositoryIT {
     @BeforeEach
     void setUp() {
         user = usersRepository.save(createUser1());
-        product = productRepository.save(createProductEntity1());
+        product = productRepository.save(createProductEntity1WithoutId());
+    }
+
+    @AfterEach
+    void cleanUp() {
+        cartRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
+        usersRepository.deleteAllInBatch();
     }
 
     @Test

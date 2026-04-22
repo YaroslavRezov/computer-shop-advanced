@@ -9,6 +9,7 @@ import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.specs.generated.model.DeviceDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.List;
+import java.util.*;
 
-import static com.example.computershop.data.LaptopEntityData.createLaptopEntity1;
-import static com.example.computershop.data.PcEntityData.createPcEntity1;
-import static com.example.computershop.data.PrinterEntityData.createPrinterEntity1;
+import static com.example.computershop.data.LaptopEntityData.createLaptopEntity1WithoutId;
+import static com.example.computershop.data.PcEntityData.createPcEntity1WithoutId;
+import static com.example.computershop.data.PrinterEntityData.createPrinterEntity1WithoutId;
 import static com.example.computershop.data.ProductEntityData.createProductEntity;
 import static com.example.computershop.utils.TestUtils.asList;
 import static com.example.computershop.utils.TestUtils.asObject;
@@ -51,9 +52,6 @@ public class DeviceControllerIT extends ControllerIT {
 
     @BeforeEach
     void setUp() {
-        pcRepository.deleteAll();
-        productRepository.deleteAll();
-
         pcProduct = createProductEntity("A", "PC");
         pcProduct = productRepository.save(pcProduct);
         laptopProduct = createProductEntity("A", "Laptop");
@@ -61,15 +59,23 @@ public class DeviceControllerIT extends ControllerIT {
         printerProduct = createProductEntity("A", "Printer");
         printerProduct = productRepository.save(printerProduct);
 
-        pcEntity = createPcEntity1();
+        pcEntity = createPcEntity1WithoutId();
         pcEntity.setProduct(pcProduct);
         pcEntity = pcRepository.save(pcEntity);
-        laptopEntity = createLaptopEntity1();
+        laptopEntity = createLaptopEntity1WithoutId();
         laptopEntity.setProduct(laptopProduct);
         laptopEntity = laptopRepository.save(laptopEntity);
-        printerEntity = createPrinterEntity1();
+        printerEntity = createPrinterEntity1WithoutId();
         printerEntity.setProduct(printerProduct);
         printerEntity = printerRepository.save(printerEntity);
+    }
+
+    @AfterEach
+    void cleanUp() {
+        pcRepository.deleteAllInBatch();
+        laptopRepository.deleteAllInBatch();
+        printerRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
     }
 
 
@@ -95,9 +101,9 @@ public class DeviceControllerIT extends ControllerIT {
 
     @Test
     void getDevices_whenNoDevices_shouldReturnEmptyList() throws Exception {
-        pcRepository.deleteAll();
-        laptopRepository.deleteAll();
-        printerRepository.deleteAll();
+        pcRepository.deleteAllInBatch();
+        laptopRepository.deleteAllInBatch();
+        printerRepository.deleteAllInBatch();
 
         MvcResult result = mockMvc.perform(get("/admin/devices/all"))
                 .andExpect(status().isOk())
