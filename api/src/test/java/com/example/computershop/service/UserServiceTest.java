@@ -4,7 +4,7 @@ import com.example.computershop.model.entity.UsersEntity;
 import com.example.computershop.repository.UsersRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -20,7 +20,7 @@ public class UserServiceTest {
     @Autowired
     private UserService userService;
 
-    @MockBean
+    @MockitoBean
     private UsersRepository usersRepository;
 
     private UsersEntity userEntity;

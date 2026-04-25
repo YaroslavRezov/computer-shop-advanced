@@ -16,4 +16,11 @@ public class ProductDtoData {
                 .maker("bbbruu")
                 .type("PC");
     }
+
+    public static ProductDto createProductDto(String model, String maker, String type) {
+        return new ProductDto()
+                .model(model)
+                .maker(maker)
+                .type(type);
+    }
 }

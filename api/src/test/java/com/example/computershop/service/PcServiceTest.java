@@ -6,10 +6,9 @@ import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.specs.generated.model.PcDto;
-import com.example.specs.generated.model.ProductDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.List;
@@ -21,13 +20,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+
 @SpringJUnitConfig(classes = {PcService.class})
 public class PcServiceTest {
-    @MockBean
+    @MockitoBean
     private PcRepository pcRepository;
-    @MockBean
+    @MockitoBean
     private ProductRepository productRepository;
-    @MockBean
+    @MockitoBean
     private PcMapper pcMapper;
 
     @Autowired

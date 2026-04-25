@@ -7,5 +7,3 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         show_sql: true
-  datasource:
-    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver

@@ -10,7 +10,7 @@ import com.example.computershop.repository.UsersRepository;
 import com.example.specs.generated.model.CartDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.Collections;
@@ -25,15 +25,15 @@ import static org.mockito.Mockito.*;
 @SpringJUnitConfig(classes = {CartService.class})
 class CartServiceTest {
 
-    @MockBean
+    @MockitoBean
     private CartRepository cartRepository;
-    @MockBean
+    @MockitoBean
     private ProductService productService;
-    @MockBean
+    @MockitoBean
     private ProductRepository productRepository;
-    @MockBean
+    @MockitoBean
     private UsersRepository usersRepository;
-    @MockBean
+    @MockitoBean
     private CartMapper cartMapper;
 
     @Autowired

@@ -6,6 +6,7 @@ import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.computershop.utils.TestUtils;
 import com.example.specs.generated.model.PcDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.*;
 
 import static com.example.computershop.data.PcDtoData.createPcDto;
 import static com.example.computershop.data.PcEntityData.createPcEntity;
+import static com.example.computershop.data.ProductEntityData.createProductEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -35,13 +37,14 @@ public class PcControllerIT extends ControllerIT {
 
     @BeforeEach
     void setUp() {
-        pcRepository.deleteAll();
-        productRepository.deleteAll();
-
-        productEntity = new ProductEntity();
-        productEntity.setMaker("TestMaker");
-        productEntity.setType("PC");
+        productEntity = createProductEntity("TestMaker", "PC");
         productEntity = productRepository.save(productEntity);
+    }
+
+    @AfterEach
+    void cleanUp() {
+        pcRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
     }
 
     @Test

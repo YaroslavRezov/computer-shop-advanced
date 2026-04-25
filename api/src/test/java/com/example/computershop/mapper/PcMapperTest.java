@@ -22,6 +22,7 @@ public class PcMapperTest {
     @Test
     void toPcDto() {
         PcEntity source = createPcEntity1();
+
         PcDto expected = createPcDto1();
 
         PcDto actual = pcMapper.toPcDto(source);

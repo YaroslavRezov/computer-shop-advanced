@@ -21,4 +21,12 @@ public class PrinterDtoData {
                 .price(7)
                 .code(13L);
     }
+
+    public static PrinterDto createPrinterDto(String model, String color, String type, int price) {
+        return new PrinterDto()
+                .model(model)
+                .color(color)
+                .type(type)
+                .price(price);
+    }
 }

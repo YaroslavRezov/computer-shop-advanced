@@ -3,19 +3,19 @@ package com.example.computershop.repository;
 import com.example.computershop.model.entity.DeviceView;
 import com.example.computershop.model.entity.PcEntity;
 import com.example.computershop.model.entity.ProductEntity;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static com.example.computershop.data.DeviceViewData.createDeviceViewMock1;
 import static com.example.computershop.data.DeviceViewData.createDeviceViewMock2;
-import static com.example.computershop.data.PcEntityData.createPcEntity1;
-import static com.example.computershop.data.PcEntityData.createPcEntity2;
-import static com.example.computershop.data.ProductEntityData.createProductEntity1;
-import static com.example.computershop.data.ProductEntityData.createProductEntity2;
+import static com.example.computershop.data.PcEntityData.createPcEntity1WithoutId;
+import static com.example.computershop.data.PcEntityData.createPcEntity2WithoutId;
+import static com.example.computershop.data.ProductEntityData.createProductEntity1WithoutId;
+import static com.example.computershop.data.ProductEntityData.createProductEntity2WithoutId;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeviceRepositoryTest extends RepositoryIT {
@@ -34,10 +34,16 @@ public class DeviceRepositoryTest extends RepositoryIT {
 
     @BeforeEach
     void setUp() {
-        productEntity = productRepository.save(createProductEntity1());
-        pcEntity = createPcEntity1();
+        productEntity = productRepository.save(createProductEntity1WithoutId());
+        pcEntity = createPcEntity1WithoutId();
         pcEntity.setProduct(productEntity);
         pcEntity = pcRepository.save(pcEntity);
+    }
+
+    @AfterEach
+    void cleanUp() {
+        pcRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
     }
 
     @Test
@@ -53,9 +59,9 @@ public class DeviceRepositoryTest extends RepositoryIT {
 
     @Test
     void findAllDevices() {
-        ProductEntity productEntity2 = createProductEntity2();
+        ProductEntity productEntity2 = createProductEntity2WithoutId();
         ProductEntity savedProductEntity2 = productRepository.save(productEntity2);
-        PcEntity pcEntity2 = createPcEntity2();
+        PcEntity pcEntity2 = createPcEntity2WithoutId();
         pcEntity2.setProduct(savedProductEntity2);
         PcEntity savedPcEntity2 = pcRepository.save(pcEntity2);
         List<DeviceView> expected = new ArrayList<>();

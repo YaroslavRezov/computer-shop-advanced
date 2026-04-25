@@ -7,13 +7,12 @@ import com.example.computershop.repository.LaptopRepository;
 import com.example.computershop.repository.PcRepository;
 import com.example.computershop.repository.PrinterRepository;
 import com.example.computershop.repository.ProductRepository;
-import com.example.specs.generated.model.CartDto;
 import com.example.specs.generated.model.ProductDto;
 import com.example.specs.generated.model.ProductJoinedDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.Arrays;
@@ -28,25 +27,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+
 @SpringJUnitConfig(classes = {ProductService.class})
 public class ProductServiceTest {
 
     @Autowired
     private ProductService productService;
 
-    @MockBean
+    @MockitoBean
     private ProductRepository productRepository;
 
-    @MockBean
+    @MockitoBean
     private ProductMapper productMapper;
 
-    @MockBean
+    @MockitoBean
     private PcRepository pcRepository;
 
-    @MockBean
+    @MockitoBean
     private PrinterRepository printerRepository;
 
-    @MockBean
+    @MockitoBean
     private LaptopRepository laptopRepository;
 
     private ProductEntity productEntity;
