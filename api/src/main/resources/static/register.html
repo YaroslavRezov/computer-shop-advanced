@@ -9,6 +9,7 @@
 <form id="registerForm">
     <input type="text" id="username" placeholder="Логин" required>
     <input type="password" id="password" placeholder="Пароль" required>
+    <input type="email" id="email" placeholder="email" required>
     <button type="submit">Зарегистрироваться</button>
 </form>
 <script>
@@ -16,7 +17,8 @@
         e.preventDefault();
         const user = {
             username: document.getElementById('username').value,
-            password: document.getElementById('password').value
+            password: document.getElementById('password').value,
+            email: document.getElementById('email').value
         };
 
         fetch('http://localhost:8080/api/auth/register', {

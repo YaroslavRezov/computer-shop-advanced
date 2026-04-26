@@ -24,6 +24,7 @@ public class AuthService {
         var user = new UsersEntity();
         user.setUsername(request.username());
         user.setPassword(passwordEncoder.encode(request.password()));
+        user.setEmail(request.email());
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         return new AuthResponse(jwtToken);
