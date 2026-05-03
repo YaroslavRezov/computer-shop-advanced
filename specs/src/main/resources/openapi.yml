@@ -1040,6 +1040,7 @@ components:
         - model
         - code
         - user
+        - status
       type: object
       properties:
         id:
@@ -1064,3 +1065,5 @@ components:
         user:
           type: integer
           format: int64
+        status:
+          type: string

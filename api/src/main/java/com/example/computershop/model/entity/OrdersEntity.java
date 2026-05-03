@@ -32,4 +32,7 @@ public class OrdersEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UsersEntity user;
+    @NotNull
+    @Column
+    private String status;
 }
