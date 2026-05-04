@@ -715,6 +715,32 @@ paths:
       responses:
         '200':
           description: OK
+  /customer/cart/:
+    post:
+      tags:
+        - cart-consumer-controller
+      operationId: insertIntoOrders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Orders'
+        required: true
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
   /customer/cart/all:
     get:
       tags:
@@ -729,6 +755,59 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Cart'
+  /customer/orders/{orderId}:
+    get:
+      tags:
+        - orders-controller
+      operationId: getOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Bad Request
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
+    patch:
+      tags:
+        - orders-controller
+      operationId: patchOrdersPartially
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Orders'
+        required: true
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
   /admin/products/fullproduct:
     get:
       tags:
@@ -1032,20 +1111,14 @@ components:
           format: int32
     Orders:
       required:
-        - id
         - orderId
-        - amount
         - email
         - number
         - model
-        - code
         - user
         - status
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
         orderId:
           type: integer
           format: int64

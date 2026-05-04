@@ -7,11 +7,8 @@ import com.example.computershop.repository.OrdersRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.computershop.repository.UsersRepository;
 import com.example.specs.generated.model.OrdersDto;
-import com.example.specs.generated.model.PcDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -22,8 +19,8 @@ public class OrdersService {
     private final UsersRepository usersRepository;
     private final CartRepository cartRepository;
 
-    public OrdersDto getOrder(Long id) {
-        OrdersEntity ordersEntity = ordersRepository.findById(id)
+    public OrdersDto getOrder(Long orderId) {
+        OrdersEntity ordersEntity = ordersRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Нет такого заказа"));
         return ordersMapper.toOrdersDto(ordersEntity);
     }

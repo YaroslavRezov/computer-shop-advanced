@@ -9,10 +9,6 @@ import lombok.Data;
 @Entity
 public class OrdersEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_id_seq")
-    @SequenceGenerator(name = "orders_id_seq", sequenceName = "orders_id_seq", allocationSize = 1)
-    @Column(nullable = false, updatable = false)
-    private Long id;
     @OneToOne
     @JoinColumn(name = "order_id", referencedColumnName = "order_id", nullable = false)
     private CartEntity cart;
