@@ -12,7 +12,7 @@ public class CartEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_order_id_seq")
     @SequenceGenerator(name = "cart_order_id_seq", sequenceName = "cart_order_id_seq", allocationSize = 1)
-    @Column(nullable = false, updatable = false)
+    @Column(name = "order_id", nullable = false, updatable = false)
     private Long orderId;
     @ManyToOne
     @JoinColumn(name = "model", referencedColumnName = "model", nullable = true)
