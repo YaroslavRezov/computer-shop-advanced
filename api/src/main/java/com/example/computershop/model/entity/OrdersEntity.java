@@ -10,24 +10,13 @@ import lombok.Data;
 public class OrdersEntity {
     @Id
     @OneToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "order_id", nullable = false)
+    @JoinColumn(name = "cart_id", referencedColumnName = "cart_id", nullable = false)
     private CartEntity cart;
     @Column
-    private Integer amount;
-    @ManyToOne
-    @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
-    private UsersEntity usersEmail;
     @NotNull
+    private Long orderId;
     @Column
-    private Integer number;
-    @ManyToOne
-    @JoinColumn(name = "model", referencedColumnName = "model", nullable = false)
-    private ProductEntity product;
-    @Column
-    private Long code;
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private UsersEntity user;
+    private Integer amount;
     @NotNull
     @Column
     private String status;

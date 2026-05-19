@@ -34,8 +34,8 @@ public class CartConsumerController implements CartConsumerControllerApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteCustomerOneFromCart(Long orderId) {
-        cartService.delete(orderId);
+    public ResponseEntity<Void> deleteCustomerOneFromCart(Long cartId) {
+        cartService.delete(cartId);
         return ResponseEntity.noContent().build();
     }
 

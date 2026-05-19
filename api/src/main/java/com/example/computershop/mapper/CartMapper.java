@@ -20,7 +20,7 @@ public class CartMapper {
                 .code(cartEntity.getCode())
                 .price(cartEntity.getPrice())
                 .username(cartEntity.getUser().getUsername())
-                .orderId(cartEntity.getOrderId())
+                .cartId(cartEntity.getCartId())
                 .type(cartEntity.getProduct().getType());
     }
 }

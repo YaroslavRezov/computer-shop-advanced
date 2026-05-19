@@ -9,25 +9,22 @@ import org.springframework.stereotype.Component;
 public class OrdersMapper {
     public OrdersDto toOrdersDto (OrdersEntity ordersEntity) {
         return new OrdersDto()
-                .orderId(ordersEntity.getCart().getOrderId())
+                .orderId(ordersEntity.getCart().getCartId())
                 .amount(ordersEntity.getAmount())
-                .email(ordersEntity.getUser().getEmail())
-                .number(ordersEntity.getNumber())
-                .model(ordersEntity.getProduct().getModel())
-                .code(ordersEntity.getCode())
-                .user(ordersEntity.getUser().getId())
                 .status(ordersEntity.getStatus());
     }
 
-    public OrdersEntity toOrdersEntity(OrdersDto ordersDto, ProductEntity foundProductEntity, UsersEntity foundUsersEntity, CartEntity foundCartEntity) {
+//    public OrdersEntity toOrdersEntity(OrdersDto ordersDto, ProductEntity foundProductEntity, UsersEntity foundUsersEntity, CartEntity foundCartEntity) {
+//        OrdersEntity ordersEntity = new OrdersEntity();
+//        ordersEntity.setCart(foundCartEntity);
+//        ordersEntity.setAmount(ordersDto.getAmount());
+//        ordersEntity.setStatus(ordersDto.getStatus());
+//        return ordersEntity;
+//    }
+    public OrdersEntity toOrdersEntity(OrdersDto ordersDto, CartEntity foundCartEntity) {
         OrdersEntity ordersEntity = new OrdersEntity();
         ordersEntity.setCart(foundCartEntity);
         ordersEntity.setAmount(ordersDto.getAmount());
-        ordersEntity.setUsersEmail(foundUsersEntity);
-        ordersEntity.setNumber(ordersEntity.getNumber());
-        ordersEntity.setProduct(foundProductEntity);
-        ordersEntity.setCode(ordersDto.getCode());
-        ordersEntity.setUser(foundUsersEntity);
         ordersEntity.setStatus(ordersDto.getStatus());
         return ordersEntity;
     }

@@ -942,13 +942,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Device'
-  /customer/cart/{orderId}:
+  /customer/cart/{cartId}:
     delete:
       tags:
         - cart-consumer-controller
       operationId: deleteCustomerOneFromCart
       parameters:
-        - name: orderId
+        - name: cartId
           in: path
           required: true
           schema:
@@ -966,7 +966,7 @@ components:
         - username
       type: object
       properties:
-        orderId:
+        cartId:
           type: integer
           format: int64
         model:
@@ -1112,31 +1112,18 @@ components:
     Orders:
       required:
         - orderId
-        - email
-        - number
-        - model
-        - user
         - status
+        - cartId
       type: object
       properties:
+        cartId:
+          type: integer
+          format: int64
         orderId:
           type: integer
           format: int64
-        number:
-          type: integer
-          format: int32
-        email:
-          type: string
         amount:
           type: integer
           format: int32
-        model:
-          type: string
-        code:
-          type: integer
-          format: int64
-        user:
-          type: integer
-          format: int64
         status:
           type: string

@@ -33,7 +33,7 @@ public class CartService {
         List<CartEntity> cartEntities = cartRepository.findByUser(usersEntity);
         return cartMapper.toCartDtoList(cartEntities);
     }
-
+    // cartRepository findByUserId if doesnt exist create cart and CT else CT
     public CartDto save(CartDto requestCartDto) {
         CartEntity cartEntity = getCartEntity(requestCartDto);
         CartEntity savedCartEntity = cartRepository.save(cartEntity);

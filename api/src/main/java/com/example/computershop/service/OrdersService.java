@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 public class OrdersService {
     private final OrdersRepository ordersRepository;
     private final OrdersMapper ordersMapper;
-    private final ProductRepository productRepository;
-    private final UsersRepository usersRepository;
+//    private final ProductRepository productRepository;
+//    private final UsersRepository usersRepository;
     private final CartRepository cartRepository;
 
     public OrdersDto getOrder(Long orderId) {
@@ -26,37 +26,50 @@ public class OrdersService {
     }
 
     public OrdersDto save(OrdersDto requestOrdersDto) {
-        ProductEntity foundProductEntity = productRepository.findById(requestOrdersDto.getModel())
-                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
-        UsersEntity foundUsersEntity = usersRepository.findById(requestOrdersDto.getUser())
-                .orElseThrow(() -> new RuntimeException("Нет такого пользователя"));
         CartEntity foundCartEntity = cartRepository.findById(requestOrdersDto.getOrderId())
                 .orElseThrow(() -> new RuntimeException("Нет такого карзины"));
-        OrdersEntity sourceOrdersEntity = ordersMapper.toOrdersEntity(requestOrdersDto, foundProductEntity, foundUsersEntity, foundCartEntity);
+        OrdersEntity sourceOrdersEntity = ordersMapper.toOrdersEntity(requestOrdersDto, foundCartEntity);
+        sourceOrdersEntity.setOrderId();
         OrdersEntity savedOrdersEntity = ordersRepository.save(sourceOrdersEntity);
         return ordersMapper.toOrdersDto(savedOrdersEntity);
     }
+    private OrdersEntity setOrderIdWhenButtonPressed(OrdersEntity ordersEntity) {
 
-    public OrdersDto updateOrdersPartially(Long ordersId, OrdersDto requestOrdersDto) {
-        ProductEntity foundProductEntity = productRepository.findById(requestOrdersDto.getModel())
-                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
-        UsersEntity foundUsersEntity = usersRepository.findById(requestOrdersDto.getUser())
-                .orElseThrow(() -> new RuntimeException("Нет такого пользователя"));
-        CartEntity foundCartEntity = cartRepository.findById(requestOrdersDto.getOrderId())
-                .orElseThrow(() -> new RuntimeException("Нет такого карзины"));
-        OrdersEntity setOrdersEntity = ordersRepository.findById(ordersId)
-                .orElseThrow(() -> new RuntimeException("Нет такого заказа"));
-        setOrdersEntity.setCart(foundCartEntity);
-        setOrdersEntity.setAmount(requestOrdersDto.getAmount());
-        setOrdersEntity.setUsersEmail(foundUsersEntity);
-        setOrdersEntity.setNumber(setOrdersEntity.getNumber());
-        setOrdersEntity.setProduct(foundProductEntity);
-        setOrdersEntity.setCode(requestOrdersDto.getCode());
-        setOrdersEntity.setUser(foundUsersEntity);
-        setOrdersEntity.setStatus("done");
-        OrdersEntity savedOrdersEntity = ordersRepository.save(setOrdersEntity);
-        return ordersMapper.toOrdersDto(savedOrdersEntity);
     }
+
+//    public OrdersDto save(OrdersDto requestOrdersDto) {
+//        ProductEntity foundProductEntity = productRepository.findById(requestOrdersDto.getModel())
+//                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+//        UsersEntity foundUsersEntity = usersRepository.findById(requestOrdersDto.getUser())
+//                .orElseThrow(() -> new RuntimeException("Нет такого пользователя"));
+//        CartEntity foundCartEntity = cartRepository.findById(requestOrdersDto.getOrderId())
+//                .orElseThrow(() -> new RuntimeException("Нет такого карзины"));
+//        OrdersEntity sourceOrdersEntity = ordersMapper.toOrdersEntity(requestOrdersDto, foundProductEntity, foundUsersEntity, foundCartEntity);
+//        OrdersEntity savedOrdersEntity = ordersRepository.save(sourceOrdersEntity);
+//        return ordersMapper.toOrdersDto(savedOrdersEntity);
+//    }
+
+//    public OrdersDto updateOrdersPartially(Long ordersId, OrdersDto requestOrdersDto) {
+//        ProductEntity foundProductEntity = productRepository.findById(requestOrdersDto.getModel())
+//                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+//        UsersEntity foundUsersEntity = usersRepository.findById(requestOrdersDto.getUser())
+//                .orElseThrow(() -> new RuntimeException("Нет такого пользователя"));
+//        CartEntity foundCartEntity = cartRepository.findById(requestOrdersDto.getOrderId())
+//                .orElseThrow(() -> new RuntimeException("Нет такого карзины"));
+//        OrdersEntity setOrdersEntity = ordersRepository.findById(ordersId)
+//                .orElseThrow(() -> new RuntimeException("Нет такого заказа"));
+//        setOrdersEntity.setCart(foundCartEntity);
+//        setOrdersEntity.setAmount(requestOrdersDto.getAmount());
+//        setOrdersEntity.setUsersEmail(foundUsersEntity);
+//        setOrdersEntity.setNumber(setOrdersEntity.getNumber());
+//        setOrdersEntity.setProduct(foundProductEntity);
+//        setOrdersEntity.setCode(requestOrdersDto.getCode());
+//        setOrdersEntity.setUser(foundUsersEntity);
+//        setOrdersEntity.setStatus("done");
+//        OrdersEntity savedOrdersEntity = ordersRepository.save(setOrdersEntity);
+//        return ordersMapper.toOrdersDto(savedOrdersEntity);
+//    }
+
 
 
 }
