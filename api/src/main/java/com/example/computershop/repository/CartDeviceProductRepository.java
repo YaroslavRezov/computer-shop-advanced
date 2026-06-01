@@ -1,10 +1,10 @@
 package com.example.computershop.repository;
 
-import com.example.computershop.model.entity.PrinterEntity;
+import com.example.computershop.model.entity.CartDeviceProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PrinterRepository extends JpaRepository<PrinterEntity, Long> {
+public interface CartDeviceProductRepository extends JpaRepository<CartDeviceProductEntity, Long> {
 
 }

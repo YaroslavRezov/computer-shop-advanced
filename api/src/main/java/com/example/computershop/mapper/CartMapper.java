@@ -16,11 +16,11 @@ public class CartMapper {
 
     public CartDto toCartDto (CartEntity cartEntity) {
         return new CartDto()
-                .model(cartEntity.getProduct().getModel())
-                .code(cartEntity.getCode())
-                .price(cartEntity.getPrice())
+//                .model(cartEntity.getProduct().getModel())
+//                .code(cartEntity.getCode())
+//                .price(cartEntity.getPrice())
                 .username(cartEntity.getUser().getUsername())
-                .cartId(cartEntity.getCartId())
-                .type(cartEntity.getProduct().getType());
+                .cartId(cartEntity.getCartId());
+//                .type(cartEntity.getProduct().getType());
     }
 }

@@ -1,9 +1,11 @@
 package com.example.computershop.service;
 
 import com.example.computershop.mapper.CartMapper;
+import com.example.computershop.model.entity.CartDeviceProductEntity;
 import com.example.computershop.model.entity.CartEntity;
 import com.example.computershop.model.entity.ProductEntity;
 import com.example.computershop.model.entity.UsersEntity;
+import com.example.computershop.repository.CartDeviceProductRepository;
 import com.example.computershop.repository.CartRepository;
 import com.example.computershop.repository.ProductRepository;
 import com.example.computershop.repository.UsersRepository;
@@ -21,6 +23,7 @@ public class CartService {
     private final ProductRepository productRepository;
     private final UsersRepository usersRepository;
     private final CartMapper cartMapper;
+    private final CartDeviceProductRepository cartDeviceProductRepository;
 
     public List<CartDto> getAll() {
         List<CartEntity> cartEntities = cartRepository.findAll();
@@ -33,11 +36,35 @@ public class CartService {
         List<CartEntity> cartEntities = cartRepository.findByUser(usersEntity);
         return cartMapper.toCartDtoList(cartEntities);
     }
-    // cartRepository findByUserId if doesnt exist create cart and CT else CT
     public CartDto save(CartDto requestCartDto) {
-        CartEntity cartEntity = getCartEntity(requestCartDto);
-        CartEntity savedCartEntity = cartRepository.save(cartEntity);
-        return cartMapper.toCartDto(savedCartEntity);
+        UsersEntity foundUsersEntity = usersRepository.findByUsername(requestCartDto.getUsername())
+                .orElseThrow(() -> new RuntimeException("Нет такого пользователя" + requestCartDto.getUsername()));
+        CartEntity foundCartEntity = cartRepository.findByUserId(foundUsersEntity).orElse(null);
+        if (foundCartEntity == null)
+        {
+            CartEntity cartEntity = new CartEntity();
+            cartEntity.setUser(foundUsersEntity);
+            CartEntity savedCartEntity = cartRepository.save(cartEntity);
+
+            CartDeviceProductEntity cartDeviceProductEntity = new CartDeviceProductEntity();
+            ProductEntity foundProductEntity = productRepository.findById(requestCartDto.getModel())
+                    .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+            cartDeviceProductEntity.setProductEntity(foundProductEntity);
+            cartDeviceProductEntity.setCode(requestCartDto.getCode());
+            cartDeviceProductEntity.setCartId(cartEntity);
+            return cartMapper.toCartDto(savedCartEntity);
+        } else {
+            CartDeviceProductEntity cartDeviceProductEntity = new CartDeviceProductEntity();
+            ProductEntity foundProductEntity = productRepository.findById(requestCartDto.getModel())
+                    .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+            cartDeviceProductEntity.setProductEntity(foundProductEntity);
+            cartDeviceProductEntity.setCode(requestCartDto.getCode());
+            cartDeviceProductEntity.setCartId(foundCartEntity);
+            CartDeviceProductEntity savedCartDeviceProductEntity = cartDeviceProductRepository.save(cartDeviceProductEntity);
+            return null;
+        }
+//        CartEntity cartEntity = getCartEntity(requestCartDto);
+//        CartEntity savedCartEntity = cartRepository.save(cartEntity);
     }
 
     public void delete(String username){
@@ -46,22 +73,22 @@ public class CartService {
         cartRepository.deleteByUser(foundUsersEntity);
     }
 
-    public void delete(Long orderId){
-        cartRepository.deleteById(orderId);
+    public void delete(Long cartId){
+        cartRepository.deleteById(cartId);
     }
 
     private CartEntity getCartEntity(CartDto cartDto) {
-        int price = productService.getPriceByCode(cartDto.getCode())
-                .orElseThrow(() -> new IllegalArgumentException("Price not found for code " + cartDto.getCode()));
-        ProductEntity foundProductEntity = productRepository.findById(cartDto.getModel())
-                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
+//        int price = productService.getPriceByCode(cartDto.getCode())
+//                .orElseThrow(() -> new IllegalArgumentException("Price not found for code " + cartDto.getCode()));
+//        ProductEntity foundProductEntity = productRepository.findById(cartDto.getModel())
+//                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
         UsersEntity foundUsersEntity = usersRepository.findByUsername(cartDto.getUsername())
                 .orElseThrow(() -> new RuntimeException("Нет такого пользователя"));
         CartEntity cartEntity = new CartEntity();
-        cartEntity.setProduct(foundProductEntity);
+//        cartEntity.setProduct(foundProductEntity);
         cartEntity.setUser(foundUsersEntity);
-        cartEntity.setCode(cartDto.getCode());
-        cartEntity.setPrice(price);
+//        cartEntity.setCode(cartDto.getCode());
+//        cartEntity.setPrice(price);
         return cartEntity;
     }
 
