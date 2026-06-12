@@ -36,36 +36,35 @@ public class CartService {
         List<CartEntity> cartEntities = cartRepository.findByUser(usersEntity);
         return cartMapper.toCartDtoList(cartEntities);
     }
+
     public CartDto save(CartDto requestCartDto) {
         UsersEntity foundUsersEntity = usersRepository.findByUsername(requestCartDto.getUsername())
-                .orElseThrow(() -> new RuntimeException("Нет такого пользователя" + requestCartDto.getUsername()));
-        CartEntity foundCartEntity = cartRepository.findByUserId(foundUsersEntity).orElse(null);
-        if (foundCartEntity == null)
-        {
-            CartEntity cartEntity = new CartEntity();
-            cartEntity.setUser(foundUsersEntity);
-            CartEntity savedCartEntity = cartRepository.save(cartEntity);
+                .orElseThrow(() -> new RuntimeException("Нет такого пользователя: " + requestCartDto.getUsername()));
 
-            CartDeviceProductEntity cartDeviceProductEntity = new CartDeviceProductEntity();
-            ProductEntity foundProductEntity = productRepository.findById(requestCartDto.getModel())
-                    .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
-            cartDeviceProductEntity.setProductEntity(foundProductEntity);
-            cartDeviceProductEntity.setCode(requestCartDto.getCode());
-            cartDeviceProductEntity.setCartId(cartEntity);
-            return cartMapper.toCartDto(savedCartEntity);
+        CartEntity foundCartEntity = cartRepository.findByUserId(foundUsersEntity).orElse(null);
+
+        CartEntity cartEntity;
+        if (foundCartEntity == null) {
+            cartEntity = new CartEntity();
+            cartEntity.setUser(foundUsersEntity);
+            cartEntity = cartRepository.save(cartEntity);
         } else {
-            CartDeviceProductEntity cartDeviceProductEntity = new CartDeviceProductEntity();
-            ProductEntity foundProductEntity = productRepository.findById(requestCartDto.getModel())
-                    .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
-            cartDeviceProductEntity.setProductEntity(foundProductEntity);
-            cartDeviceProductEntity.setCode(requestCartDto.getCode());
-            cartDeviceProductEntity.setCartId(foundCartEntity);
-            CartDeviceProductEntity savedCartDeviceProductEntity = cartDeviceProductRepository.save(cartDeviceProductEntity);
-            return null;
+            cartEntity = foundCartEntity;
         }
-//        CartEntity cartEntity = getCartEntity(requestCartDto);
-//        CartEntity savedCartEntity = cartRepository.save(cartEntity);
+
+        ProductEntity foundProductEntity = productRepository.findById(requestCartDto.getModel())
+                .orElseThrow(() -> new RuntimeException("Нет такого продукта: " + requestCartDto.getModel()));
+
+        CartDeviceProductEntity cartDeviceProductEntity = new CartDeviceProductEntity();
+        cartDeviceProductEntity.setProductEntity(foundProductEntity);
+        cartDeviceProductEntity.setCode(requestCartDto.getCode());
+        cartDeviceProductEntity.setCartId(cartEntity);
+
+        cartDeviceProductRepository.save(cartDeviceProductEntity);
+
+        return cartMapper.toCartDto(cartEntity);
     }
+
 
     public void delete(String username){
         UsersEntity foundUsersEntity = usersRepository.findByUsername(username)
