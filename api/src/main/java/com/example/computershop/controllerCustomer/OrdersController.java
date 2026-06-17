@@ -14,13 +14,13 @@ public class OrdersController implements OrdersControllerApi {
 
     private final OrdersService ordersService;
 
-    @Override
-    public ResponseEntity<OrdersDto> getOrder(Long orderId){
-        return ResponseEntity.ok(ordersService.getOrder(orderId));
-    }
+//    @Override
+//    public ResponseEntity<OrdersDto> getOrder(Long orderId){
+//        return ResponseEntity.ok(ordersService.getOrder(orderId));
+//    }
 
-    @Override
-    public ResponseEntity<OrdersDto> patchOrdersPartially(Long code, OrdersDto ordersDto) {
-        return ResponseEntity.ok(ordersService.updateOrdersPartially(code, ordersDto));
-    }
+//    @Override
+//    public ResponseEntity<OrdersDto> patchOrdersPartially(Long code, OrdersDto ordersDto) {
+//        return ResponseEntity.ok(ordersService.updateOrdersPartially(code, ordersDto));
+//    }
 }

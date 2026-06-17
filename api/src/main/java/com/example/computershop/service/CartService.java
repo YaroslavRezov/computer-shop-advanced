@@ -36,7 +36,7 @@ public class CartService {
         List<CartEntity> cartEntities = cartRepository.findByUser(user);
 
         List<CartDeviceProductEntity> items =
-                cartDeviceProductRepository.findByCartIn(cartEntities);
+                cartDeviceProductRepository.findByCartEntityIn(cartEntities);
 
         return items.stream()
                 .map(item -> {
@@ -94,7 +94,7 @@ public class CartService {
 
         List<CartEntity> carts = cartRepository.findByUser(user);
 
-        cartDeviceProductRepository.deleteByCartIn(carts);
+        cartDeviceProductRepository.deleteByCartEntityIn(carts);
 
         cartRepository.deleteAll(carts);
     }
@@ -107,7 +107,7 @@ public class CartService {
                     "нет такой карзины: " + cartId);
         }
 
-        cartDeviceProductRepository.deleteByCartId(cartId);
+        cartDeviceProductRepository.deleteByCartEntityCartId(cartId);
 
         cartRepository.deleteById(cartId);
     }
