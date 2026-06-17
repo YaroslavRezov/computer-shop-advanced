@@ -13,7 +13,7 @@ public class CartDeviceProductEntity {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "cart_id", referencedColumnName = "cart_id", nullable = false)
-    private CartEntity cartId;
+    private CartEntity cartEntity;
     @Column(name = "code")
     private Long code;
     @ManyToOne

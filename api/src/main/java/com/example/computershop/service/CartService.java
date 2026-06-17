@@ -1,17 +1,14 @@
 package com.example.computershop.service;
 
 import com.example.computershop.mapper.CartMapper;
-import com.example.computershop.model.entity.CartDeviceProductEntity;
-import com.example.computershop.model.entity.CartEntity;
-import com.example.computershop.model.entity.ProductEntity;
-import com.example.computershop.model.entity.UsersEntity;
-import com.example.computershop.repository.CartDeviceProductRepository;
-import com.example.computershop.repository.CartRepository;
-import com.example.computershop.repository.ProductRepository;
-import com.example.computershop.repository.UsersRepository;
+import com.example.computershop.model.entity.*;
+import com.example.computershop.repository.*;
 import com.example.specs.generated.model.CartDto;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,22 +16,44 @@ import java.util.List;
 public class CartService {
 
     private final CartRepository cartRepository;
-    private final ProductService productService;
     private final ProductRepository productRepository;
     private final UsersRepository usersRepository;
     private final CartMapper cartMapper;
     private final CartDeviceProductRepository cartDeviceProductRepository;
+    private final DevicePriceRepository devicePriceRepository;
 
     public List<CartDto> getAll() {
         List<CartEntity> cartEntities = cartRepository.findAll();
         return cartMapper.toCartDtoList(cartEntities);
     }
 
-    public List<CartDto> getCartForUser(String username){
-        UsersEntity usersEntity = usersRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Нет такого пользователя" + username));
-        List<CartEntity> cartEntities = cartRepository.findByUser(usersEntity);
-        return cartMapper.toCartDtoList(cartEntities);
+    public List<CartDto> getCartForUser(String username) {
+
+        UsersEntity user = usersRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new RuntimeException("Нет такого пользователя " + username));
+
+        List<CartEntity> cartEntities = cartRepository.findByUser(user);
+
+        List<CartDeviceProductEntity> items =
+                cartDeviceProductRepository.findByCartIn(cartEntities);
+
+        return items.stream()
+                .map(item -> {
+                    Integer price = getPriceByCode(item.getCode());
+
+                    CartDto dto = new CartDto();
+
+                    dto.setCartId(item.getCartEntity().getCartId());
+                    dto.setUsername(username);
+                    dto.setModel(item.getProductEntity().getModel());
+                    dto.setType(item.getProductEntity().getType());
+                    dto.setCode(item.getCode());
+                    dto.setPrice(price);
+
+                    return dto;
+                })
+                .toList();
     }
 
     public CartDto save(CartDto requestCartDto) {
@@ -58,7 +77,7 @@ public class CartService {
         CartDeviceProductEntity cartDeviceProductEntity = new CartDeviceProductEntity();
         cartDeviceProductEntity.setProductEntity(foundProductEntity);
         cartDeviceProductEntity.setCode(requestCartDto.getCode());
-        cartDeviceProductEntity.setCartId(cartEntity);
+        cartDeviceProductEntity.setCartEntity(cartEntity);
 
         cartDeviceProductRepository.save(cartDeviceProductEntity);
 
@@ -66,13 +85,30 @@ public class CartService {
     }
 
 
-    public void delete(String username){
-        UsersEntity foundUsersEntity = usersRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Нет такого пользователя"));
-        cartRepository.deleteByUser(foundUsersEntity);
+    @Transactional
+    public void delete(String username) {
+
+        UsersEntity user = usersRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new RuntimeException("нет такого пользователя: " + username));
+
+        List<CartEntity> carts = cartRepository.findByUser(user);
+
+        cartDeviceProductRepository.deleteByCartIn(carts);
+
+        cartRepository.deleteAll(carts);
     }
 
-    public void delete(Long cartId){
+    @Transactional
+    public void delete(Long cartId) {
+
+        if (!cartRepository.existsById(cartId)) {
+            throw new EntityNotFoundException(
+                    "нет такой карзины: " + cartId);
+        }
+
+        cartDeviceProductRepository.deleteByCartId(cartId);
+
         cartRepository.deleteById(cartId);
     }
 
@@ -91,6 +127,12 @@ public class CartService {
         return cartEntity;
     }
 
-
+    public Integer getPriceByCode(Long code) {
+        return devicePriceRepository.findPriceByCode(code)
+                .map(DevicePriceView::getPrice)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Device not found: " + code));
+    }
 }
 
