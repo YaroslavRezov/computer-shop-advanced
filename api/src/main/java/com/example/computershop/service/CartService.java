@@ -128,11 +128,11 @@ public class CartService {
     }
 
     public Integer getPriceByCode(Long code) {
-        return devicePriceRepository.findPriceByCode(code)
+        return devicePriceRepository.findDevicePriceByCode(code)
                 .map(DevicePriceView::getPrice)
                 .orElseThrow(() ->
                         new EntityNotFoundException(
-                                "Device not found: " + code));
+                                "нет такого дивайса: " + code));
     }
 }
 
