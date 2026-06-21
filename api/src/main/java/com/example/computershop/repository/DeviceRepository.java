@@ -1,13 +1,16 @@
 package com.example.computershop.repository;
 
+import com.example.computershop.model.entity.DevicePriceView;
 import com.example.computershop.model.entity.DeviceView;
 import com.example.computershop.model.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-@Repository
+import java.util.Optional;
+
 public interface DeviceRepository extends JpaRepository<ProductEntity, String> {
     @Query(nativeQuery = true, value = """
             SELECT model, price
@@ -34,5 +37,40 @@ public interface DeviceRepository extends JpaRepository<ProductEntity, String> {
             WHERE s.model = ?1
             LIMIT 1""")
     DeviceView findDeviceByCode(String model);
+
+    @Query(value = """
+            SELECT *
+            FROM (
+                SELECT
+                    p.code,
+                    p.model,
+                    p.price,
+                    'PC' AS type
+                FROM pc p
+
+                UNION ALL
+
+                SELECT
+                    l.code,
+                    l.model,
+                    l.price,
+                    'LAPTOP' AS type
+                FROM laptop l
+
+                UNION ALL
+
+                SELECT
+                    pr.code,
+                    pr.model,
+                    pr.price,
+                    'PRINTER' AS type
+                FROM printer pr
+            ) devices
+            WHERE devices.code = :code
+            AND devices.model = :model
+            """, nativeQuery = true)
+    Optional<DevicePriceView> findDevicePriceByCode(
+            @Param("code") Long code,
+            @Param("model") String model);
 
 }

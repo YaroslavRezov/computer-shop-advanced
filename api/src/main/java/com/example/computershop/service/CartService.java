@@ -20,7 +20,7 @@ public class CartService {
     private final UsersRepository usersRepository;
     private final CartMapper cartMapper;
     private final CartDeviceProductRepository cartDeviceProductRepository;
-    private final DevicePriceRepository devicePriceRepository;
+    private final DeviceRepository deviceRepository;
 
     public List<CartDto> getAll() {
         List<CartEntity> cartEntities = cartRepository.findAll();
@@ -33,14 +33,14 @@ public class CartService {
                 .orElseThrow(() ->
                         new RuntimeException("Нет такого пользователя " + username));
 
-        List<CartEntity> cartEntities = cartRepository.findByUser(user);
+        CartEntity cartEntity = cartRepository.findByUser(user);
 
         List<CartDeviceProductEntity> items =
-                cartDeviceProductRepository.findByCartEntityIn(cartEntities);
+                cartDeviceProductRepository.findByCartEntityIn(cartEntity);
 
         return items.stream()
                 .map(item -> {
-                    Integer price = getPriceByCode(item.getCode());
+                    Integer price = getPriceByCodeAndModel(item.getCode(), item.getProductEntity().getModel());
 
                     CartDto dto = new CartDto();
 
@@ -92,19 +92,18 @@ public class CartService {
                 .orElseThrow(() ->
                         new RuntimeException("нет такого пользователя: " + username));
 
-        List<CartEntity> carts = cartRepository.findByUser(user);
+        CartEntity cart = cartRepository.findByUser(user);
 
-        cartDeviceProductRepository.deleteByCartEntityIn(carts);
+        cartDeviceProductRepository.deleteByCartEntityIn(cart);
 
-        cartRepository.deleteAll(carts);
+        cartRepository.deleteByUser(user);
     }
 
     @Transactional
     public void delete(Long cartId) {
 
         if (!cartRepository.existsById(cartId)) {
-            throw new EntityNotFoundException(
-                    "нет такой карзины: " + cartId);
+            throw new EntityNotFoundException("нет такой карзины: " + cartId);
         }
 
         cartDeviceProductRepository.deleteByCartEntityCartId(cartId);
@@ -127,12 +126,10 @@ public class CartService {
         return cartEntity;
     }
 
-    public Integer getPriceByCode(Long code) {
-        return devicePriceRepository.findDevicePriceByCode(code)
-                .map(DevicePriceView::getPrice)
-                .orElseThrow(() ->
-                        new EntityNotFoundException(
-                                "нет такого дивайса: " + code));
+    private Integer getPriceByCodeAndModel(Long code, String model) {
+        return deviceRepository.findDevicePriceByCode(code, model)
+                .map(DevicePriceView::getPrice).orElseThrow(() ->
+                        new EntityNotFoundException("нет такого дивайса: " + code));
     }
 }
 
