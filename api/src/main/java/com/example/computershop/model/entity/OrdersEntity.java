@@ -4,20 +4,18 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-//@Table(name = "orders")
-//@Data
-//@Entity
+@Table(name = "orders")
+@Data
+@Entity
 public class OrdersEntity {
-    //@Id
-    //@OneToOne
-    //@JoinColumn(name = "cart_id", referencedColumnName = "cart_id", nullable = false)
-    //private CartEntity cart;
-    //@Column
-    //@NotNull
-    //private Long orderId;
-    //@Column
-    //private Integer amount;
-    //@NotNull
-    //@Column
-    //private String status;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_id_seq")
+    @SequenceGenerator(name = "order_id_seq", sequenceName = "order_id_seq", allocationSize = 1)
+    private Long orderId;
+    @OneToOne
+    @JoinColumn(name = "cart_id", referencedColumnName = "cart_id", nullable = false)
+    private CartEntity cartEntity;
+    private Long amount;
+    private String status;
+
 }

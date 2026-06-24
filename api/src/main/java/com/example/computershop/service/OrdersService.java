@@ -2,28 +2,27 @@ package com.example.computershop.service;
 
 import com.example.computershop.mapper.OrdersMapper;
 import com.example.computershop.model.entity.*;
-import com.example.computershop.repository.CartRepository;
-import com.example.computershop.repository.OrdersRepository;
-import com.example.computershop.repository.ProductRepository;
-import com.example.computershop.repository.UsersRepository;
+import com.example.computershop.repository.*;
 import com.example.specs.generated.model.OrdersDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class OrdersService {
-  //  private final OrdersRepository ordersRepository;
-  //  private final OrdersMapper ordersMapper;
-//    private final ProductRepository productRepository;
-//    private final UsersRepository usersRepository;
-  //  private final CartRepository cartRepository;
-//
-  //  public OrdersDto getOrder(Long orderId) {
-  //      OrdersEntity ordersEntity = ordersRepository.findById(orderId)
-  //              .orElseThrow(() -> new RuntimeException("Нет такого заказа"));
-  //      return ordersMapper.toOrdersDto(ordersEntity);
-  //  }
+    private final OrdersRepository ordersRepository;
+    private final OrdersMapper ordersMapper;
+    private final ProductRepository productRepository;
+    private final UsersRepository usersRepository;
+    private final CartRepository cartRepository;
+    private final CartDeviceProductRepository cartDeviceProductRepository;
+
+    public List<OrdersDto> getOrders(String username) {
+        return ordersMapper.toOrdersDtoList(ordersRepository.findByUsername(username));
+    }
 //
 //    public OrdersDto save(OrdersDto requestOrdersDto) {
 //        CartEntity foundCartEntity = cartRepository.findById(requestOrdersDto.getOrderId())

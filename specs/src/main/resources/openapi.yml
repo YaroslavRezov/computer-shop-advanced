@@ -1112,18 +1112,28 @@ components:
     Orders:
       required:
         - orderId
+        - code
+        - model
+        - amount
         - status
-        - cartId
+        - username
+        - email
       type: object
       properties:
-        cartId:
-          type: integer
-          format: int64
         orderId:
           type: integer
           format: int64
+        code:
+          type: integer
+          format: int64
+        model:
+          type: string
         amount:
           type: integer
-          format: int32
+          format: int64
         status:
+          type: string
+        username:
+          type: string
+        email:
           type: string
