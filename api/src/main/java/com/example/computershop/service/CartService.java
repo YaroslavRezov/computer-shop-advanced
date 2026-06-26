@@ -23,37 +23,19 @@ public class CartService {
     private final DeviceRepository deviceRepository;
 
     public List<CartDto> getAll() {
-        List<CartEntity> cartEntities = cartRepository.findAll();
+        List<CartDeviceProductEntity> cartEntities = cartDeviceProductRepository.findAll();
         return cartMapper.toCartDtoList(cartEntities);
     }
 
     public List<CartDto> getCartForUser(String username) {
-
         UsersEntity user = usersRepository.findByUsername(username)
-                .orElseThrow(() ->
-                        new RuntimeException("Нет такого пользователя " + username));
+                .orElseThrow(() -> new RuntimeException("Нет такого пользователя " + username));
 
         CartEntity cartEntity = cartRepository.findByUser(user);
 
-        List<CartDeviceProductEntity> items =
-                cartDeviceProductRepository.findByCartEntityIn(cartEntity);
+        List<CartDeviceProductEntity> cartDeviceProductEntities = cartDeviceProductRepository.findByCartEntity(cartEntity);
 
-        return items.stream()
-                .map(item -> {
-                    Integer price = getPriceByCodeAndModel(item.getCode(), item.getProductEntity().getModel());
-
-                    CartDto dto = new CartDto();
-
-                    dto.setCartId(item.getCartEntity().getCartId());
-                    dto.setUsername(username);
-                    dto.setModel(item.getProductEntity().getModel());
-                    dto.setType(item.getProductEntity().getType());
-                    dto.setCode(item.getCode());
-                    dto.setPrice(price);
-
-                    return dto;
-                })
-                .toList();
+        return cartMapper.toCartDtoList(cartDeviceProductEntities);
     }
 
     public CartDto save(CartDto requestCartDto) {
@@ -81,7 +63,7 @@ public class CartService {
 
         cartDeviceProductRepository.save(cartDeviceProductEntity);
 
-        return cartMapper.toCartDto(cartEntity);
+        return cartMapper.toCartDto(cartDeviceProductEntity);
     }
 
 
@@ -94,7 +76,7 @@ public class CartService {
 
         CartEntity cart = cartRepository.findByUser(user);
 
-        cartDeviceProductRepository.deleteByCartEntityIn(cart);
+        cartDeviceProductRepository.deleteByCartEntity(cart);
 
         cartRepository.deleteByUser(user);
     }
