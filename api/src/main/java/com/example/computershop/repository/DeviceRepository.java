@@ -69,7 +69,7 @@ public interface DeviceRepository extends JpaRepository<ProductEntity, String> {
             WHERE devices.code = :code
             AND devices.model = :model
             """, nativeQuery = true)
-    Optional<DevicePriceView> findDevicePriceByCode(
+    Optional<DevicePriceView> findDevicePriceByCodeAndModel(
             @Param("code") Long code,
             @Param("model") String model);
 

@@ -1109,11 +1109,21 @@ components:
         price:
           type: integer
           format: int32
+    OrdersDevices:
+      required:
+        - code
+        - model
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+        model:
+          type: string
     Orders:
       required:
         - orderId
-        - code
-        - model
+        - orderDevices
         - amount
         - status
         - username
@@ -1123,11 +1133,10 @@ components:
         orderId:
           type: integer
           format: int64
-        code:
-          type: integer
-          format: int64
-        model:
-          type: string
+        ordersDevices:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrdersDevices'
         amount:
           type: integer
           format: int64

@@ -29,7 +29,7 @@ public class CartService {
 
     public List<CartDto> getCartForUser(String username) {
         UsersEntity user = usersRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Нет такого пользователя " + username));
+                .orElseThrow(() -> new RuntimeException("Нет такого пользователя: " + username));
 
         CartEntity cartEntity = cartRepository.findByUser(user);
 
@@ -91,27 +91,6 @@ public class CartService {
         cartDeviceProductRepository.deleteByCartEntityCartId(cartId);
 
         cartRepository.deleteById(cartId);
-    }
-
-    private CartEntity getCartEntity(CartDto cartDto) {
-//        int price = productService.getPriceByCode(cartDto.getCode())
-//                .orElseThrow(() -> new IllegalArgumentException("Price not found for code " + cartDto.getCode()));
-//        ProductEntity foundProductEntity = productRepository.findById(cartDto.getModel())
-//                .orElseThrow(() -> new RuntimeException("Нет такого продукта"));
-        UsersEntity foundUsersEntity = usersRepository.findByUsername(cartDto.getUsername())
-                .orElseThrow(() -> new RuntimeException("Нет такого пользователя"));
-        CartEntity cartEntity = new CartEntity();
-//        cartEntity.setProduct(foundProductEntity);
-        cartEntity.setUser(foundUsersEntity);
-//        cartEntity.setCode(cartDto.getCode());
-//        cartEntity.setPrice(price);
-        return cartEntity;
-    }
-
-    private Integer getPriceByCodeAndModel(Long code, String model) {
-        return deviceRepository.findDevicePriceByCode(code, model)
-                .map(DevicePriceView::getPrice).orElseThrow(() ->
-                        new EntityNotFoundException("нет такого дивайса: " + code));
     }
 }
 

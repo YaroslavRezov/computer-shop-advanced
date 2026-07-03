@@ -32,7 +32,7 @@ public class CartMapper {
     }
 
     private Integer getPriceByCodeAndModel(Long code, String model) {
-        return deviceRepository.findDevicePriceByCode(code, model)
+        return deviceRepository.findDevicePriceByCodeAndModel(code, model)
                 .map(DevicePriceView::getPrice).orElseThrow(() ->
                         new EntityNotFoundException("нет такого дивайса: " + code));
     }

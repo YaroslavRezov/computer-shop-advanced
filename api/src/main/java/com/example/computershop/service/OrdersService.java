@@ -1,13 +1,15 @@
 package com.example.computershop.service;
 
+import com.example.computershop.mapper.CartMapper;
 import com.example.computershop.mapper.OrdersMapper;
 import com.example.computershop.model.entity.*;
 import com.example.computershop.repository.*;
 import com.example.specs.generated.model.OrdersDto;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -19,12 +21,45 @@ public class OrdersService {
     private final UsersRepository usersRepository;
     private final CartRepository cartRepository;
     private final CartDeviceProductRepository cartDeviceProductRepository;
+    private final CartMapper cartMapper;
 
     public List<OrdersDto> getOrders(String username) {
-        return ordersMapper.toOrdersDtoList(ordersRepository.findByUsername(username));
+        UsersEntity user = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Нет такого пользователя: " + username));
+        List<OrdersEntity> ordersEntities = ordersRepository.findByUser(user);
+
+        return ordersMapper.toOrdersDtoList(ordersEntities);
     }
+
+    @Transactional
+    public OrdersDto save(String username) {
+        UsersEntity foundUserEntity = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("Нет такого пользователя: " + username));
+
+        CartEntity foundCartEntity = cartRepository.findByUserId(foundUserEntity)
+                .orElseThrow(() -> new EntityNotFoundException("Нет такой корзины"));
+
+        OrdersEntity ordersEntity = new OrdersEntity();
+        ordersEntity.setCartEntity(foundCartEntity);
+
+        OrdersEntity savedOrdersEntity = ordersRepository.save(ordersEntity);
+
+        return ordersMapper.toOrdersDto(savedOrdersEntity);
+    }
+
+//    public List<OrdersDto> getOrders(String username) {
+//        return ordersMapper.toOrdersDtoList(ordersRepository.findByUsername(username));
+//    }
+
 //
 //    public OrdersDto save(OrdersDto requestOrdersDto) {
+//        CartEntity foundCartEntity = cartRepository.findById(requestOrdersDto.getOrderId())
+//                .orElseThrow(() -> new RuntimeException("Нет такого карзины"));
+//        OrdersEntity sourceOrdersEntity = ordersMapper.toOrdersEntity(foundCartEntity);
+//        OrdersEntity savedOrdersEntity = ordersRepository.save(sourceOrdersEntity);
+//
+//        return ordersMapper.toOrdersDto(savedOrdersEntity);
+//    }
 //        CartEntity foundCartEntity = cartRepository.findById(requestOrdersDto.getOrderId())
 //                .orElseThrow(() -> new RuntimeException("Нет такого карзины"));
 //        OrdersEntity sourceOrdersEntity = ordersMapper.toOrdersEntity(requestOrdersDto, foundCartEntity);

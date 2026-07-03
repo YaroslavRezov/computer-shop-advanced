@@ -1,7 +1,6 @@
 package com.example.computershop.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Table(name = "orders")
@@ -15,7 +14,6 @@ public class OrdersEntity {
     @OneToOne
     @JoinColumn(name = "cart_id", referencedColumnName = "cart_id", nullable = false)
     private CartEntity cartEntity;
-    private Long amount;
     private String status;
 
 }
