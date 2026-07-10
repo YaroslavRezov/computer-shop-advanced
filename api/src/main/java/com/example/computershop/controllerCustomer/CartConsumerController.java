@@ -39,8 +39,8 @@ public class CartConsumerController implements CartConsumerControllerApi {
         return ResponseEntity.noContent().build();
     }
 
-//    @Override
-//    public ResponseEntity<OrdersDto> insertIntoOrders(OrdersDto ordersDto) {
-//        return ResponseEntity.ok(ordersService.save(ordersDto));
-//    }
+    @Override
+    public ResponseEntity<OrdersDto> insertIntoOrders(String username) {
+        return ResponseEntity.ok(ordersService.save(username));
+    }
 }

@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -14,10 +16,10 @@ public class OrdersController implements OrdersControllerApi {
 
     private final OrdersService ordersService;
 
-//    @Override
-//    public ResponseEntity<OrdersDto> getOrder(Long orderId){
-//        return ResponseEntity.ok(ordersService.getOrder(orderId));
-//    }
+    @Override
+    public ResponseEntity<List<OrdersDto>> getOrders(String username){
+        return ResponseEntity.ok(ordersService.getOrders(username));
+    }
 
 //    @Override
 //    public ResponseEntity<OrdersDto> patchOrdersPartially(Long code, OrdersDto ordersDto) {

@@ -715,17 +715,16 @@ paths:
       responses:
         '200':
           description: OK
-  /customer/cart/:
     post:
       tags:
         - cart-consumer-controller
       operationId: insertIntoOrders
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Orders'
-        required: true
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '400':
           description: Bad Request
@@ -755,27 +754,29 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Cart'
-  /customer/orders/{orderId}:
+  /customer/orders/{username}:
     get:
       tags:
         - orders-controller
-      operationId: getOrder
+      operationId: getOrders
       parameters:
-        - name: orderId
+        - name: username
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '400':
           description: Bad Request
         '200':
-          description: OK
+          description: User orders
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Orders'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Orders'
+  /customer/orders/{orderId}:
     patch:
       tags:
         - orders-controller
