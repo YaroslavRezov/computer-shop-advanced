@@ -12,9 +12,8 @@ import java.util.List;
 import java.util.Optional;
 public interface CartRepository extends JpaRepository<CartEntity, Long> {
 
-    CartEntity findByUser(UsersEntity user);// Было findByUsername
 
-    Optional<CartEntity> findByUserId(UsersEntity user);
+    Optional<CartEntity> findByUser(UsersEntity user);
     @Modifying
     @Transactional
     @Query("DELETE FROM CartEntity c WHERE c.user = :user")

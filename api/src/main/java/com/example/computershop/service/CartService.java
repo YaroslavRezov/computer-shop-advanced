@@ -31,7 +31,8 @@ public class CartService {
         UsersEntity user = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Нет такого пользователя: " + username));
 
-        CartEntity cartEntity = cartRepository.findByUser(user);
+        CartEntity cartEntity = cartRepository.findByUser(user)
+                .orElseThrow(() -> new EntityNotFoundException("Нет такой корзины"));
 
         List<CartDeviceProductEntity> cartDeviceProductEntities = cartDeviceProductRepository.findByCartEntity(cartEntity);
 
@@ -39,10 +40,11 @@ public class CartService {
     }
 
     public CartDto save(CartDto requestCartDto) {
+        System.out.println("save() called");
         UsersEntity foundUsersEntity = usersRepository.findByUsername(requestCartDto.getUsername())
                 .orElseThrow(() -> new RuntimeException("Нет такого пользователя: " + requestCartDto.getUsername()));
 
-        CartEntity foundCartEntity = cartRepository.findByUserId(foundUsersEntity).orElse(null);
+        CartEntity foundCartEntity = cartRepository.findByUser(foundUsersEntity).orElse(null);
 
         CartEntity cartEntity;
         if (foundCartEntity == null) {
@@ -74,9 +76,10 @@ public class CartService {
                 .orElseThrow(() ->
                         new RuntimeException("нет такого пользователя: " + username));
 
-        CartEntity cart = cartRepository.findByUser(user);
+        CartEntity cartEntity = cartRepository.findByUser(user)
+                .orElseThrow(() -> new EntityNotFoundException("Нет такой корзины"));
 
-        cartDeviceProductRepository.deleteByCartEntity(cart);
+        cartDeviceProductRepository.deleteByCartEntity(cartEntity);
 
         cartRepository.deleteByUser(user);
     }

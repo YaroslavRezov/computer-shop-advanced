@@ -1,6 +1,8 @@
 package com.example.computershop.config;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -28,9 +30,13 @@ public class GlobalExceptionHandler {
         return errors;
     }
 
+    private static final Logger log =
+            LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<String> handleThrowable(Throwable ex) {
+        log.error("Unhandled exception", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ex.getMessage());
     }

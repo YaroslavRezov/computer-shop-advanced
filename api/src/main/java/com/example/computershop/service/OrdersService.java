@@ -26,7 +26,7 @@ public class OrdersService {
     public List<OrdersDto> getOrders(String username) {
         UsersEntity user = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Нет такого пользователя: " + username));
-        List<OrdersEntity> ordersEntities = ordersRepository.findByUser(user);
+        List<OrdersEntity> ordersEntities = ordersRepository.findByCartEntityUser(user);
 
         return ordersMapper.toOrdersDtoList(ordersEntities);
     }
@@ -36,11 +36,12 @@ public class OrdersService {
         UsersEntity foundUserEntity = usersRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("Нет такого пользователя: " + username));
 
-        CartEntity foundCartEntity = cartRepository.findByUserId(foundUserEntity)
+        CartEntity foundCartEntity = cartRepository.findByUser(foundUserEntity)
                 .orElseThrow(() -> new EntityNotFoundException("Нет такой корзины"));
 
         OrdersEntity ordersEntity = new OrdersEntity();
         ordersEntity.setCartEntity(foundCartEntity);
+        ordersEntity.setStatus("");
 
         OrdersEntity savedOrdersEntity = ordersRepository.save(ordersEntity);
 

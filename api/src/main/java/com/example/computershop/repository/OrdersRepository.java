@@ -1,19 +1,15 @@
 package com.example.computershop.repository;
 
 import com.example.computershop.model.entity.OrdersEntity;
-import com.example.computershop.model.entity.OrdersView;
 import com.example.computershop.model.entity.UsersEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 
 public interface OrdersRepository extends JpaRepository<OrdersEntity, Long> {
 
-    List<OrdersEntity> findByUser(UsersEntity user);
-
+    List<OrdersEntity> findByCartEntityUser(UsersEntity user);
     //    @Query("""
 //    SELECT
 //        o.orderId AS orderId,
