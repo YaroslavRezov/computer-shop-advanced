@@ -1,8 +1,10 @@
 package com.example.computershop.controllerCustomer;
 
 import com.example.computershop.service.CartService;
+import com.example.computershop.service.OrdersService;
 import com.example.specs.generated.api.CartConsumerControllerApi;
 import com.example.specs.generated.model.CartDto;
+import com.example.specs.generated.model.OrdersDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,7 @@ import java.util.List;
 public class CartConsumerController implements CartConsumerControllerApi {
 
     private final CartService cartService;
-
+    private final OrdersService ordersService;
     @Override
     public ResponseEntity<List<CartDto>> getCustomerAllCartItems() {
         return ResponseEntity.ok(cartService.getAll());
@@ -32,10 +34,13 @@ public class CartConsumerController implements CartConsumerControllerApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteCustomerOneFromCart(Long orderId) {
-        cartService.delete(orderId);
-
+    public ResponseEntity<Void> deleteCustomerOneFromCart(Long cartId) {
+        cartService.delete(cartId);
         return ResponseEntity.noContent().build();
     }
 
+    @Override
+    public ResponseEntity<OrdersDto> insertIntoOrders(String username) {
+        return ResponseEntity.ok(ordersService.save(username));
+    }
 }

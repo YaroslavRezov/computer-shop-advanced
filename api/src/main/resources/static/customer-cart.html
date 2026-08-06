@@ -74,6 +74,22 @@
         #home-btn:hover {
             background-color: #31b0d5;
         }
+        #orders-btn {
+            margin: 20px;
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #orders-btn {
+            background-color: #5cb85c;
+        }
+
+        #orders-btn:hover {
+            background-color: #449d44;
+        }
 
     </style>
 </head>
@@ -82,6 +98,7 @@
 <h1>Список заказов
     <button id="clear-cart-btn">Очистить корзину</button>
     <button id="home-btn">На главную</button>
+    <button id="orders-btn">Мои заказы</button>
 </h1>
 
 <table>
@@ -90,13 +107,16 @@
         <th>Модель</th>
         <th>Код</th>
         <th>Цена</th>
-        <th>Username</th>
-        <th>Номер заказа</th>
+        <th>Удалить</th>
     </tr>
     </thead>
     <tbody id="cart-body">
     </tbody>
 </table>
+
+<button id="checkout-btn">
+    Оформить заказ
+</button>
 
 <script>
     const cartBody = document.getElementById("cart-body");
@@ -131,9 +151,13 @@
                     <td>${item.model}</td>
                     <td>${item.code}</td>
                     <td>${item.price}</td>
-                    <td>${item.username}</td>
-                    <td>${item.orderId ?? ''}</td>
-                    <td><button class="delete-btn" data-orderid="${item.orderId}">Удалить</button></td>
+                    <td>
+                        <button
+                            class="delete-btn"
+                            data-cartid="${item.cartId}">
+                            Удалить
+                        </button>
+                    </td>
                 `;
 
                 // 👉 переход по строке на карточку товара
@@ -163,15 +187,16 @@
                 deleteButton.addEventListener('click', (event) => {
                     event.stopPropagation(); // чтобы не срабатывал переход
 
-                    const orderId = deleteButton.getAttribute('data-orderid');
+                    const cartId =
+                        deleteButton.getAttribute('data-cartId');
 
-                    if (!orderId) {
-                        alert("Ошибка: orderId отсутствует");
+                    if (!cartId) {
+                        alert("Ошибка: cartId отсутствует");
                         return;
                     }
 
                     if (confirm("Удалить этот товар из корзины?")) {
-                        fetch(`http://localhost:8080/customer/cart/${orderId}`, {
+                        fetch(`http://localhost:8080/customer/cart/${cartId}`, {
                             method: 'DELETE',
                             headers: {
                                 'Authorization': 'Bearer ' + token
@@ -229,6 +254,49 @@
     document.getElementById('home-btn').addEventListener('click', () => {
         window.location.href = "customer-index.html";
     });
+    document.getElementById('orders-btn').addEventListener('click', () => {
+        window.location.href = "customer-orders.html";
+    });
+
+    document
+        .getElementById("checkout-btn")
+        .addEventListener("click", () => {
+
+            if (!confirm("Оформить заказ?")) {
+                return;
+            }
+
+            fetch(
+                `http://localhost:8080/customer/cart/user/${username}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    }
+                }
+            )
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Ошибка оформления заказа");
+                    }
+                    return response.json();
+                })
+                .then(order => {
+
+                    alert(
+                        "Заказ №" +
+                        order.orderId +
+                        " успешно создан."
+                    );
+
+                    window.location.href =
+                        "customer-orders.html";
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Не удалось оформить заказ");
+                });
+        });
 </script>
 
 </body>

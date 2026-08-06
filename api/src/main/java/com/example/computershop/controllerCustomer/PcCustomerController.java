@@ -29,6 +29,7 @@ public class PcCustomerController implements PcCustomerControllerApi {
 
     @Override
     public ResponseEntity<CartDto> insertCustomerPcIntoCart(CartDto cartDto) {
+        System.out.println("Controller reached");
         return ResponseEntity.ok(cartService.save(cartDto));
     }
 
