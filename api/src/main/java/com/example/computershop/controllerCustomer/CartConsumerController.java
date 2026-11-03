@@ -43,4 +43,9 @@ public class CartConsumerController implements CartConsumerControllerApi {
     public ResponseEntity<OrdersDto> insertIntoOrders(String username) {
         return ResponseEntity.ok(ordersService.save(username));
     }
+
+
+
+    //remove to og tables
+    //remove cascades
 }
