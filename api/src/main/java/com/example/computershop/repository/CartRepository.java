@@ -9,14 +9,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+import java.util.Optional;
 public interface CartRepository extends JpaRepository<CartEntity, Long> {
 
-    List<CartEntity> findByUser(UsersEntity user); // Было findByUsername
 
+    Optional<CartEntity> findByUser(UsersEntity user);
     @Modifying
     @Transactional
     @Query("DELETE FROM CartEntity c WHERE c.user = :user")
     void deleteByUser(@Param("user") UsersEntity user); // Было deleteByUsername
-
 }

@@ -57,7 +57,6 @@ public class SecurityConfig {
                         .requestMatchers("/images/hammerAndAnother.png").permitAll()
                         .requestMatchers("/swagger-ui/index.html").permitAll()
 
-
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

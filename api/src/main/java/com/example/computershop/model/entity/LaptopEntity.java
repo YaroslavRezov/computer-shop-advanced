@@ -13,7 +13,6 @@ public class LaptopEntity extends BaseDeviceEntity {
     @SequenceGenerator(name = "laptop_code_seq", sequenceName = "laptop_code_seq", allocationSize = 1)
     @Column(nullable = false, updatable = false)
     private Long code;
-
     @Column
     private int speed;
     @Column
@@ -22,6 +21,5 @@ public class LaptopEntity extends BaseDeviceEntity {
     private Double hd;
     @Column
     private int screen;
-
 
 }

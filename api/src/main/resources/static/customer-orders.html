@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои заказы</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        th {
+            background: #337ab7;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f7f7f7;
+        }
+
+        ul{
+            margin:0;
+            padding-left:20px;
+        }
+
+        button{
+            margin-top:20px;
+            padding:10px 20px;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            background:#337ab7;
+            color:white;
+            font-weight:bold;
+        }
+
+        button:hover{
+            background:#23527c;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Мои заказы</h1>
+
+<table>
+
+    <thead>
+
+    <tr>
+        <th>Номер заказа</th>
+        <th>Пользователь</th>
+        <th>Email</th>
+        <th>Статус</th>
+        <th>Сумма</th>
+        <th>Товары</th>
+    </tr>
+
+    </thead>
+
+    <tbody id="orders-body">
+
+    </tbody>
+
+</table>
+
+<button id="home-btn">
+    На главную
+</button>
+
+<script>
+
+    const token = localStorage.getItem("authToken");
+    const username = localStorage.getItem("username");
+
+    if(!token){
+        location.href="login.html";
+    }
+
+    const tbody=document.getElementById("orders-body");
+
+    fetch(`http://localhost:8080/customer/orders/${username}`,{
+
+        method:"GET",
+
+        headers:{
+            "Authorization":"Bearer "+token
+        }
+
+    })
+        .then(response=>{
+
+            if(!response.ok){
+                throw new Error("Ошибка загрузки заказов");
+            }
+
+            return response.json();
+
+        })
+        .then(data=>{
+
+            tbody.innerHTML="";
+
+            data.forEach(order=>{
+
+                const devices = order.ordersDevices
+                    .map(device=>`<li>${device.model} (${device.code})</li>`)
+                    .join("");
+
+                const row=document.createElement("tr");
+
+                row.innerHTML=`
+
+            <td>${order.orderId}</td>
+
+            <td>${order.username}</td>
+
+            <td>${order.email}</td>
+
+            <td>${order.status}</td>
+
+            <td>${order.amount}</td>
+
+            <td>
+                <ul>
+                    ${devices}
+                </ul>
+            </td>
+
+        `;
+
+                tbody.appendChild(row);
+
+            });
+
+        })
+        .catch(error=>{
+
+            console.error(error);
+
+            tbody.innerHTML=`
+        <tr>
+            <td colspan="6">
+                Ошибка загрузки заказов
+            </td>
+        </tr>
+    `;
+
+        });
+
+    document.getElementById("home-btn").addEventListener("click",()=>{
+
+        window.location.href="customer-index.html";
+
+    });
+
+</script>
+
+</body>
+</html>

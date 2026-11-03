@@ -18,17 +18,18 @@ public class UsersEntity implements UserDetails {
     @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
     @Column(nullable = false, updatable = false)
     private Long id;
-
     @Column(unique = true, nullable = false)
     private String username;
-
     @Column(nullable = false)
     private String password;
-
+    @Column
     private String firstName;
+    @Column
     private String surname;
+    @Column
     private String userRole;
-
+    @Column(unique = true, nullable = false)
+    private String email;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

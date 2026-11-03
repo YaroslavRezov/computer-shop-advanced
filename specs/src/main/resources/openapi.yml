@@ -715,6 +715,31 @@ paths:
       responses:
         '200':
           description: OK
+    post:
+      tags:
+        - cart-consumer-controller
+      operationId: insertIntoOrders
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
   /customer/cart/all:
     get:
       tags:
@@ -729,6 +754,61 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Cart'
+  /customer/orders/{username}:
+    get:
+      tags:
+        - orders-controller
+      operationId: getOrders
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Bad Request
+        '200':
+          description: User orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Orders'
+  /customer/orders/{orderId}:
+    patch:
+      tags:
+        - orders-controller
+      operationId: patchOrdersPartially
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Orders'
+        required: true
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
   /admin/products/fullproduct:
     get:
       tags:
@@ -863,13 +943,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Device'
-  /customer/cart/{orderId}:
+  /customer/cart/{cartId}:
     delete:
       tags:
         - cart-consumer-controller
       operationId: deleteCustomerOneFromCart
       parameters:
-        - name: orderId
+        - name: cartId
           in: path
           required: true
           schema:
@@ -883,11 +963,10 @@ components:
     Cart:
       required:
         - model
-        - price
         - username
       type: object
       properties:
-        orderId:
+        cartId:
           type: integer
           format: int64
         model:
@@ -908,6 +987,8 @@ components:
         username:
           type: string
         password:
+          type: string
+        email:
           type: string
     AuthResponse:
       type: object
@@ -1028,3 +1109,40 @@ components:
         price:
           type: integer
           format: int32
+    OrdersDevices:
+      required:
+        - code
+        - model
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+        model:
+          type: string
+    Orders:
+      required:
+        - orderId
+        - orderDevices
+        - amount
+        - status
+        - username
+        - email
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int64
+        ordersDevices:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrdersDevices'
+        amount:
+          type: integer
+          format: int64
+        status:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
